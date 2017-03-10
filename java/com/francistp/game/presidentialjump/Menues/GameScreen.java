@@ -235,14 +235,6 @@ public class GameScreen extends GLScreen {
         player.render(batcher);
         batcher.endBatch();
 
-        batcher.beginBatch(Assets.buttonsTexture);
-        if (pauseState == BOUNDS_NOT_TOUCHED) {
-            batcher.drawSprite(pauseBounds.x, pauseBounds.y, pauseBounds.width, pauseBounds.height, Assets.pause_button);
-        } else {
-            batcher.drawSprite(pauseBounds.x, pauseBounds.y, pauseBounds.width, pauseBounds.height, Assets.pause_button_pressed);
-        }
-        batcher.endBatch();
-
         pauseMenu.render(batcher);
 
         // Stop rendering
