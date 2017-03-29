@@ -18,6 +18,7 @@ import com.francistp.game.presidentialjump.Character.Player;
 import com.francistp.game.presidentialjump.Character.Trump;
 import com.francistp.game.presidentialjump.Decore.Background;
 import com.francistp.game.presidentialjump.Decore.Fireworks;
+import com.francistp.game.presidentialjump.Object.ElectricBoundary;
 import com.francistp.game.presidentialjump.Object.Wall;
 import com.francistp.game.presidentialjump.Settings.SoundController;
 
@@ -53,6 +54,9 @@ public class GameScreen extends GLScreen {
     Background background;
     Wall wall;
 
+    ElectricBoundary topBoundary, bottomBoundary;
+
+
     Rectangle pauseBounds;
     int pauseState;
     PauseMenu pauseMenu;
@@ -70,6 +74,9 @@ public class GameScreen extends GLScreen {
         player = new Trump();
 
         wall = new Wall();
+
+        topBoundary = new ElectricBoundary(240, 850);
+        bottomBoundary = new ElectricBoundary(240, -50);
 
         pauseBounds = new Rectangle(Assets.pause_button.width + 5, 800 - Assets.pause_button.height - 5, Assets.pause_button.width*2, Assets.pause_button.height*2);
         pauseState = BOUNDS_NOT_TOUCHED;
@@ -93,6 +100,22 @@ public class GameScreen extends GLScreen {
             if (player.getPlayerState() != 0) {
                 wall.scroll(-1.50f);
                 background.scroll(-1.50f);
+
+                if (topBoundary.getY() > 740) {
+                    topBoundary.addY(-2f);
+                    if (topBoundary.getY() < 740) {
+                        topBoundary.setY(740);
+                    }
+                }
+                if (bottomBoundary.getY() < 40) {
+                    bottomBoundary.addY(2f);
+                    if (bottomBoundary.getY() > 40) {
+                        bottomBoundary.setY(40);
+                    }
+                }
+
+                topBoundary.update();
+                bottomBoundary.update();
             }
             background.update(deltaTime);
 
@@ -100,6 +123,11 @@ public class GameScreen extends GLScreen {
             background.checkBackgrounds();
 
             checkAndSetPlayer(player, wall);
+
+            if (checkIfHit()) {
+                pauseState = BOUNDS_NOT_TOUCHED;
+                state = PAUSED_STATE;
+            }
         } else if (Assets.readyState && state == PAUSED_STATE) {
             List<Input.TouchEvent> touchEvents = game.getInput().getTouchEvents();
             game.getInput().getKeyEvents();
@@ -194,6 +222,9 @@ public class GameScreen extends GLScreen {
         player.render(batcher);
         batcher.endBatch();
 
+        topBoundary.render(batcher);
+        bottomBoundary.render(batcher);
+
         batcher.beginBatch(Assets.buttonsTexture);
         if (pauseState == BOUNDS_NOT_TOUCHED) {
             batcher.drawSprite(pauseBounds.x, pauseBounds.y, pauseBounds.width, pauseBounds.height, Assets.pause_button);
@@ -234,6 +265,9 @@ public class GameScreen extends GLScreen {
         batcher.beginBatch(Assets.trumpallbodyparts);
         player.render(batcher);
         batcher.endBatch();
+
+        topBoundary.render(batcher);
+        bottomBoundary.render(batcher);
 
         batcher.beginBatch(Assets.buttonsTexture);
         if (pauseState == BOUNDS_NOT_TOUCHED) {
@@ -286,6 +320,14 @@ public class GameScreen extends GLScreen {
 
         // medium walls
 
+    }
+
+    public boolean checkIfHit() {
+        if (CollisionTester.CollisionTest(player.getDamageBounds(), topBoundary.getBounds()) || CollisionTester.CollisionTest(player.getDamageBounds(), bottomBoundary.getBounds())) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override

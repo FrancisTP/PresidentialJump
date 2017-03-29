@@ -95,7 +95,7 @@ public class Trump extends Player {
             blinkCounter = 0;
             blinkIntervalTime = minBlinkTime + (int)(Math.random() * ((maxBlinkTime - minBlinkTime) + 1));
         }
-
+        dustTimer += 0.15f;
         updatePlayer(deltaTime);
         wallBounds.setPosition(position.x - bodyOffsetX, position.y - bodyOffsetY);
         damageBounds.setPosition(position.x - bodyOffsetX, position.y - bodyOffsetY);
@@ -188,23 +188,22 @@ public class Trump extends Player {
                 TextureRegion keyFrame;
                 keyFrame = Assets.dust_right.getKeyFrame(dustTimer, Animation.ANIMATION_LOOPING);
                 batcher.drawSprite(position.x + dustOffsetX, position.y + dustOffsetY, Assets.dust_01.width, Assets.dust_01.height, keyFrame);
-                dustTimer += 0.15f;
+                //dustTimer += 0.15f;
                 batcher.endBatch();
-                ;
             } else if (playerState == WALL_LEFT) {
                 batcher.beginBatch(Assets.fenceTexture);
                 TextureRegion keyFrame;
                 keyFrame = Assets.dust_left.getKeyFrame(dustTimer, Animation.ANIMATION_LOOPING);
                 batcher.drawSprite(position.x - dustOffsetX, position.y + dustOffsetY, Assets.dust_01.width, Assets.dust_01.height, keyFrame);
-                dustTimer += 0.15f;
+                //dustTimer += 0.15f;
                 batcher.endBatch();
             }
         }
 
-        /*
+
         batcher.beginBatch(Assets.collisionLinesTexture);
         damageBounds.drawShape(batcher);
         wallBounds.drawShape(batcher);
-        */
+
     }
 }
