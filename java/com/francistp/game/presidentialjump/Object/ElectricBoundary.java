@@ -20,7 +20,7 @@ public class ElectricBoundary {
         this.x = x;
         this.y = y;
 
-        bounds = new GameObjectRectangle(this.x, this.y, Assets.electric_boundry_01.width, Assets.electric_boundry_01.height);
+        bounds = new GameObjectRectangle(this.x, this.y, Assets.electric_boundry_01.width, Assets.electric_boundry_01.height * 5);
         stateTime = 0;
     }
 
@@ -32,8 +32,13 @@ public class ElectricBoundary {
     public void render(SpriteBatcher batcher) {
         batcher.beginBatch(Assets.electricBoundry);
 
-        TextureRegion keyFrame = Assets.electric_boundry.getKeyFrame(stateTime, Animation.ANIMATION_LOOPING);
-        batcher.drawSprite(x, y, Assets.electric_boundry_01.width, Assets.electric_boundry_01.height, keyFrame);
+        TextureRegion keyFrame_01 = Assets.electric_boundry.getKeyFrame(stateTime, Animation.ANIMATION_LOOPING);
+        TextureRegion keyFrame_02 = Assets.electric_boundry.getKeyFrame((stateTime + 1f), Animation.ANIMATION_LOOPING);
+        batcher.drawSprite(x, y - 40, Assets.electric_boundry_01.width, Assets.electric_boundry_01.height, keyFrame_01);
+        batcher.drawSprite(x, y - 20, Assets.electric_boundry_01.width, Assets.electric_boundry_01.height, keyFrame_02);
+        batcher.drawSprite(x, y, Assets.electric_boundry_01.width, Assets.electric_boundry_01.height, keyFrame_01);
+        batcher.drawSprite(x, y + 20, Assets.electric_boundry_01.width, Assets.electric_boundry_01.height, keyFrame_02);
+        batcher.drawSprite(x, y + 40, Assets.electric_boundry_01.width, Assets.electric_boundry_01.height, keyFrame_01);
 
         batcher.endBatch();
 

@@ -61,7 +61,7 @@ public class Trump extends Player {
         dustOffsetY = -15;
 
         wallBounds = new GameObjectRectangle(position.x - bodyOffsetX, position.y - bodyOffsetY, 45, 40);
-        damageBounds = new GameObjectRectangle(position.x - bodyOffsetX, position.y - bodyOffsetY, 25, 35);
+        damageBounds = new GameObjectRectangle(position.x - bodyOffsetX, position.y - bodyOffsetY + 10, 25, 70);
 
         handWobble = 0;
 
@@ -98,7 +98,7 @@ public class Trump extends Player {
         dustTimer += 0.15f;
         updatePlayer(deltaTime);
         wallBounds.setPosition(position.x - bodyOffsetX, position.y - bodyOffsetY);
-        damageBounds.setPosition(position.x - bodyOffsetX, position.y - bodyOffsetY);
+        damageBounds.setPosition(position.x - bodyOffsetX, position.y - bodyOffsetY + 10);
     }
 
     @Override

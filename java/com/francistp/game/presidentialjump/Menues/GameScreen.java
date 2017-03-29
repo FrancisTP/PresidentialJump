@@ -38,12 +38,12 @@ public class GameScreen extends GLScreen {
     Vector2 touchPoint;
     FPSCounter fpsCounter = new FPSCounter();
 
-    static int state;
-    static final int LOADING_STATE = 0;
-    static final int READY_STATE = 1;
-    static final int RUNNING_STATE = 2;
-    static final int PAUSED_STATE = 3;
-    static final int FINISHED_STATE = 4;
+    public static int state;
+    public static final int LOADING_STATE = 0;
+    public static final int READY_STATE = 1;
+    public static final int RUNNING_STATE = 2;
+    public static final int PAUSED_STATE = 3;
+    public static final int FINISHED_STATE = 4;
 
     final int BOUNDS_NOT_TOUCHED = 0;
     final int BOUNDS_TOUCHED = 1;
@@ -101,16 +101,16 @@ public class GameScreen extends GLScreen {
                 wall.scroll(-1.50f);
                 background.scroll(-1.50f);
 
-                if (topBoundary.getY() > 740) {
+                if (topBoundary.getY() > 780) {
                     topBoundary.addY(-2f);
-                    if (topBoundary.getY() < 740) {
-                        topBoundary.setY(740);
+                    if (topBoundary.getY() < 780) {
+                        topBoundary.setY(780);
                     }
                 }
-                if (bottomBoundary.getY() < 40) {
+                if (bottomBoundary.getY() < 0) {
                     bottomBoundary.addY(2f);
-                    if (bottomBoundary.getY() > 40) {
-                        bottomBoundary.setY(40);
+                    if (bottomBoundary.getY() > 0) {
+                        bottomBoundary.setY(0);
                     }
                 }
 
@@ -269,14 +269,6 @@ public class GameScreen extends GLScreen {
         topBoundary.render(batcher);
         bottomBoundary.render(batcher);
 
-        batcher.beginBatch(Assets.buttonsTexture);
-        if (pauseState == BOUNDS_NOT_TOUCHED) {
-            batcher.drawSprite(pauseBounds.x, pauseBounds.y, pauseBounds.width, pauseBounds.height, Assets.pause_button);
-        } else {
-            batcher.drawSprite(pauseBounds.x, pauseBounds.y, pauseBounds.width, pauseBounds.height, Assets.pause_button_pressed);
-        }
-        batcher.endBatch();
-        
         pauseMenu.render(batcher);
 
         // Stop rendering

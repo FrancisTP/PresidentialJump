@@ -4,6 +4,7 @@ import com.francistp.game.framework.gl.Animation;
 import com.francistp.game.framework.gl.SpriteBatcher;
 import com.francistp.game.framework.gl.TextureRegion;
 import com.francistp.game.presidentialjump.Assets.Assets;
+import com.francistp.game.presidentialjump.Menues.GameScreen;
 
 import java.util.Random;
 
@@ -78,7 +79,9 @@ public class Firework {
 
     public void update(float deltaTime){
         //this.stateTime += deltaTime;
-
+        if (state == EXPLOSION_STATE) {
+            stateTime += 0.20f;
+        }
         if (state == SHOOTING_STATE) {
             counter++;
         } else if (state == EXPLOSION_STATE) {
@@ -114,7 +117,6 @@ public class Firework {
                 batcher.drawSprite(x, y, Assets.red_firework_01.width, Assets.red_firework_01.height, Assets.red_firework_01);
             }
         } else if (state == EXPLOSION_STATE) {
-            stateTime += 0.20f;
             if (color == BLUE) {
                 TextureRegion keyFrame = Assets.blueFirework.getKeyFrame(stateTime, Animation.ANIMATION_NONLOOPING);
                 batcher.drawSprite(x, y, Assets.blue_firework_01.width, Assets.blue_firework_01.height, keyFrame);
