@@ -14,6 +14,7 @@ import com.francistp.game.framework.math.OverlapTester;
 import com.francistp.game.framework.math.Rectangle;
 import com.francistp.game.framework.math.Vector2;
 import com.francistp.game.presidentialjump.Assets.Assets;
+import com.francistp.game.presidentialjump.Assets.Text;
 import com.francistp.game.presidentialjump.Character.Player;
 import com.francistp.game.presidentialjump.Character.Trump;
 import com.francistp.game.presidentialjump.Decore.Background;
@@ -56,6 +57,7 @@ public class GameScreen extends GLScreen {
 
     ElectricBoundary topBoundary, bottomBoundary;
 
+    private Text scoreCounter;
 
     Rectangle pauseBounds;
     int pauseState;
@@ -77,6 +79,8 @@ public class GameScreen extends GLScreen {
 
         topBoundary = new ElectricBoundary(240, 850);
         bottomBoundary = new ElectricBoundary(240, -50);
+
+        scoreCounter = new Text(240, 650, "Score: 0", 10);
 
         pauseBounds = new Rectangle(Assets.pause_button.width + 5, 800 - Assets.pause_button.height - 5, Assets.pause_button.width*2, Assets.pause_button.height*2);
         pauseState = BOUNDS_NOT_TOUCHED;
@@ -224,6 +228,8 @@ public class GameScreen extends GLScreen {
 
         topBoundary.render(batcher);
         bottomBoundary.render(batcher);
+
+        scoreCounter.render(batcher);
 
         batcher.beginBatch(Assets.buttonsTexture);
         if (pauseState == BOUNDS_NOT_TOUCHED) {
