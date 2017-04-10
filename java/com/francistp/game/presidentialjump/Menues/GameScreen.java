@@ -80,7 +80,7 @@ public class GameScreen extends GLScreen {
         topBoundary = new ElectricBoundary(240, 850);
         bottomBoundary = new ElectricBoundary(240, -50);
 
-        scoreCounter = new Text(240, 650, "Score: 0", 10);
+        scoreCounter = new Text(240, 650, "Tes fucking con", 10);
 
         pauseBounds = new Rectangle(Assets.pause_button.width + 5, 800 - Assets.pause_button.height - 5, Assets.pause_button.width*2, Assets.pause_button.height*2);
         pauseState = BOUNDS_NOT_TOUCHED;
