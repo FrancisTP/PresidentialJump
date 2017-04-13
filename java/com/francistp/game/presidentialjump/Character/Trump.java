@@ -201,9 +201,9 @@ public class Trump extends Player {
         }
 
 
-        batcher.beginBatch(Assets.collisionLinesTexture);
-        damageBounds.drawShape(batcher);
-        wallBounds.drawShape(batcher);
+        //batcher.beginBatch(Assets.collisionLinesTexture);
+        //damageBounds.drawShape(batcher);
+        //wallBounds.drawShape(batcher);
 
     }
 }

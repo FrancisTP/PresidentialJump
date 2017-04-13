@@ -186,15 +186,15 @@ public class Letter {
 
     public void setY(float y, float biggestHeight){
         if (this.letter == ',') {
-            this.y = y - (this.sprite.height/2);
+            this.y = y - (height/2);
         } else if (this.letter == '-') {
-            this.y = y + (biggestHeight/2) - (this.sprite.height/2);
+            this.y = y + (biggestHeight/2) - (height/2);
         } else if (this.letter == '\'') {
-            this.y = y + biggestHeight - (this.sprite.height/2);
+            this.y = y + biggestHeight - (height/2);
         } else if (this.letter == 'g' || this.letter == 'j' || this.letter == 'p' || this.letter == 'q' || this.letter == 'y' || this.letter == 'Q') {
-            this.y = y - (this.sprite.height/3) + (this.sprite.height/9);
+            this.y = y - (height/3) + (height/9);
         } else if (this.letter == '0' || this.letter == '6') {
-            this.y = y - (this.sprite.height/50);
+            this.y = y - (height/50);
         } else {
             this.y = y;
         }
@@ -214,6 +214,10 @@ public class Letter {
 
     public float getHeight() {
         return height;
+    }
+
+    public char getLetter() {
+        return letter;
     }
 
     public void render(SpriteBatcher batcher) {

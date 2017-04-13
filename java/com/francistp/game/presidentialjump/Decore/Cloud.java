@@ -85,12 +85,6 @@ public class Cloud {
             x += 300;
         }
 
-        System.out.println(" ");
-        System.out.println("=============================");
-        System.out.println("Size: " + size);
-        System.out.println("Color: " + color);
-        System.out.println("Direction: " + direction);
-
         if (color == ONE) {
             if (size == SMALL_ONE || size == SMALL_TWO ) {
                 if (direction == LEFT) {
@@ -272,9 +266,6 @@ public class Cloud {
                 }
             }
         }
-        System.out.println("textureRegion: " + textureRegion);
-        System.out.println("=============================");
-        System.out.println(" ");
     }
 
     public void update(int color){
