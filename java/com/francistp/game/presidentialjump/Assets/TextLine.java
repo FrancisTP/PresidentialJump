@@ -6,7 +6,7 @@ import com.francistp.game.framework.gl.SpriteBatcher;
  * Created by Francis on 2017-04-10.
  */
 
-// As with Text, the y defines the top of the line
+// As with TextOld, the y defines the top of the line
 
 public class TextLine {
 

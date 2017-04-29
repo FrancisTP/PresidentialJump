@@ -14,7 +14,7 @@ import com.francistp.game.framework.math.OverlapTester;
 import com.francistp.game.framework.math.Rectangle;
 import com.francistp.game.framework.math.Vector2;
 import com.francistp.game.presidentialjump.Assets.Assets;
-import com.francistp.game.presidentialjump.Assets.Text;
+import com.francistp.game.presidentialjump.Assets.TextOld;
 import com.francistp.game.presidentialjump.Character.Player;
 import com.francistp.game.presidentialjump.Character.Trump;
 import com.francistp.game.presidentialjump.Decore.Background;
@@ -57,12 +57,12 @@ public class GameScreen extends GLScreen {
 
     ElectricBoundary topBoundary, bottomBoundary;
 
-    private Text textText_01;
-    private Text textText_02;
-    private Text textText_03;
-    private Text textText_04;
-    private Text textText_05;
-    private Text textText_06;
+    private TextOld textText_Old_01;
+    private TextOld textText_Old_02;
+    private TextOld textText_Old_03;
+    private TextOld textText_Old_04;
+    private TextOld textText_Old_05;
+    private TextOld textText_Old_06;
 
     Rectangle pauseBounds;
     int pauseState;
@@ -85,13 +85,13 @@ public class GameScreen extends GLScreen {
         topBoundary = new ElectricBoundary(240, 850);
         bottomBoundary = new ElectricBoundary(240, -50);
 
-        //public Text(float x, float y, String text, float size, String align, float width, boolean background) {
-        textText_01 = new Text(240, 650, "It's almost       working, I need to fix the      words getting    cut off :O", 10, "left", 400, false);
-        //textText_02 = new Text(240, 550, "TESTING 12369", 20);
-        //textText_03 = new Text(240, 450, "Testing 12369", 10);
-        //textText_04 = new Text(240, 350, "TESTING 12369", 10);
-        //textText_05 = new Text(240, 250, "Testing 12369", 5);
-        //textText_06 = new Text(240, 150, "TESTING 12369", 5);
+        //public TextOld(float x, float y, String text, float size, String align, float width, boolean background) {
+        textText_Old_01 = new TextOld(240, 650, "It's almost       working, I need to fix the      words getting    cut off :O", 10, "left", 400, false);
+        //textText_Old_02 = new TextOld(240, 550, "TESTING 12369", 20);
+        //textText_Old_03 = new TextOld(240, 450, "Testing 12369", 10);
+        //textText_Old_04 = new TextOld(240, 350, "TESTING 12369", 10);
+        //textText_Old_05 = new TextOld(240, 250, "Testing 12369", 5);
+        //textText_Old_06 = new TextOld(240, 150, "TESTING 12369", 5);
 
         pauseBounds = new Rectangle(Assets.pause_button.width + 5, 800 - Assets.pause_button.height - 5, Assets.pause_button.width*2, Assets.pause_button.height*2);
         pauseState = BOUNDS_NOT_TOUCHED;
@@ -240,12 +240,12 @@ public class GameScreen extends GLScreen {
         topBoundary.render(batcher);
         bottomBoundary.render(batcher);
 
-        textText_01.render(batcher);
-        //textText_02.render(batcher);
-        //textText_03.render(batcher);
-        //textText_04.render(batcher);
-        //textText_05.render(batcher);
-        //textText_06.render(batcher);
+        textText_Old_01.render(batcher);
+        //textText_Old_02.render(batcher);
+        //textText_Old_03.render(batcher);
+        //textText_Old_04.render(batcher);
+        //textText_Old_05.render(batcher);
+        //textText_Old_06.render(batcher);
 
         batcher.beginBatch(Assets.buttonsTexture);
         if (pauseState == BOUNDS_NOT_TOUCHED) {

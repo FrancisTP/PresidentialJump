@@ -31,7 +31,7 @@ public class Assets {
     public static TextureRegion line;
     public static TextureRegion circle;
 
-    // Text
+    // TextOld
     public static Texture textSpriteSheet;
 
     public static TextureRegion a_lower;

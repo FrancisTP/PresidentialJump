@@ -1,221 +1,311 @@
 package com.francistp.game.presidentialjump.Assets;
 
-import com.francistp.game.framework.gl.SpriteBatcher;
 import com.francistp.game.presidentialjump.Character.Player;
 
 /**
- * Created by franc on 2017-03-29.
+ * Created by Francis on 2017-04-26.
  */
-
-// This classes y attribute specifies the TOP of the text box, not middle like other objects
-
 public class Text {
 
-    private float x, y;
     private String text;
+    private float x, y;
     private float width, height;
-    private String align;
-    private char[] textArray;
-    private Letter[] letters;
-    private TextLine[] textLines;
-    private float length, biggestHeight;
-    private float size;
+    private float lineSpacing;
+    private boolean invisible;
     private boolean background;
+    private float backgroundWidth, backgroundHeight;
+    private Line lines[];
+    private Word words[];
+    private int wordCount, lineCount;
+    private Character characters[];
+    private char charCharacters[];
+    private int size;
+    private String colour;
 
-    public Text(float x, float y, String text, float size, String align) {
+    public Text(String text, int size, String colour, float x, float y, float width) {
+        this.text = text;
         this.x = x;
         this.y = y;
+        this.width = width;
         this.size = size;
-        this.align = align;
+        this.colour = colour;
 
-        this.text = text;
-        this.width = 480;
-        this.height = 800;
-        this.background = false;
-        calculateText();
+        background = false;
+        backgroundHeight = 0;
+
+        create();
     }
 
-    public Text(float x, float y, String text, float size, String align, float width) {
+    public Text(String text, int size, String colour, float x, float y, float width, boolean background,  float backgroundHeight) {
+        this.text = text;
         this.x = x;
         this.y = y;
-        this.size = size;
-        this.align = align;
-
-        this.text = text;
         this.width = width;
-        this.height = 0;
-        this.background = false;
-        calculateText();
-    }
-
-    public Text(float x, float y, String text, float size, String align, float width, float height) {
-        this.x = x;
-        this.y = y;
-        this.size = size;
-        this.align = align;
-
-        this.text = text;
-        this.width = width;
-        this.height = height;
-        this.background = false;
-        calculateText();
-    }
-
-    public Text(float x, float y, String text, float size, String align, float width, boolean background) {
-        this.x = x;
-        this.y = y;
-        this.size = size;
-        this.align = align;
-
-        this.text = text;
-        this.width = width;
-        this.height = 0;
         this.background = background;
-        calculateText();
-    }
-
-    public Text(float x, float y, String text, float size, String align, float width, float height, boolean background) {
-        this.x = x;
-        this.y = y;
+        this.backgroundHeight = backgroundHeight;
         this.size = size;
-        this.align = align;
+        this.colour = colour;
 
-        this.text = text;
-        this.width = width;
-        this.height = height;
-        this.background = background;
-        calculateText();
+        create();
     }
 
-    private void calculateText() {
+    private void create() {
+        wordCount = 0;
+        lineCount = 0;
+        charCharacters = text.toCharArray();
+        words = new Word[charCharacters.length];
+        characters = new Character[charCharacters.length];
 
-        textArray = this.text.toCharArray();
-        letters = new Letter[textArray.length];
-        textLines = new TextLine[textArray.length];
-
-        biggestHeight = 0;
-
-        for (int i=0; i < letters.length; i++) {
-            letters[i] = new Letter(textArray[i], size);
-            if (letters[i].getHeight() > biggestHeight) {
-                biggestHeight = letters[i].getHeight();
+        // Create characters
+        float wordHeight = 0;
+        for (int i=0; i<charCharacters.length; i ++) {
+            characters[i] = new Character(charCharacters[i], size, colour);
+            if (characters[i].getHeight() > wordHeight) {
+                wordHeight = characters[i].getHeight();
             }
         }
 
-        length = (TextLine.sidePad*2);
-        int offSet = 0;
-
-        int letterCount = 0;
-        for (int i=0; i < letters.length; i++) {
-            if (length + letters[i].getWidth() - Letter.buffer_width > width || i == letters.length-1) {
-                length -= Letter.buffer_width;
-                if (i == letters.length-1) {
-                    letterCount++;
-                }
-                Letter[] lineLetters = new Letter[letterCount];
-                int newLetterCount = letterCount;
-                for (int z=0; z < lineLetters.length; z++) {
-                    if ((z == 0 && letters[z + offSet].getLetter() == ' ') || (z == lineLetters.length-1 && letters[z + offSet].getLetter() == ' ')) {
-                        newLetterCount--;
+        // All characters created, word creation starts
+        Character wordChar[] = new Character[characters.length];
+        int wordCharCount = 0;
+        for (int i=0; i<characters.length; i ++) {
+            // making words
+            if (i == characters.length-1) { // last character in text
+                if (characters[i].getCharacter() == ' ') {
+                    if (wordChar[0] == null) {
+                        words[wordCount] = new Word(new Character[]{characters[i]}, characters[i].getWidth(), wordHeight);
+                        wordCount++;
                     } else {
-                        lineLetters[z] = letters[z + offSet];
+                        Character[] newWordChar = new Character[wordCharCount];
+                        wordCharCount = 0;
+
+                        // create word
+                        float wordWidth = 0;
+                        for (int r = 0; r < newWordChar.length; r++) {
+                            if (r == newWordChar.length - 1) {
+                                newWordChar[r] = wordChar[r];
+                                wordWidth += newWordChar[r].getWidth();
+                            } else {
+                                newWordChar[r] = wordChar[r];
+                                wordWidth += newWordChar[r].getWidth() + Word.charSpacing;
+                            }
+                        }
+                        words[wordCount] = new Word(newWordChar, wordWidth, wordHeight);
+                        wordCount++;
+                        wordChar = new Character[characters.length];
+
+                        // create "space" word
+                        words[wordCount] = new Word(new Character[]{characters[i]}, characters[i].getWidth(), wordHeight);
+                        wordCount++;
                     }
-                }
+                } else {
+                    wordChar[wordCharCount] = characters[i];
+                    wordCharCount++;
 
-                int realLineCount = 0;
-                Letter[] newLineLetters = new Letter[newLetterCount];
-                for (int z=0; z < lineLetters.length; z++) {
-                    if (lineLetters[z] != null) {
-                        newLineLetters[realLineCount] = lineLetters[z];
-                        realLineCount++;
+                    Character[] newWordChar = new Character[wordCharCount];
+                    wordCharCount = 0;
+
+                    // create word
+                    float wordWidth = 0;
+                    for (int r = 0; r < newWordChar.length; r++) {
+                        if (r == newWordChar.length - 1) {
+                            newWordChar[r] = wordChar[r];
+                            wordWidth += newWordChar[r].getWidth();
+                        } else {
+                            newWordChar[r] = wordChar[r];
+                            wordWidth += newWordChar[r].getWidth() + Word.charSpacing;
+                        }
                     }
+                    words[wordCount] = new Word(newWordChar, wordWidth, wordHeight);
+                    wordCount++;
+                    wordChar = new Character[characters.length];
                 }
+            } else if (characters[i].getCharacter() == ' ') { // space
+                if (wordChar[0] == null) {
+                    words[wordCount] = new Word(new Character[]{characters[i]}, characters[i].getWidth(), wordHeight);
+                    wordCount++;
+                } else {
+                    Character[] newWordChar = new Character[wordCharCount];
+                    wordCharCount = 0;
 
-
-                lineLetters = newLineLetters;
-                offSet += letterCount;
-
-                float lineX = 0;
-                float lineY;
-
-                if (align.equals("left")) {
-                    lineX = x - (width/2) + (length/2);
-                } else if (align.equals("center")) {
-                    lineX = x;
-                } else if (align.equals("right")) {
-                    lineX = x + (width/2) - (length/2);
-                }
-
-                int lineCount = 0;
-                for (int z=0; z < textLines.length; z++) {
-                    if (textLines[z] != null) {
-                        lineCount++;
-                    } else {
-                        lineY = y - ((biggestHeight + TextLine.bottomPad + TextLine.topPad)*lineCount); //float x, float y, Letter[] lettersLine, float width, float height
-                        textLines[lineCount] = new TextLine(lineX, lineY, lineLetters, length, biggestHeight + TextLine.bottomPad + TextLine.topPad);
+                    // create word
+                    float wordWidth = 0;
+                    for (int r = 0; r < newWordChar.length; r++) {
+                        if (r == newWordChar.length - 1) {
+                            newWordChar[r] = wordChar[r];
+                            wordWidth += newWordChar[r].getWidth();
+                        } else {
+                            newWordChar[r] = wordChar[r];
+                            wordWidth += newWordChar[r].getWidth() + Word.charSpacing;
+                        }
                     }
-                }
+                    words[wordCount] = new Word(newWordChar, wordWidth, wordHeight);
+                    wordCount++;
+                    wordChar = new Character[characters.length];
 
-                length = (TextLine.sidePad*2) + letters[i].getWidth();
-                letterCount = 1;
-            } else {
-                length += letters[i].getWidth() + Letter.buffer_width;
-                letterCount++;
+                    // create "space" word
+                    words[wordCount] = new Word(new Character[]{characters[i]}, characters[i].getWidth(), wordHeight);
+                    wordCount++;
+                }
+            } else { // character
+                wordChar[wordCharCount] = characters[i];
+                wordCharCount++;
             }
         }
 
-        int lineC = 0;
-        for (int i=0; i < textLines.length; i++) {
-            if (textLines[i] != null) {
-                lineC++;
+        // All words created, line creation starts
+        Word[] lineWords = new Word[words.length];
+        int wordCounter = 0;
+        Word overFlowWord = null; // used if word is bigger than defined width of text
+        float lineWidth = 0;
+        for (int i=0; i<words.length; i++) {
+            if (overFlowWord != null) {
+                i--;
+
             } else {
-                break;
+                if (words[i] != null) {
+
+                    if (lineWidth + words[i].getWidth() > width) {
+                        if (words[i].getWidth() > width) { // word needs to be broken up
+                            overFlowWord = words[i];
+                            // roll back to previous word
+                            i--;
+
+                            // look if part of word can fit on line
+                            Character hyphen = new Character('-', size, colour);
+                            float widthLeft = width - lineWidth - hyphen.getWidth();
+                            int lettersThatFit = 0;
+                            while (widthLeft > 0) {
+                                widthLeft -= overFlowWord.getCharacters()[lettersThatFit].getWidth();
+                                lettersThatFit++;
+                            }
+                            lettersThatFit--;
+
+                            if (lettersThatFit > 3) { // at least three characters fit on the line
+                                Word newPartialWord;
+
+                                Character[] partialWordCharacters = new Character[lettersThatFit+1]; // create partial word and create line with it, set new partial word to remaining characters
+
+                            } else {        // DONE
+                                Word[] newLineWords = new Word[wordCounter];
+                                for (int r=0; r < wordCounter; r++) {
+                                    newLineWords[r] = lineWords[r];
+                                }
+                                Line newLine = new Line(newLineWords, lineWidth, wordHeight);
+                                lines[lineCount] = newLine;
+                                lineCount++;
+                                lineWidth = 0;
+                            }
+                        } else { // word goes on next line      // DONE
+                            // roll back to previous word
+                            i--;
+                            // create next line
+                            Word[] newLineWords = new Word[wordCounter];
+                            for (int r=0; r < wordCounter; r++) {
+                                newLineWords[r] = lineWords[r];
+                            }
+                            Line newLine = new Line(newLineWords, lineWidth, wordHeight);
+                            lines[lineCount] = newLine;
+                            lineCount++;
+                            lineWidth = 0;
+                        }
+                    } else { // add word to line        // DONE
+                        lineWords[wordCounter] = words[i];
+                        wordCounter++;
+                        lineWidth += words[i].getWidth();
+                    }
+                } else {
+
+                }
             }
         }
-
-        TextLine[] trimmedTextLines = new TextLine[lineC];
-        for (int i=0; i < trimmedTextLines.length; i++) {
-            trimmedTextLines[i] = textLines[i];
-        }
-        textLines = trimmedTextLines;
     }
 
-    private void moveText() {
-        float bottomLine = this.y - (biggestHeight/2);
-        float startingX = this.x - (length/2);
-
-        for (int i=0; i < letters.length; i++) {
-            letters[i].setY(bottomLine + (letters[i].getHeight()/2), biggestHeight);
-            letters[i].setX(startingX + (letters[i].getWidth()/2));
-            startingX += letters[i].getWidth() + Letter.buffer_width;
-        }
-    }
-
-    public void setX(float x) {
-        this.x = x;
-        moveText();
-    }
-
-    public void setY(float y){
-        this.y = y;
-        moveText();
+    public String getText() {
+        return text;
     }
 
     public void setText(String text) {
         this.text = text;
-        calculateText();
     }
 
-    public void setSize(int size) {
-        this.size = size;
-        calculateText();
+    public float getX() {
+        return x;
     }
 
-    public void render(SpriteBatcher batcher) {
-        batcher.beginBatch(Assets.textSpriteSheet);
-        for (int i=0; i < textLines.length; i++) {
-            textLines[i].render(batcher);
-        }
-        batcher.endBatch();
+    public void setX(float x) {
+        this.x = x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public void setY(float y) {
+        this.y = y;
+    }
+
+    public float getWidth() {
+        return width;
+    }
+
+    public void setWidth(float width) {
+        this.width = width;
+    }
+
+    public float getHeight() {
+        return height;
+    }
+
+    public void setHeight(float height) {
+        this.height = height;
+    }
+
+    public float getLineSpacing() {
+        return lineSpacing;
+    }
+
+    public void setLineSpacing(float lineSpacing) {
+        this.lineSpacing = lineSpacing;
+    }
+
+    public boolean isInvisible() {
+        return invisible;
+    }
+
+    public void setInvisible(boolean invisible) {
+        this.invisible = invisible;
+    }
+
+    public boolean isBackground() {
+        return background;
+    }
+
+    public void setBackground(boolean background) {
+        this.background = background;
+    }
+
+    public float getBackgroundWidth() {
+        return backgroundWidth;
+    }
+
+    public void setBackgroundWidth(float backgroundWidth) {
+        this.backgroundWidth = backgroundWidth;
+    }
+
+    public float getBackgroundHeight() {
+        return backgroundHeight;
+    }
+
+    public void setBackgroundHeight(float backgroundHeight) {
+        this.backgroundHeight = backgroundHeight;
+    }
+
+    public Line[] getLines() {
+        return lines;
+    }
+
+    public void setLines(Line[] lines) {
+        this.lines = lines;
     }
 }
