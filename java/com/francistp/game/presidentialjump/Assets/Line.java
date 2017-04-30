@@ -1,5 +1,7 @@
 package com.francistp.game.presidentialjump.Assets;
 
+import com.francistp.game.framework.gl.SpriteBatcher;
+
 /**
  * Created by Francis on 2017-04-26.
  */
@@ -30,6 +32,11 @@ public class Line {
 
     public void setX(float x) {
         this.x = x;
+        float currentX = this.x;
+        for (int i=0; i<words.length; i++) {
+            words[i].setX(currentX);
+            currentX += words[i].getWidth();
+        }
     }
 
     public float getY() {
@@ -38,6 +45,9 @@ public class Line {
 
     public void setY(float y) {
         this.y = y;
+        for (int i=0; i<words.length; i++) {
+            words[i].setY(this.y);
+        }
     }
 
     public float getWidth() {
@@ -56,7 +66,9 @@ public class Line {
         this.height = height;
     }
 
-    private static float wordSpacing = 2;
-
-
+    public void render(SpriteBatcher batcher) {
+        for (int i=0; i<words.length; i++) {
+            words[i].render(batcher);
+        }
+    }
 }

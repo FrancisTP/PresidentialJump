@@ -1,5 +1,6 @@
 package com.francistp.game.presidentialjump.Assets;
 
+import com.francistp.game.framework.gl.SpriteBatcher;
 import com.francistp.game.framework.gl.TextureRegion;
 
 /**
@@ -9,7 +10,7 @@ public class Character {
 
     private float x, y;
     private float width, height;
-    private int size;
+    private float size;
     private String colour;
     private char character;
     private TextureRegion sprite;
@@ -163,6 +164,12 @@ public class Character {
             sprite = Assets.semi_colon;
         } else if (this.character == '\'') {
             sprite = Assets.apostrophe;
+        } else if (this.character == '(') {
+            sprite = Assets.parenthesis_left;  // TO BE ADDED
+        } else if (this.character == ')') {
+            sprite = Assets.parenthesis_right;  // TO BE ADDED
+        }  else if (this.character == '@') {
+            sprite = Assets.at;  // TO BE ADDED
         } else if (this.character == ' ') {
             sprite = null;
         } else {
@@ -190,8 +197,20 @@ public class Character {
         return y;
     }
 
-    public void setY(float y) {
-        this.y = y;
+    public void setY(float y, float biggestHeight) {
+        if (this.character == ',') {
+            this.y = y - (height/2);
+        } else if (this.character == '-') {
+            this.y = y + (biggestHeight/2) - (height/2);
+        } else if (this.character == '\'') {
+            this.y = y + biggestHeight - (height);//(height/2)
+        } else if (this.character == 'g' || this.character == 'j' || this.character == 'p' || this.character == 'q' || this.character == 'y' || this.character == 'Q') {
+            this.y = y - (height/3) + (height/9);
+        } else if (this.character == '0' || this.character == '6') {
+            this.y = y - (height/50);
+        } else {
+            this.y = y;
+        }
     }
 
     public float getWidth() {
@@ -210,11 +229,11 @@ public class Character {
         this.height = height;
     }
 
-    public int getSize() {
+    public float getSize() {
         return size;
     }
 
-    public void setSize(int size) {
+    public void setSize(float size) {
         this.size = size;
     }
 
@@ -228,5 +247,11 @@ public class Character {
 
     public char getCharacter() {
         return character;
+    }
+
+    public void render(SpriteBatcher batcher) {
+        if (sprite != null) {
+            batcher.drawSprite(x + width/2, y + height/2, width, height, sprite);
+        }
     }
 }

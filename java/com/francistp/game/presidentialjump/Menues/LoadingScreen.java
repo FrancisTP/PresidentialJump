@@ -46,7 +46,7 @@ public class LoadingScreen extends GLScreen {
         super(game);
 
         guiCam = new Camera2D(glGraphics, 480, 800); // Screen resolution 480x800
-        batcher = new SpriteBatcher(glGraphics, 100); // A maximum of 100 sprite per batch
+        batcher = new SpriteBatcher(glGraphics, 1000); // A maximum of 100 sprite per batch
         touchPoint = new Vector2();
 
         this.screenToLoad = screenToLoad;
@@ -60,7 +60,7 @@ public class LoadingScreen extends GLScreen {
         super(game);
 
         guiCam = new Camera2D(glGraphics, 480, 800); // Screen resolution 480x800
-        batcher = new SpriteBatcher(glGraphics, 100); // A maximum of 100 sprite per batch
+        batcher = new SpriteBatcher(glGraphics, 1000); // A maximum of 100 sprite per batch
         touchPoint = new Vector2();
 
         this.screenToLoad = screenToLoad;

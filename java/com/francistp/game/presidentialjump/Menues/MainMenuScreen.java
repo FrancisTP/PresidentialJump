@@ -66,7 +66,7 @@ public class MainMenuScreen extends GLScreen {
 		super(game);
 
 		guiCam = new Camera2D(glGraphics, 480, 800); // Screen resolution 1280x800
-		batcher = new SpriteBatcher(glGraphics, 100); // A maximum of 100 sprite per batch
+		batcher = new SpriteBatcher(glGraphics, 1000); // A maximum of 100 sprite per batch
 		touchPoint = new Vector2();
 
 		state = RUNNING_STATE;
