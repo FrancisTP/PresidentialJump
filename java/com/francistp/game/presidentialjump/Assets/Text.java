@@ -185,8 +185,31 @@ public class Text {
                                 Word newPartialWord;
 
                                 Character[] partialWordCharacters = new Character[lettersThatFit+1]; // create partial word and create line with it, set new partial word to remaining characters
+                                float partialWordWidth = 0;
+                                for (int r=0; r<partialWordCharacters.length; r++) {
+                                    if (r == partialWordCharacters.length-1) {
+                                        partialWordCharacters[r] = hyphen;
+                                        partialWordWidth += partialWordCharacters[r].getWidth();
+                                    } else {
+                                        partialWordCharacters[r] = overFlowWord.getCharacters()[r];
+                                        partialWordWidth += partialWordCharacters[r].getWidth() + Word.charSpacing;
+                                    }
+                                }
+                                newPartialWord = new Word(partialWordCharacters, partialWordWidth, wordHeight);
+                                Character[] newOverFlowWordCharacters = new Character[overFlowWord.getCharacters().length - lettersThatFit];
 
-                            } else {        // DONE
+                                float overFlowWordWidth = 0;
+                                for (int r=0; r< newOverFlowWordCharacters.length; r++) {
+                                    newOverFlowWordCharacters[r] = overFlowWord.getCharacters()[lettersThatFit + r];
+                                    if (r == newOverFlowWordCharacters.length-1) {
+                                        overFlowWordWidth += newOverFlowWordCharacters[r].getWidth();
+                                    } else {
+                                        overFlowWordWidth += newOverFlowWordCharacters[r].getWidth() + Word.charSpacing;
+                                    }
+                                }
+                                overFlowWord = new Word(newOverFlowWordCharacters, overFlowWordWidth, wordHeight);
+
+                                // We have overFlow word for the next line and the partial overFlow word for the current line
                                 Word[] newLineWords = new Word[wordCounter];
                                 for (int r=0; r < wordCounter; r++) {
                                     newLineWords[r] = lineWords[r];
@@ -195,6 +218,21 @@ public class Text {
                                 lines[lineCount] = newLine;
                                 lineCount++;
                                 lineWidth = 0;
+                                wordCounter = 0;
+
+                            } else {        // DONE
+                                Word[] newLineWords = new Word[wordCounter];
+                                boolean hasBeginingSpace = false;
+                                boolean hasEndingSpace = false;
+                                for (int r=0; r < wordCounter; r++) {
+                                    // check for space at beginning and end, omit them if present
+                                    newLineWords[r] = lineWords[r];
+                                }
+                                Line newLine = new Line(newLineWords, lineWidth, wordHeight);
+                                lines[lineCount] = newLine;
+                                lineCount++;
+                                lineWidth = 0;
+                                wordCounter = 0;
                             }
                         } else { // word goes on next line      // DONE
                             // roll back to previous word
@@ -208,6 +246,7 @@ public class Text {
                             lines[lineCount] = newLine;
                             lineCount++;
                             lineWidth = 0;
+                            wordCounter = 0;
                         }
                     } else { // add word to line        // DONE
                         lineWords[wordCounter] = words[i];
