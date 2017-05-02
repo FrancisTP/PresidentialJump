@@ -45,6 +45,7 @@ public class GameScreen extends GLScreen {
     public static final int RUNNING_STATE = 2;
     public static final int PAUSED_STATE = 3;
     public static final int FINISHED_STATE = 4;
+    public static final int SETTING_STATE = 5;
 
     final int BOUNDS_NOT_TOUCHED = 0;
     final int BOUNDS_TOUCHED = 1;
@@ -57,12 +58,18 @@ public class GameScreen extends GLScreen {
 
     ElectricBoundary topBoundary, bottomBoundary;
 
-    private Text textText_Old_01;
+    private Text scoreText;
+    private String scoreString;
+    private int score, scoreCounter;
 
 
     Rectangle pauseBounds;
     int pauseState;
     PauseMenu pauseMenu;
+    SettingMenu settingMenu;
+
+    FinishedMenu finishedMenu;
+    String deathCause;
 
     public GameScreen(Game game, Fireworks fireworks) {
         super(game);
@@ -87,13 +94,18 @@ public class GameScreen extends GLScreen {
         //String text, int size, String colour, String alignment, float x, float y, float width, boolean background,  float backgroundHeight
         //String text, int size, String colour, float x, float y, float width, boolean background                                                   - alignment left, background autoSized
         //String text, int size, String colour, String alignment, float x, float y, float width, boolean background                                 - background autoSized
-        textText_Old_01 = new Text("Presidential Jump", 10, "white", "left", 40, 600, 400, true);
+        scoreText = new Text("Score: 0000000", 7, "white", "left", 40, 750, 325, true);
+        scoreString = "Score: ";
+        score = 0;
+        scoreCounter = 0;
 
-        pauseBounds = new Rectangle(Assets.pause_button.width + 5, 800 - Assets.pause_button.height - 5, Assets.pause_button.width*2, Assets.pause_button.height*2);
+        pauseBounds = new Rectangle(480 - Assets.pause_button.width - 5, 800 - Assets.pause_button.height - 5, Assets.pause_button.width*2, Assets.pause_button.height*2);
         pauseState = BOUNDS_NOT_TOUCHED;
 
         pauseMenu = new PauseMenu();
+        settingMenu = new SettingMenu();
 
+        deathCause = "";
     }
 
     @Override
@@ -127,6 +139,28 @@ public class GameScreen extends GLScreen {
 
                 topBoundary.update();
                 bottomBoundary.update();
+
+                // update score
+                scoreCounter++;
+                if (scoreCounter >= 10) {
+                    scoreCounter = 0;
+                    score++;
+                    if (Integer.toString(score).length() == 1) {
+                        scoreText.setText(scoreString + "000000" + Integer.toString(score));
+                    } else if (Integer.toString(score).length() == 2) {
+                        scoreText.setText(scoreString + "00000" + Integer.toString(score));
+                    } else if (Integer.toString(score).length() == 3) {
+                        scoreText.setText(scoreString + "0000" + Integer.toString(score));
+                    } else if (Integer.toString(score).length() == 4) {
+                        scoreText.setText(scoreString + "000" + Integer.toString(score));
+                    } else if (Integer.toString(score).length() == 5) {
+                        scoreText.setText(scoreString + "00" + Integer.toString(score));
+                    } else if (Integer.toString(score).length() == 6) {
+                        scoreText.setText(scoreString + "0" + Integer.toString(score));
+                    } else if (Integer.toString(score).length() == 7) {
+                        scoreText.setText(scoreString + Integer.toString(score));
+                    }
+                }
             }
             background.update(deltaTime);
 
@@ -137,15 +171,30 @@ public class GameScreen extends GLScreen {
 
             if (checkIfHit()) {
                 pauseState = BOUNDS_NOT_TOUCHED;
-                state = PAUSED_STATE;
+                state = FINISHED_STATE;
+                finishedMenu = new FinishedMenu(score,deathCause);
             }
+
         } else if (Assets.readyState && state == PAUSED_STATE) {
             List<Input.TouchEvent> touchEvents = game.getInput().getTouchEvents();
             game.getInput().getKeyEvents();
 
-            pauseMenu.update(deltaTime);
+            pauseMenu.update(deltaTime, score);
             pauseMenu.listenToTouches(touchEvents, touchPoint, guiCam, game, glGame);
+        } else if (Assets.readyState && state == FINISHED_STATE) {
+            List<Input.TouchEvent> touchEvents = game.getInput().getTouchEvents();
+            game.getInput().getKeyEvents();
+
+            finishedMenu.update(deltaTime);
+            finishedMenu.listenToTouches(touchEvents, touchPoint, guiCam, game, glGame);
+        } else if (Assets.readyState && state == SETTING_STATE) {
+            List<Input.TouchEvent> touchEvents = game.getInput().getTouchEvents();
+            game.getInput().getKeyEvents();
+
+            settingMenu.update(deltaTime);
+            settingMenu.listenToTouches(touchEvents, touchPoint, guiCam, game, glGame);
         }
+
 
         //time += deltaTime;
         //Log.d("deltaTime", "" + time);
@@ -198,6 +247,10 @@ public class GameScreen extends GLScreen {
             presentRunning(deltaTime);
         else if (state == PAUSED_STATE) {
             presentPause(0);
+        } else if (state == FINISHED_STATE) {
+            presentFinished(0);
+        } else if (state == SETTING_STATE) {
+            presentSetting(0);
         }
     }
 
@@ -236,7 +289,9 @@ public class GameScreen extends GLScreen {
         topBoundary.render(batcher);
         bottomBoundary.render(batcher);
 
-        textText_Old_01.render(batcher);
+        if (player.getPlayerState() != 0) {
+            scoreText.render(batcher);
+        }
 
         batcher.beginBatch(Assets.buttonsTexture);
         if (pauseState == BOUNDS_NOT_TOUCHED) {
@@ -288,6 +343,73 @@ public class GameScreen extends GLScreen {
         gl.glDisable(GL10.GL_BLEND);
     }
 
+    @SuppressLint("FloatMath")
+    public void presentFinished(float deltaTime) {
+        // Initiates everything needed to render sprites
+        GL10 gl = glGraphics.getGL();
+        gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+        gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+        guiCam.setViewportAndMatrices();
+
+        gl.glEnable(GL10.GL_TEXTURE_2D);
+
+        gl.glEnable(GL10.GL_BLEND);
+        gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+
+
+        // Draw background
+        background.render(batcher);
+
+        batcher.beginBatch(Assets.fenceTexture);
+        wall.render(batcher);
+        batcher.endBatch();
+
+        batcher.beginBatch(Assets.trumpallbodyparts);
+        player.render(batcher);
+        batcher.endBatch();
+
+        topBoundary.render(batcher);
+        bottomBoundary.render(batcher);
+
+        finishedMenu.render(batcher);
+
+        // Stop rendering
+        gl.glDisable(GL10.GL_BLEND);
+    }
+
+    @SuppressLint("FloatMath")
+    public void presentSetting(float deltaTime) {
+        GL10 gl = glGraphics.getGL();
+        gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+        gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+        guiCam.setViewportAndMatrices();
+
+        gl.glEnable(GL10.GL_TEXTURE_2D);
+
+        gl.glEnable(GL10.GL_BLEND);
+        gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+
+
+        // Draw background
+        background.render(batcher);
+
+        batcher.beginBatch(Assets.fenceTexture);
+        wall.render(batcher);
+        batcher.endBatch();
+
+        batcher.beginBatch(Assets.trumpallbodyparts);
+        player.render(batcher);
+        batcher.endBatch();
+
+        topBoundary.render(batcher);
+        bottomBoundary.render(batcher);
+
+        settingMenu.render(batcher);
+
+        // Stop rendering
+        gl.glDisable(GL10.GL_BLEND);
+    }
+
 
     @SuppressLint("FloatMath")
     public void presentChange(float deltaTime){
@@ -329,6 +451,7 @@ public class GameScreen extends GLScreen {
 
     public boolean checkIfHit() {
         if (CollisionTester.CollisionTest(player.getDamageBounds(), topBoundary.getBounds()) || CollisionTester.CollisionTest(player.getDamageBounds(), bottomBoundary.getBounds())) {
+            deathCause = "YOU WERE KILLED BY THE ELECTRIC BARRIER";
             return true;
         } else {
             return false;

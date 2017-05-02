@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import com.francistp.game.framework.CollisionTester;
 import com.francistp.game.framework.Game;
 import com.francistp.game.framework.GameObject;
+import com.francistp.game.framework.Input;
 import com.francistp.game.framework.Input.TouchEvent;
 import com.francistp.game.framework.gl.Camera2D;
 import com.francistp.game.framework.gl.FPSCounter;
@@ -35,13 +36,14 @@ public class MainMenuScreen extends GLScreen {
 	SpriteBatcher batcher;
 	Vector2 touchPoint;
 	FPSCounter fpsCounter = new FPSCounter();
-	 
-	int state;
-	final int LOADING_STATE = 0;
-	final int READY_STATE = 1;
-	final int RUNNING_STATE = 2;
-	final int PAUSED_STATE = 3;
-	final int FINISHED_STATE = 4;
+
+	static int state;
+	static final int LOADING_STATE = 0;
+	static final int READY_STATE = 1;
+	static final int RUNNING_STATE = 2;
+	static final int PAUSED_STATE = 3;
+	static final int FINISHED_STATE = 4;
+	static final int SETTING_STATE = 5;
 
 	GameObject title;
 	float titleSinX;
@@ -60,6 +62,7 @@ public class MainMenuScreen extends GLScreen {
 	float stateTime = 3;
 
 	Player player;
+	SettingMenu settingMenu;
 
 
 	public MainMenuScreen(Game game){
@@ -85,10 +88,12 @@ public class MainMenuScreen extends GLScreen {
 		settingsBounds = new Rectangle(100, 465, Assets.settings_button.width*2, Assets.settings_button_pressed.height*2);
 		settingsState = BOUNDS_NOT_TOUCHED;
 
+		settingMenu = new SettingMenu();
+
 		// Request a song
 		//SoundController.requestSong("MainMenuSong.mp3");
 	}
-	
+
 	@Override
 	public void update(float deltaTime){
 		SoundController.update();
@@ -97,11 +102,18 @@ public class MainMenuScreen extends GLScreen {
 		player.update(deltaTime);
 
 		if(Assets.readyState){
-			List<TouchEvent> touchEvents = game.getInput().getTouchEvents();
-			game.getInput().getKeyEvents();
-			
-			if(state == RUNNING_STATE)
+
+			if(state == RUNNING_STATE) {
+				List<TouchEvent> touchEvents = game.getInput().getTouchEvents();
+				game.getInput().getKeyEvents();
 				listenToTouches(touchEvents);
+			} else if (state == SETTING_STATE) {
+				List<Input.TouchEvent> touchEvents = game.getInput().getTouchEvents();
+				game.getInput().getKeyEvents();
+
+				settingMenu.update(deltaTime);
+				settingMenu.listenToTouches(touchEvents, touchPoint, guiCam, game, glGame);
+			}
 		}
 
 		// Title sin wave
@@ -113,12 +125,12 @@ public class MainMenuScreen extends GLScreen {
 		//time += deltaTime;
 		//Log.d("deltaTime", "" + time);
 	}
-	
+
 	public void listenToTouches(List<TouchEvent> touchEvents){
 		int len = touchEvents.size();
 		for(int i=0; i<len; i++){
 			TouchEvent event = touchEvents.get(i);
-			
+
 			if(event.type == TouchEvent.TOUCH_UP){
 				touchPoint.set(event.x, event.y);
 				guiCam.touchToWorld(touchPoint);
@@ -126,20 +138,20 @@ public class MainMenuScreen extends GLScreen {
 				// If finger is lifted, all buttons are reset
 				playState = BOUNDS_NOT_TOUCHED;
 				settingsState = BOUNDS_NOT_TOUCHED;
-			
+
 				if(OverlapTester.pointInRectangle(playBounds, touchPoint)){
 					//state = CHANGE_SCREEN_STATE;
 					game.setScreen(new LoadingScreen(glGame, "GameScreen", fireworks));
 					//return;
 				}
 				if (OverlapTester.pointInRectangle(settingsBounds, touchPoint)) {
-
+					state = SETTING_STATE;
 				}
 			}
 			if(event.type == TouchEvent.TOUCH_DOWN){
 				touchPoint.set(event.x, event.y);
 				guiCam.touchToWorld(touchPoint);
-				
+
 				if(OverlapTester.pointInRectangle(playBounds, touchPoint)) {
 					playState = BOUNDS_TOUCHED;
 				}
@@ -151,7 +163,7 @@ public class MainMenuScreen extends GLScreen {
 			if(event.type == TouchEvent.TOUCH_DRAGGED){
 				touchPoint.set(event.x, event.y);
 				guiCam.touchToWorld(touchPoint);
-				
+
 				if(!OverlapTester.pointInRectangle(playBounds, touchPoint)) {
 					playState = BOUNDS_NOT_TOUCHED;
 				}
@@ -164,10 +176,13 @@ public class MainMenuScreen extends GLScreen {
 
 	@Override
 	public void present(float deltaTime){
-		if(state == LOADING_STATE)
+		if(state == LOADING_STATE) {
 			presentLoading(deltaTime);
-		else if(state == RUNNING_STATE)
+		} else if(state == RUNNING_STATE) {
 			presentRunning(deltaTime);
+		} else if (state == SETTING_STATE) {
+			presentSetting(0);
+		}
 	}
 
 	@SuppressLint("FloatMath")
@@ -254,6 +269,75 @@ public class MainMenuScreen extends GLScreen {
 		// Stop rendering
 		gl.glDisable(GL10.GL_BLEND);
 		
+		// Display fps on LogCat
+		//fpsCounter.logFrame();
+	}
+
+	@SuppressLint("FloatMath")
+	public void presentSetting(float deltaTime){
+		stateTime += deltaTime; // updates stateTime if we want frame independent movement
+
+		// Initiates everything needed to render sprites
+		GL10 gl = glGraphics.getGL();
+		gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		guiCam.setViewportAndMatrices();
+
+		gl.glEnable(GL10.GL_TEXTURE_2D);
+
+		gl.glEnable(GL10.GL_BLEND);
+		gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+
+
+		// Draw background
+		batcher.beginBatch(Assets.plainSkyAndGroundTexture);
+		batcher.drawSprite(240, 400, Assets.plainSkyAndGround.width, Assets.plainSkyAndGround.height, Assets.plainSkyAndGround);
+		batcher.endBatch();
+
+		batcher.beginBatch(Assets.fireworksTexture);
+		fireworks.render(batcher);
+		batcher.endBatch();
+
+		batcher.beginBatch(Assets.whiteHouseTexture);
+		batcher.drawSprite(240, 300, Assets.whiteHouse.width, Assets.whiteHouse.height, Assets.whiteHouse);
+		batcher.endBatch();
+
+		batcher.beginBatch(Assets.fenceTexture);
+		batcher.drawSprite(240, 120, Assets.metal_fence.width, Assets.metal_fence.height, Assets.metal_fence);
+		batcher.drawSprite(240, 120 + Assets.metal_fence.height, Assets.metal_fence.width, Assets.metal_fence.height, Assets.metal_fence);
+		batcher.drawSprite(240, 120 + (Assets.metal_fence.height*2), Assets.metal_fence.width, Assets.metal_fence.height, Assets.metal_fence);
+		batcher.drawSprite(240, 120 + (Assets.metal_fence.height*3), Assets.metal_fence.width, Assets.metal_fence.height, Assets.metal_fence);
+		batcher.drawSprite(240, 120 + (Assets.metal_fence.height*4), Assets.metal_fence.width, Assets.metal_fence.height, Assets.metal_fence);
+		batcher.drawSprite(240, 120 + (Assets.metal_fence.height*5), Assets.metal_fence.width, Assets.metal_fence.height, Assets.metal_fence);
+		batcher.drawSprite(-15, 420, Assets.left_wall.width, Assets.left_wall.height, Assets.left_wall);
+		batcher.drawSprite(495, 420, Assets.right_wall.width, Assets.right_wall.height, Assets.right_wall);
+		batcher.endBatch();
+
+		player.render(batcher);
+
+		settingMenu.render(batcher);
+
+		batcher.endBatch();
+
+		/*
+			// Play button
+		if(playState == BOUNDS_NOT_TOUCHED)
+			batcher.drawSprite(playBounds.x, playBounds.y, playBounds.width, playBounds.height, Assets.mainMenuButtonUp);
+		else
+			batcher.drawSprite(playBounds.x, playBounds.y, playBounds.width, playBounds.height, Assets.mainMenuButtonDown);
+		batcher.drawSprite(playBounds.x, playBounds.y, 114, 56, Assets.mainMenuPlay);
+		*/
+
+		/*
+		// Draw collision lines
+		batcher.beginBatch(Assets.collisionLinesTexture);
+		noStarZone.drawShape(batcher);
+		batcher.endBatch();
+		*/
+
+		// Stop rendering
+		gl.glDisable(GL10.GL_BLEND);
+
 		// Display fps on LogCat
 		//fpsCounter.logFrame();
 	}

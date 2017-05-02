@@ -11,8 +11,8 @@ public class Text {
     private String text;
     private float x, y;
     private float width, height;
-    private final float lineSpacing = 2f;
-    private final float backgroundPadding = 20;
+    private final float lineSpacing = 4f;
+    private float backgroundPadding = 20;
     private boolean invisible;
     private boolean background;
     private float backgroundWidth, backgroundHeight;
@@ -38,6 +38,9 @@ public class Text {
         background = false;
         backgroundHeight = 0;
 
+        if (size > 10) {
+            backgroundPadding = backgroundPadding * ((size / 10) * (size / 10));
+        }
         create();
     }
 
@@ -53,6 +56,9 @@ public class Text {
         background = false;
         backgroundHeight = 0;
 
+        if (size > 10) {
+            backgroundPadding = backgroundPadding * ((size / 10) * (size / 10));
+        }
         create();
     }
 
@@ -68,6 +74,9 @@ public class Text {
 
         alignment = "left";
 
+        if (size > 10) {
+            backgroundPadding = backgroundPadding * ((size / 10) * (size / 10));
+        }
         create();
     }
 
@@ -82,6 +91,9 @@ public class Text {
         this.colour = colour;
         this.alignment = alignment;
 
+        if (size > 10) {
+            backgroundPadding = backgroundPadding * ((size / 10) * (size / 10));
+        }
         create();
     }
 
@@ -97,6 +109,9 @@ public class Text {
 
         alignment = "left";
 
+        if (size > 10) {
+            backgroundPadding = backgroundPadding * ((size / 10) * (size / 10));
+        }
         create();
     }
 
@@ -111,6 +126,9 @@ public class Text {
         this.colour = colour;
         this.alignment = alignment;
 
+        if (size > 10) {
+            backgroundPadding = backgroundPadding * ((size / 10) * (size / 10));
+        }
         create();
     }
 
@@ -851,7 +869,7 @@ public class Text {
         if (calcBackHeight) {
             backgroundHeight += backgroundPadding;
         }
-        backgroundWidth = width += backgroundPadding;
+        backgroundWidth = width + backgroundPadding;
 
         backgroundX = (x - (backgroundPadding/2)) + (backgroundWidth/2);
         backgroundY = (y + (backgroundPadding/2)) - (backgroundHeight/2) + lines[0].getHeight();
@@ -863,6 +881,7 @@ public class Text {
 
     public void setText(String text) {
         this.text = text;
+        create();
     }
 
     public float getX() {
@@ -938,14 +957,16 @@ public class Text {
     }
 
     public void render(SpriteBatcher batcher) {
-        batcher.beginBatch(Assets.textSpriteSheet);
-        if (background) {
-            batcher.drawSprite(backgroundX, backgroundY, backgroundWidth, backgroundHeight, Assets.text_background);
-        }
+        if (!invisible) {
+            batcher.beginBatch(Assets.textSpriteSheet);
+            if (background) {
+                batcher.drawSprite(backgroundX, backgroundY, backgroundWidth, backgroundHeight, Assets.text_background);
+            }
 
-        for (int i=0; i<lines.length; i++) {
-            lines[i].render(batcher);
+            for (int i = 0; i < lines.length; i++) {
+                lines[i].render(batcher);
+            }
+            batcher.endBatch();
         }
-        batcher.endBatch();
     }
 }

@@ -11,7 +11,7 @@ public class Word {
     private float x, y;
     private float width, height;
 
-    public static final float charSpacing = 2f;
+    public static final float charSpacing = 3f;
 
     public Word(Character characters[], float width, float height) {
         this.characters = characters;
