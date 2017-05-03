@@ -71,6 +71,8 @@ public class GameScreen extends GLScreen {
     FinishedMenu finishedMenu;
     String deathCause;
 
+    private boolean firstTouch;
+
     public GameScreen(Game game, Fireworks fireworks) {
         super(game);
         guiCam = new Camera2D(glGraphics, 480, 800); // Screen resolution 1280x800
@@ -106,6 +108,7 @@ public class GameScreen extends GLScreen {
         settingMenu = new SettingMenu();
 
         deathCause = "";
+        firstTouch = true;
     }
 
     @Override
@@ -215,6 +218,7 @@ public class GameScreen extends GLScreen {
                 if(OverlapTester.pointInRectangle(pauseBounds, touchPoint)) {
                     pauseState = BOUNDS_NOT_TOUCHED;
                     state = PAUSED_STATE;
+                    SoundController.pauseMusic();
                 }
 
             }
@@ -226,6 +230,9 @@ public class GameScreen extends GLScreen {
                     pauseState = BOUNDS_TOUCHED;
                 } else {
                     player.jump();
+                    if (firstTouch) {
+                        SoundController.requestSong("PimPoy.ogg");
+                    }
                 }
             }
             if(event.type == Input.TouchEvent.TOUCH_DRAGGED){

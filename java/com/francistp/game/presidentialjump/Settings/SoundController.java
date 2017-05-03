@@ -34,9 +34,7 @@ public class SoundController {
     protected static GLGame glGame;
 
     public static Music music;
-
     public static float musicVolume;
-
     public static int state;
 
     private static final int NOTHING = 0;
@@ -49,6 +47,9 @@ public class SoundController {
     public static String musicVol;
 
     public static SharedPreferences settings;
+
+    private static final String musicDirectory = "music/";
+    private static final String soundEffectDirectory = "soundEffect/";
 
     public static void load(GLGame game){
         glGame = game;
@@ -78,10 +79,10 @@ public class SoundController {
     }
 
     public static void update(){
-        if(state == FADE_OUT){
+        if (state == FADE_OUT){
             musicVolume -= 0.004;
             music.setVolume(musicVolume);
-            if(musicVolume <= 0){
+            if (musicVolume <= 0){
                 music.stop();
                 musicVolume = Float.parseFloat(settings.getString(musicVol, null));
                 state = CHANGING;
@@ -100,10 +101,10 @@ public class SoundController {
                 if (music.isPlaying() && state == NOTHING) {
                     state = FADE_OUT;
                 } else if (state == NOTHING) {
-                    startSong(musicPlaying);
+                    startSong(musicDirectory + musicPlaying);
                 }
             } else {
-                startSong(musicPlaying);
+                startSong(musicDirectory + musicPlaying);
             }
         }
     }

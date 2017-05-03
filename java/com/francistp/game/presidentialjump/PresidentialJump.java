@@ -22,13 +22,14 @@ public class PresidentialJump extends GLGame {
     public void onSurfaceCreated(GL10 gl, EGLConfig config){
         super.onSurfaceCreated(gl, config);
         if(firstTimeCreate){
-            Saves.load(getFileIO());
+            //Saves.load(getFileIO());
             Assets.load(this);
             SoundController.load(this);
             firstTimeCreate = false;
             Assets.readyState = true;
         } else {
             Assets.reload();
+            System.out.println("only reloaded");
         }
     }
 
