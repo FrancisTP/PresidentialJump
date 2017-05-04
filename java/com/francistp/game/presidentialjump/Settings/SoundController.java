@@ -64,6 +64,7 @@ public class SoundController {
 
     private static int JUMP_SOUND;
     private static int ELECTRIC_SOUND;
+    private static int SETTING_SOUND;
 
     private static boolean isUserMusicPlaying;
     private static AudioManager manager;
@@ -185,10 +186,12 @@ public class SoundController {
 
     private static void loadSoundEffects() { // need to manually add the files I want loaded here
         try {
-            AssetFileDescriptor assetDescriptor = glGame.getAssets().openFd(soundEffectDirectory + "JumpSound.ogg");
+            AssetFileDescriptor assetDescriptor = glGame.getAssets().openFd(soundEffectDirectory + "wallJump.ogg");
             JUMP_SOUND = soundPool.load(assetDescriptor, 0);
             assetDescriptor = glGame.getAssets().openFd(soundEffectDirectory + "electricshock.ogg");
             ELECTRIC_SOUND = soundPool.load(assetDescriptor, 0);
+            assetDescriptor = glGame.getAssets().openFd(soundEffectDirectory + "settingSound.ogg");
+            SETTING_SOUND = soundPool.load(assetDescriptor, 0);
         } catch (IOException e) {
             throw new RuntimeException("Couldn't load sound some soundEffects: " + e.getMessage());
         }
@@ -203,6 +206,6 @@ public class SoundController {
     }
 
     public static void playSettingSound() {
-        soundPool.play(JUMP_SOUND, soundEffectVolume, soundEffectVolume, 0, 0, 1);
+        soundPool.play(SETTING_SOUND, soundEffectVolume, soundEffectVolume, 0, 0, 1);
     }
 }

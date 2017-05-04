@@ -73,19 +73,21 @@ public class Player {
     }
 
     public void jump() {
-        SoundController.playJumpSound();
         if (playerState == IDLE) {
             velocity.y = initialJumpSpeedY;
             velocity.x = initialJumpSpeedX;
             playerState = JUMP_RIGHT;
+            SoundController.playJumpSound();
         } else if (playerState == WALL_LEFT) {
             velocity.y = jumpSpeedY;
             velocity.x = jumpSpeedX;
             playerState = JUMP_RIGHT;
+            SoundController.playJumpSound();
         } else if (playerState == WALL_RIGHT) {
             velocity.y = jumpSpeedY;
             velocity.x = -jumpSpeedX;
             playerState = JUMP_LEFT;
+            SoundController.playJumpSound();
         }
 
     }

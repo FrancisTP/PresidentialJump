@@ -165,6 +165,8 @@ public class PauseMenu {
             } else {
                 batcher.drawSprite(resumeBounds.x, resumeBounds.y, resumeBounds.width, resumeBounds.height, Assets.play_button_pressed);
             }
+            System.out.println("X: " + quitBounds.x);
+            System.out.println("Y: " + quitBounds.y);
 
             if (settingState == BOUNDS_NOT_TOUCHED) {
                 batcher.drawSprite(settingBounds.x, settingBounds.y, settingBounds.width, settingBounds.height, Assets.settings_button);

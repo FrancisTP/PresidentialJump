@@ -16,9 +16,11 @@ import com.francistp.game.framework.math.OverlapTester;
 import com.francistp.game.framework.math.Rectangle;
 import com.francistp.game.framework.math.Vector2;
 import com.francistp.game.presidentialjump.Assets.Assets;
+import com.francistp.game.presidentialjump.Assets.Text;
 import com.francistp.game.presidentialjump.Character.Player;
 import com.francistp.game.presidentialjump.Character.Trump;
 import com.francistp.game.presidentialjump.Decore.Fireworks;
+import com.francistp.game.presidentialjump.Settings.Saves;
 import com.francistp.game.presidentialjump.Settings.SoundController;
 
 import java.util.List;
@@ -55,6 +57,8 @@ public class MainMenuScreen extends GLScreen {
 	int playState;
 	Rectangle settingsBounds;
 	int settingsState;
+	Rectangle customizeBounds;
+	int customizeState;
 	
 	final int BOUNDS_NOT_TOUCHED = 0;
 	final int BOUNDS_TOUCHED = 1;
@@ -64,6 +68,9 @@ public class MainMenuScreen extends GLScreen {
 	Player player;
 	SettingMenu settingMenu;
 
+	private int highscore;
+	private Text highscoreText;
+	private String highscoreString;
 
 	public MainMenuScreen(Game game){
 		super(game);
@@ -83,15 +90,38 @@ public class MainMenuScreen extends GLScreen {
 		player = new Trump();
 
 		// Rectangles used to detect touch inputs
-		playBounds = new Rectangle(380, 465, Assets.play_button.width*2, Assets.play_button.height*2);
+		playBounds = new Rectangle(365, 200, Assets.play_button.width*2, Assets.play_button.height*2);
 		playState = BOUNDS_NOT_TOUCHED;
-		settingsBounds = new Rectangle(100, 465, Assets.settings_button.width*2, Assets.settings_button_pressed.height*2);
+		settingsBounds = new Rectangle(240, 200, Assets.settings_button.width*2, Assets.settings_button_pressed.height*2);
 		settingsState = BOUNDS_NOT_TOUCHED;
+		customizeBounds = new Rectangle(115, 200, Assets.menu_button.width*2, Assets.menu_button.height*2);
+		customizeState = BOUNDS_NOT_TOUCHED;
 
 		SoundController.requestSong("PimPoy.ogg");
 		SoundController.pauseMusic();
 
 		settingMenu = new SettingMenu();
+		highscore = Saves.getHighscore();
+		highscoreString = "Highscore: ";
+		if (Integer.toString(highscore).length() == 1) {
+			highscoreString += "000000" + Integer.toString(highscore);
+		} else if (Integer.toString(highscore).length() == 2) {
+			highscoreString += "00000" + Integer.toString(highscore);
+		} else if (Integer.toString(highscore).length() == 3) {
+			highscoreString += "0000" + Integer.toString(highscore);
+		} else if (Integer.toString(highscore).length() == 4) {
+			highscoreString += "000" + Integer.toString(highscore);
+		} else if (Integer.toString(highscore).length() == 5) {
+			highscoreString += "00" + Integer.toString(highscore);
+		} else if (Integer.toString(highscore).length() == 6) {
+			highscoreString += "0" + Integer.toString(highscore);
+		} else if (Integer.toString(highscore).length() == 7) {
+			highscoreString += Integer.toString(highscore);
+		} else {
+			highscoreString += Integer.toString(highscore);
+		}
+
+		highscoreText = new Text(highscoreString, 7, "white", "center", 40, 40000, 400, true);
 
 		// Request a song
 		//SoundController.requestSong("MainMenuSong.mp3");
@@ -141,6 +171,7 @@ public class MainMenuScreen extends GLScreen {
 				// If finger is lifted, all buttons are reset
 				playState = BOUNDS_NOT_TOUCHED;
 				settingsState = BOUNDS_NOT_TOUCHED;
+				customizeState = BOUNDS_NOT_TOUCHED;
 
 				if(OverlapTester.pointInRectangle(playBounds, touchPoint)){
 					//state = CHANGE_SCREEN_STATE;
@@ -150,6 +181,9 @@ public class MainMenuScreen extends GLScreen {
 				}
 				if (OverlapTester.pointInRectangle(settingsBounds, touchPoint)) {
 					state = SETTING_STATE;
+				}
+				if (OverlapTester.pointInRectangle(customizeBounds, touchPoint)) {
+					// nothing yet
 				}
 			}
 			if(event.type == TouchEvent.TOUCH_DOWN){
@@ -162,6 +196,9 @@ public class MainMenuScreen extends GLScreen {
 				if(OverlapTester.pointInRectangle(settingsBounds, touchPoint)) {
 					settingsState = BOUNDS_TOUCHED;
 				}
+				if(OverlapTester.pointInRectangle(customizeBounds, touchPoint)) {
+					customizeState = BOUNDS_TOUCHED;
+				}
 
 			}
 			if(event.type == TouchEvent.TOUCH_DRAGGED){
@@ -173,6 +210,9 @@ public class MainMenuScreen extends GLScreen {
 				}
 				if(!OverlapTester.pointInRectangle(settingsBounds, touchPoint)) {
 					settingsState = BOUNDS_NOT_TOUCHED;
+				}
+				if(!OverlapTester.pointInRectangle(customizeBounds, touchPoint)) {
+					customizeState = BOUNDS_NOT_TOUCHED;
 				}
 			}
 		}
@@ -239,6 +279,8 @@ public class MainMenuScreen extends GLScreen {
 		batcher.drawSprite(title.position.x, title.position.y, Assets.presidentialJumpTitle.width, Assets.presidentialJumpTitle.height, Assets.presidentialJumpTitle);
 		batcher.endBatch();
 
+		highscoreText.render(batcher);
+
 		player.render(batcher);
 
 		batcher.beginBatch(Assets.buttonsTexture);
@@ -251,6 +293,11 @@ public class MainMenuScreen extends GLScreen {
 			batcher.drawSprite(settingsBounds.x, settingsBounds.y, settingsBounds.width, settingsBounds.height, Assets.settings_button);
 		} else {
 			batcher.drawSprite(settingsBounds.x, settingsBounds.y, settingsBounds.width, settingsBounds.height, Assets.settings_button_pressed);
+		}
+		if (customizeState == BOUNDS_NOT_TOUCHED) {
+			batcher.drawSprite(customizeBounds.x, customizeBounds.y, customizeBounds.width, customizeBounds.height, Assets.menu_button);
+		} else {
+			batcher.drawSprite(customizeBounds.x, customizeBounds.y, customizeBounds.width, customizeBounds.height, Assets.menu_button_pressed);
 		}
 		batcher.endBatch();
 

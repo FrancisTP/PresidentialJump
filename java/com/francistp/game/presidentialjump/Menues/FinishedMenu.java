@@ -11,6 +11,7 @@ import com.francistp.game.framework.math.Vector2;
 import com.francistp.game.presidentialjump.Assets.Assets;
 import com.francistp.game.presidentialjump.Assets.Text;
 import com.francistp.game.presidentialjump.Decore.Fireworks;
+import com.francistp.game.presidentialjump.Settings.Saves;
 import com.francistp.game.presidentialjump.Settings.SoundController;
 
 import java.util.List;
@@ -72,6 +73,11 @@ public class FinishedMenu {
         scoreText = new Text(scoreString, 7, "white", "center", 77, 400, 325, false);
 
         deathCauseText = new Text(deathCause, 7, "white", "center", 67, 640, 344, false);
+
+        if (Saves.getHighscore() < score) {
+            Saves.setHighscore(score);
+            Saves.saveHighscore();
+        }
     }
 
     public void update(float deltaTime) {
