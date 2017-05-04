@@ -22,7 +22,7 @@ public class PresidentialJump extends GLGame {
     public void onSurfaceCreated(GL10 gl, EGLConfig config){
         super.onSurfaceCreated(gl, config);
         if(firstTimeCreate){
-            //Saves.load(getFileIO());
+            Saves.load(this);
             Assets.load(this);
             SoundController.load(this);
             firstTimeCreate = false;
@@ -35,13 +35,13 @@ public class PresidentialJump extends GLGame {
 
     @Override
     public void onPause(){
-        SoundController.pauseMusic();
+        SoundController.pauseMusicAppClosed();
         super.onPause();
     }
 
     @Override
     public void onResume() {
-        SoundController.resumeMusic();
+        SoundController.resumeMusicAppOpened();
         super.onResume();
     }
 

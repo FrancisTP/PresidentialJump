@@ -4,6 +4,7 @@ import com.francistp.game.framework.GameObjectRectangle;
 import com.francistp.game.framework.gl.SpriteBatcher;
 import com.francistp.game.framework.math.Rectangle;
 import com.francistp.game.framework.math.Vector2;
+import com.francistp.game.presidentialjump.Settings.SoundController;
 
 /**
  * Created by Francis on 2017-01-16.
@@ -33,6 +34,7 @@ public class Player {
 
     protected float x, y;
 
+    private final String jumpSound = "JumpSound.ogg";
 
     public Player() {
         playerState = IDLE;
@@ -71,6 +73,7 @@ public class Player {
     }
 
     public void jump() {
+        SoundController.requestSoundEffect(jumpSound);
         if (playerState == IDLE) {
             velocity.y = initialJumpSpeedY;
             velocity.x = initialJumpSpeedX;

@@ -88,6 +88,9 @@ public class MainMenuScreen extends GLScreen {
 		settingsBounds = new Rectangle(100, 465, Assets.settings_button.width*2, Assets.settings_button_pressed.height*2);
 		settingsState = BOUNDS_NOT_TOUCHED;
 
+		SoundController.requestSong("PimPoy.ogg");
+		SoundController.pauseMusic();
+
 		settingMenu = new SettingMenu();
 
 		// Request a song
@@ -141,6 +144,7 @@ public class MainMenuScreen extends GLScreen {
 
 				if(OverlapTester.pointInRectangle(playBounds, touchPoint)){
 					//state = CHANGE_SCREEN_STATE;
+					SoundController.stopMusic();
 					game.setScreen(new LoadingScreen(glGame, "GameScreen", fireworks));
 					//return;
 				}

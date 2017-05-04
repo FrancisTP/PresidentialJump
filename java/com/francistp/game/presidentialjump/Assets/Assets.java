@@ -112,7 +112,7 @@ public class Assets {
     public static TextureRegion z_upper;
 
 
-    // Main Menu
+    // Main menu_frame
     public static Texture plainSkyAndGroundTexture;
     public static TextureRegion plainSkyAndGround;
 
@@ -297,8 +297,9 @@ public class Assets {
     public static Texture menuesTexture;
 
     public static TextureRegion menu_frame;
-    public static TextureRegion pause_title;
-    public static TextureRegion results_title;
+    public static TextureRegion slider_background;
+    public static TextureRegion slider_bar;
+    public static TextureRegion slider_knob;
 
     // Buttons
     public static Texture buttonsTexture;
@@ -629,7 +630,7 @@ public class Assets {
         plainSkyAndGroundTexture = new Texture(game, "environments/SkyAndGround.png");
         plainSkyAndGround = new TextureRegion(plainSkyAndGroundTexture, 0, 0, 480, 800);
 
-        // Main menu objects
+        // Main menu_frame objects
         whiteHouseTexture = new Texture(game, "environments/Whitehouse.png");
         whiteHouse = new TextureRegion(whiteHouseTexture, 0, 0, 526, 382);
 
@@ -731,7 +732,7 @@ public class Assets {
         background_transition_08 = new TextureRegion(backgroundsTexture, 971, 2415, 480, 800);
         background_transition_09 = new TextureRegion(backgroundsTexture, 971, 3219, 480, 800);
 
-        // Main menu objects
+        // Main menu_frame objects
         whiteHouseTexture = new Texture(game, "environments/Whitehouse.png");
         whiteHouse = new TextureRegion(whiteHouseTexture, 0, 0, 526, 382);
 
@@ -819,16 +820,15 @@ public class Assets {
     public static void loadMenues(GLGame game) {
         menuesTexture = new Texture(game, "interactive/Menues.png");
 
-        menu_frame = new TextureRegion(menuesTexture, 3, 3, 480, 800);
-        pause_title = new TextureRegion(menuesTexture, 3, 870, 256, 59);
-        results_title = new TextureRegion(menuesTexture, 3, 807, 265, 59);
+        menu_frame = new TextureRegion(menuesTexture, 3, 3, 400, 600);
+        slider_background = new TextureRegion(menuesTexture, 3, 607, 300, 10);
+        slider_bar = new TextureRegion(menuesTexture, 3, 621, 300, 10);
+        slider_knob = new TextureRegion(menuesTexture, 307, 607, 10, 10);
     }
 
     public static void reloadMenues() {
         if (menuesTexture != null) {
             menuesTexture.reload();
-        } else {
-            System.out.println("Error reloading menuesTexture");
         }
     }
 
@@ -839,12 +839,12 @@ public class Assets {
     }
 
     public static void clearMenues() {
-        unloadMenues();
-
         menuesTexture = null;
+
         menu_frame = null;
-        pause_title = null;
-        results_title = null;
+        slider_background = null;
+        slider_bar = null;
+        slider_knob = null;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////

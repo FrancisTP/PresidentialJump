@@ -1,6 +1,10 @@
 package com.francistp.game.presidentialjump.Settings;
 
+import android.content.SharedPreferences;
+
 import com.francistp.game.framework.FileIO;
+import com.francistp.game.framework.impl.GLGame;
+import com.francistp.game.presidentialjump.R;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -9,153 +13,146 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
 public class Saves {
-	public static float musicVolume = 0.5f;
-	public static float soundEffectVolume = 0.5f;
-	public static int highscore = 0;
-	public static boolean firstTimePlaying = true;
-	public final static String file = ".presidentialJumpSave";
+	private static float musicVolume;
+	private static float soundEffectVolume;
+	private static int highscore;
+	private static int firstTimePlaying;
+
+	private static final String musicVolumeKey = "musicVolume";
+	private static final float defaultMusicVolume = 0.5f;
+	private static final float defaultMusicVolumeCheck = -0.5f;
+
+	private static final String soundEffectVolumeKey = "soundEffectVolume";
+	private static final float defaultSoundEffectVolume = 0.5f;
+	private static final float defaultSoundEffectVolumeCheck = -0.5f;
+
+	private static final String highscoreKey = "highscore";
+	private static final int defaultHighscore = 0;
+	private static final int defaultHighscoreCheck = -1;
+
+	private static final String firstTimePlayingKey = "firstTimePlaying";
+	private static final int defaultFirstTimePlaying = 1;
+	private static final int defaultFirstTimePlayingCheck = -1;
+
+	private static SharedPreferences sharedPreferences;
+	private static SharedPreferences.Editor editor;
 	
-	public static void load(FileIO files){
-		BufferedReader in = null;
+	public static void load(GLGame game){
+		// load all keys when app is opened..
 
-		System.out.println(" ");
-		System.out.println("============================");
-		System.out.println("Trying to load settings..");
-		System.out.println(" ");
-		try{
-			in = new BufferedReader(new InputStreamReader(files.readFile(file)));
-			musicVolume = Float.parseFloat(in.readLine()); // first line musicVolume
-			soundEffectVolume = Float.parseFloat(in.readLine());	// second line soudEffect volume
-			highscore = Integer.parseInt(in.readLine());	// third line highscore
-			firstTimePlaying = Boolean.parseBoolean(in.readLine());
+		try {
+			sharedPreferences = game.getPreferences(game.MODE_PRIVATE);
+			editor = sharedPreferences.edit();
 
-			System.out.println("musicVolume: " + musicVolume);
-			System.out.println("soundEffectVolume: " + soundEffectVolume);
-			System.out.println("highscore: " + highscore);
-			System.out.println("firstTimePlaying: " + firstTimePlaying);
-
-		} catch (IOException e) {
-			// We have defaults
-			System.out.println("IOException: " + e.getMessage());
-		} catch (NumberFormatException e) {
-			// we have defaults
-			System.out.println("NumberFormatException: " + e.getMessage());
-		} finally {
-			try{
-				if(in != null)
-					in.close();
-			} catch (IOException e) {
+			// check if keys exist, if not create them
+			musicVolume = sharedPreferences.getFloat(musicVolumeKey, defaultMusicVolumeCheck);
+			if (musicVolume < 0) {
+				editor.putFloat(musicVolumeKey, defaultMusicVolume);
+				editor.commit();
+				musicVolume = defaultMusicVolume;
 			}
+
+			soundEffectVolume = sharedPreferences.getFloat(soundEffectVolumeKey, defaultSoundEffectVolumeCheck);
+			if (soundEffectVolume < 0) {
+				editor.putFloat(soundEffectVolumeKey, defaultSoundEffectVolume);
+				editor.commit();
+				soundEffectVolume = defaultSoundEffectVolume;
+			}
+
+			highscore = sharedPreferences.getInt(highscoreKey, defaultHighscoreCheck);
+			if (highscore < 0) {
+				editor.putInt(highscoreKey, defaultHighscore);
+				editor.commit();
+				highscore = defaultHighscore;
+			}
+
+			firstTimePlaying = sharedPreferences.getInt(firstTimePlayingKey, defaultFirstTimePlayingCheck);
+			if (firstTimePlaying < 0) {
+				editor.putInt(firstTimePlayingKey, defaultFirstTimePlaying);
+				editor.commit();
+				firstTimePlaying = defaultFirstTimePlaying;
+			}
+		} catch (Exception e) {
+			System.out.println("Error in saves.. " + e.getMessage());
 		}
 
-		System.out.println("============================");
-		System.out.println(" ");
 	}
 
 
-	
-	public static void saveSettings(FileIO files){
-		BufferedWriter out = null;
-		try{
-			out = new BufferedWriter(new OutputStreamWriter(
-					files.writeFile(file)));
-			out.write(Float.toString(musicVolume));
-		} catch (IOException e) {
-		} finally {
-			try{
-				if(out != null)
-					out.close();
-			} catch (IOException e){
-			}
+
+	public static void saveMusicVolume(){
+		try {
+			editor.putFloat(musicVolumeKey, musicVolume);
+			editor.commit();
+		} catch (Exception e) {
+			System.out.println("Error in saves.. " + e.getMessage());
 		}
 	}
 
-	public static void savemusicVolume(FileIO files){
-		BufferedWriter out = null;
-		try{
-			out = new BufferedWriter(new OutputStreamWriter(
-					files.writeFile(file)));
-			out.write(Float.toString(musicVolume));
-		} catch (IOException e) {
-		} finally {
-			try{
-				if(out != null)
-					out.close();
-			} catch (IOException e){
-			}
+	public static void saveSoundEffectVolume(){
+		try {
+			editor.putFloat(soundEffectVolumeKey, soundEffectVolume);
+			editor.commit();
+		} catch (Exception e) {
+			System.out.println("Error in saves.. " + e.getMessage());
 		}
 	}
 
-	public static void saveSoundEffectVolume(FileIO files){
-		BufferedWriter out = null;
-		try{
-			out = new BufferedWriter(new OutputStreamWriter(
-					files.writeFile(file)));
-			out.write("\n");
-			out.write(Float.toString(soundEffectVolume));
-		} catch (IOException e) {
-		} finally {
-			try{
-				if(out != null)
-					out.close();
-			} catch (IOException e){
-			}
+	public static void saveHighscore(){
+		try {
+			editor.putInt(highscoreKey, highscore);
+			editor.commit();
+		} catch (Exception e) {
+			System.out.println("Error in saves.. " + e.getMessage());
 		}
 	}
 
-	public static void saveHighscore(FileIO files){
-		BufferedWriter out = null;
-		try{
-			out = new BufferedWriter(new OutputStreamWriter(
-					files.writeFile(file)));
-			out.write("\n");
-			out.write("\n");
-			out.write(Integer.toString(highscore));
-		} catch (IOException e) {
-		} finally {
-			try{
-				if(out != null)
-					out.close();
-			} catch (IOException e){
-			}
+	public static void saveFirstTimePlaying(){
+		try {
+			editor.putInt(firstTimePlayingKey, firstTimePlaying);
+			editor.commit();
+		} catch (Exception e) {
+			System.out.println("Error in saves.. " + e.getMessage());
 		}
 	}
 
-	public static void saveFirstTimePlaying(FileIO files){
-		BufferedWriter out = null;
-		try{
-			out = new BufferedWriter(new OutputStreamWriter(
-					files.writeFile(file)));
-			out.write("\n");
-			out.write("\n");
-			out.write("\n");
-			out.write(Boolean.toString(firstTimePlaying));
-		} catch (IOException e) {
-		} finally {
-			try{
-				if(out != null)
-					out.close();
-			} catch (IOException e){
-			}
+	public static void setMusicVolume(float musicV) {
+		musicVolume = musicV;
+	}
+
+	public static float getMusicVolume() {
+		return musicVolume;
+	}
+
+	public static void setSoundEffectVolume(float soundEffectV) {
+		soundEffectVolume = soundEffectV;
+	}
+
+	public static float getSoundEffectVolume() {
+		return soundEffectVolume;
+	}
+
+	public static void setHighscore(int highs) {
+		highscore = highs;
+	}
+
+	public static int getHighscore() {
+		return highscore;
+	}
+
+	public static void setFirstTimePlaying(boolean firstTimeP) {
+		if (firstTimeP) {
+			firstTimePlaying = 1;
+		} else {
+			firstTimePlaying = 0;
 		}
 	}
-	
-	public static void saveAll(FileIO files){
-		BufferedWriter out = null;
-		try{
-			out = new BufferedWriter(new OutputStreamWriter(
-					files.writeFile(file)));
-			out.write(Float.toString(musicVolume));
-			out.write(Float.toString(soundEffectVolume));
-			out.write(Integer.toString(highscore));
-			out.write(Boolean.toString(firstTimePlaying));
-		} catch (IOException e) {
-		} finally {
-			try{
-				if(out != null)
-					out.close();
-			} catch (IOException e){
-			}
+
+	public static boolean getFirstTimePlaying() {
+		if (firstTimePlaying == 0) {
+			return false;
+		} else {
+			return true;
 		}
 	}
 }

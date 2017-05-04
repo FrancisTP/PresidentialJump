@@ -37,6 +37,7 @@ public class Text {
         alignment = "left";
         background = false;
         backgroundHeight = 0;
+        height = 0;
 
         if (size > 10) {
             backgroundPadding = backgroundPadding * ((size / 10) * (size / 10));
@@ -55,6 +56,7 @@ public class Text {
 
         background = false;
         backgroundHeight = 0;
+        height = 0;
 
         if (size > 10) {
             backgroundPadding = backgroundPadding * ((size / 10) * (size / 10));
@@ -73,6 +75,7 @@ public class Text {
         this.colour = colour;
 
         alignment = "left";
+        height = 0;
 
         if (size > 10) {
             backgroundPadding = backgroundPadding * ((size / 10) * (size / 10));
@@ -91,6 +94,8 @@ public class Text {
         this.colour = colour;
         this.alignment = alignment;
 
+        height = 0;
+
         if (size > 10) {
             backgroundPadding = backgroundPadding * ((size / 10) * (size / 10));
         }
@@ -108,6 +113,7 @@ public class Text {
         this.colour = colour;
 
         alignment = "left";
+        height = 0;
 
         if (size > 10) {
             backgroundPadding = backgroundPadding * ((size / 10) * (size / 10));
@@ -125,6 +131,8 @@ public class Text {
         this.size = size;
         this.colour = colour;
         this.alignment = alignment;
+
+        height = 0;
 
         if (size > 10) {
             backgroundPadding = backgroundPadding * ((size / 10) * (size / 10));
@@ -841,7 +849,9 @@ public class Text {
             backgroundHeight = 0;
         }
         // characters, words and lines are created - need to position them
+
         for (int i=0; i<lineCount; i++) {
+            height += lines[i].getHeight() + lineSpacing;
             if (alignment == "left") {
                 lines[i].setX(x);
                 lines[i].setY(y - ((lines[i].getHeight() + lineSpacing) * i));

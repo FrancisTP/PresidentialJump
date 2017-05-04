@@ -2,6 +2,7 @@ package com.francistp.game.presidentialjump.Menues;
 
 import com.francistp.game.framework.Game;
 import com.francistp.game.framework.Input;
+import com.francistp.game.framework.Sound;
 import com.francistp.game.framework.gl.Camera2D;
 import com.francistp.game.framework.gl.SpriteBatcher;
 import com.francistp.game.framework.impl.GLGame;
@@ -10,6 +11,9 @@ import com.francistp.game.framework.math.Rectangle;
 import com.francistp.game.framework.math.Vector2;
 import com.francistp.game.presidentialjump.Assets.Assets;
 import com.francistp.game.presidentialjump.Assets.Text;
+import com.francistp.game.presidentialjump.Menues.MenueObjects.Slider;
+import com.francistp.game.presidentialjump.Settings.Saves;
+import com.francistp.game.presidentialjump.Settings.SoundController;
 
 import java.util.List;
 
@@ -33,6 +37,8 @@ public class SettingMenu {
     private Text settings;
     private Text music, sound;
 
+    Slider musicSlider;
+
     public SettingMenu() {
         x = 240;
         y = 400;
@@ -48,10 +54,21 @@ public class SettingMenu {
 
         backBounds = new Rectangle(x + backOffsetX, y + backOffsetY, Assets.previous_button.width*2, Assets.previous_button.height*2);
         backState = BOUNDS_NOT_TOUCHED;
+
+        // float x, float y, float min, float max, float value
+        System.out.println("musicVolume: " + SoundController.musicVolume);
+        musicSlider = new Slider(x, music.getY() - (music.getHeight()*2) + (music.getHeight()/2), SoundController.musicVolume);
     }
 
     public void update(float deltaTime) {
+        musicSlider.update(deltaTime);
 
+        if (musicSlider.getPressedDown()) {
+                SoundController.resumeMusic();
+                SoundController.setMusicVolume(musicSlider.getValue());
+        } else {
+                SoundController.pauseMusic();
+        }
     }
 
     public void listenToTouches(List<Input.TouchEvent> touchEvents, Vector2 touchPoint, Camera2D guiCam, Game game, GLGame glGame){
@@ -67,6 +84,8 @@ public class SettingMenu {
                 backState = BOUNDS_NOT_TOUCHED;
 
                 if(OverlapTester.pointInRectangle(backBounds, touchPoint)) {
+                    Saves.saveMusicVolume();
+                    Saves.saveSoundEffectVolume();
                     backState = BOUNDS_NOT_TOUCHED;
                     if (Assets.onScreen == "MainMenuScreen") {
                         MainMenuScreen.state = MainMenuScreen.RUNNING_STATE;
@@ -92,12 +111,16 @@ public class SettingMenu {
                     backState = BOUNDS_NOT_TOUCHED;
                 }
             }
+
+            // sliders
+            musicSlider.listenToTouches(touchEvents, touchPoint, guiCam, game, glGame);
         }
     }
 
     public void render(SpriteBatcher batcher) {
         batcher.beginBatch(Assets.menuesTexture);
         batcher.drawSprite(x, y, Assets.menu_frame.width, Assets.menu_frame.height, Assets.menu_frame);
+        musicSlider.render(batcher);
         batcher.endBatch();
 
         settings.render(batcher);

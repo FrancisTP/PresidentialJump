@@ -105,16 +105,18 @@ public class PauseMenu {
                 if(OverlapTester.pointInRectangle(resumeBounds, touchPoint)) {
                     resumeState = BOUNDS_NOT_TOUCHED;
                     GameScreen.state = GameScreen.RUNNING_STATE;
-                    SoundController.resumeMusic();
+                    if (GameScreen.gameStarted) {
+                        SoundController.resumeMusic();
+                    }
                 }
                 if(OverlapTester.pointInRectangle(settingBounds, touchPoint)) {
                     settingState = BOUNDS_NOT_TOUCHED;
                     GameScreen.state = GameScreen.SETTING_STATE;
                 }
                 if(OverlapTester.pointInRectangle(quitBounds, touchPoint)) {
+                    SoundController.stopMusic();
                     quitState = BOUNDS_NOT_TOUCHED;
                     game.setScreen(new LoadingScreen(glGame, "MainMenuScreen"));
-                    SoundController.stopMusic();
                 }
 
             }

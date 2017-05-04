@@ -2,8 +2,10 @@ package com.francistp.game.presidentialjump.Settings;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.media.SoundPool;
 
 import com.francistp.game.framework.Music;
+import com.francistp.game.framework.Sound;
 import com.francistp.game.framework.impl.GLGame;
 
 /**
@@ -37,6 +39,10 @@ public class SoundController {
     public static float musicVolume;
     public static int state;
 
+    public static SoundPool soundPool;
+    public static Sound sound;
+    public static float soundEffectVolume;
+
     private static final int NOTHING = 0;
     private static final int FADE_OUT = 1;
     public static final int CHANGING = 2;
@@ -46,10 +52,11 @@ public class SoundController {
     public static String fileName;
     public static String musicVol;
 
-    public static SharedPreferences settings;
 
     private static final String musicDirectory = "music/";
     private static final String soundEffectDirectory = "soundEffect/";
+
+    private static boolean shouldMusicBePlaying;
 
     public static void load(GLGame game){
         glGame = game;
@@ -57,25 +64,19 @@ public class SoundController {
         state = NOTHING;
 
         musicPlaying = "";
+        shouldMusicBePlaying = false;
 
        //////////////////////////////////////////////////////////////////////////////////////////
 
         fileName = "presidentialjumpsoundsettings";
         musicVol = "musicVolume";
 
-        settings = glGame.getSharedPreferences(fileName, Context.MODE_PRIVATE);
-
-        // Checks if the music volume key already exists, if not creates one
-        if(!settings.contains(musicVol)){
-            // Key does not exist
-            SharedPreferences.Editor editor = settings.edit();
-            editor.putString(musicVol, "0.5");
-            editor.apply();
-        }
         // Load saved music volume
-        musicVolume = Float.parseFloat(settings.getString(musicVol, null));
+        musicVolume = Saves.getMusicVolume();
+        soundEffectVolume = Saves.getSoundEffectVolume();
 
         music = null;
+        sound = null;
     }
 
     public static void update(){
@@ -84,7 +85,7 @@ public class SoundController {
             music.setVolume(musicVolume);
             if (musicVolume <= 0){
                 music.stop();
-                musicVolume = Float.parseFloat(settings.getString(musicVol, null));
+                musicVolume = Saves.getMusicVolume();
                 state = CHANGING;
             }
         } else if (state == CHANGING){
@@ -93,6 +94,7 @@ public class SoundController {
         }
     }
 
+    // Music
     public static void requestSong(String song){
         // Check if a song is already playing
         if(musicPlaying != song) {
@@ -116,16 +118,19 @@ public class SoundController {
         music.setLooping(true);
         music.setVolume(musicVolume);
         music.play();
+        shouldMusicBePlaying = true;
     }
 
     public static void pauseMusic(){
         if(music != null)
             music.pause();
+            shouldMusicBePlaying = false;
     }
 
     public static void resumeMusic(){
         if(music != null)
             music.play();
+            shouldMusicBePlaying = true;
     }
 
     public static void stopMusic(){
@@ -134,6 +139,27 @@ public class SoundController {
             music.dispose();
             music = null;
             musicPlaying = "";
+            shouldMusicBePlaying = false;
+        }
+    }
+
+    public static void setMusicVolume(float musicV) {
+        musicVolume = musicV;
+        music.setVolume(musicVolume);
+        Saves.setMusicVolume(musicVolume);
+    }
+
+    public static void pauseMusicAppClosed(){
+        if (shouldMusicBePlaying) {
+            if (music != null)
+                music.pause();
+        }
+    }
+
+    public static void resumeMusicAppOpened(){
+        if (shouldMusicBePlaying) {
+            if (music != null)
+                music.play();
         }
     }
 }

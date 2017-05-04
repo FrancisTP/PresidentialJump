@@ -93,13 +93,13 @@ public class FinishedMenu {
 
                 if(OverlapTester.pointInRectangle(restartBounds, touchPoint)) {
                     restartState = BOUNDS_NOT_TOUCHED;
-                    game.setScreen(new LoadingScreen(glGame, "GameScreen", new Fireworks()));
                     SoundController.stopMusic();
+                    game.setScreen(new LoadingScreen(glGame, "GameScreen", new Fireworks()));
                 }
                 if(OverlapTester.pointInRectangle(quitBounds, touchPoint)) {
                     quitState = BOUNDS_NOT_TOUCHED;
-                    game.setScreen(new LoadingScreen(glGame, "MainMenuScreen"));
                     SoundController.stopMusic();
+                    game.setScreen(new LoadingScreen(glGame, "MainMenuScreen"));
                 }
 
             }

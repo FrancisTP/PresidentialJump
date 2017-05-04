@@ -70,8 +70,7 @@ public class GameScreen extends GLScreen {
 
     FinishedMenu finishedMenu;
     String deathCause;
-
-    private boolean firstTouch;
+    public static boolean gameStarted;
 
     public GameScreen(Game game, Fireworks fireworks) {
         super(game);
@@ -104,11 +103,14 @@ public class GameScreen extends GLScreen {
         pauseBounds = new Rectangle(480 - Assets.pause_button.width - 5, 800 - Assets.pause_button.height - 5, Assets.pause_button.width*2, Assets.pause_button.height*2);
         pauseState = BOUNDS_NOT_TOUCHED;
 
+        SoundController.requestSong("PimPoy.ogg");
+        SoundController.pauseMusic();
+
         pauseMenu = new PauseMenu();
         settingMenu = new SettingMenu();
 
         deathCause = "";
-        firstTouch = true;
+        gameStarted = false;
     }
 
     @Override
@@ -216,9 +218,9 @@ public class GameScreen extends GLScreen {
                 pauseState = BOUNDS_NOT_TOUCHED;
 
                 if(OverlapTester.pointInRectangle(pauseBounds, touchPoint)) {
+                    SoundController.pauseMusic();
                     pauseState = BOUNDS_NOT_TOUCHED;
                     state = PAUSED_STATE;
-                    SoundController.pauseMusic();
                 }
 
             }
@@ -226,12 +228,17 @@ public class GameScreen extends GLScreen {
                 touchPoint.set(event.x, event.y);
                 guiCam.touchToWorld(touchPoint);
 
-                if(OverlapTester.pointInRectangle(pauseBounds, touchPoint)) {
-                    pauseState = BOUNDS_TOUCHED;
-                } else {
-                    player.jump();
-                    if (firstTouch) {
-                        SoundController.requestSong("PimPoy.ogg");
+                if (state == RUNNING_STATE) {
+                    if (OverlapTester.pointInRectangle(pauseBounds, touchPoint)) {
+                        pauseState = BOUNDS_TOUCHED;
+                    } else {
+                        player.jump();
+                        if (!gameStarted) {
+                            gameStarted = true;
+                        }
+                        if(!SoundController.music.isPlaying()) {
+                            SoundController.resumeMusic();
+                        }
                     }
                 }
             }
