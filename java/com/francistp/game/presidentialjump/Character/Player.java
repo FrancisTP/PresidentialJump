@@ -73,7 +73,6 @@ public class Player {
     }
 
     public void jump() {
-        SoundController.requestSoundEffect(jumpSound);
         if (playerState == IDLE) {
             velocity.y = initialJumpSpeedY;
             velocity.x = initialJumpSpeedX;

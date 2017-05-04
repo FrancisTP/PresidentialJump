@@ -150,9 +150,8 @@ public class SoundController {
     }
 
     public static void pauseMusicAppClosed(){
-        if (shouldMusicBePlaying) {
-            if (music != null)
-                music.pause();
+        if (music != null && music.isPlaying()) {
+            music.pause();
         }
     }
 

@@ -35,7 +35,7 @@ public class AndroidAudio implements Audio {
 					.setMaxStreams(MAX_STREAM)
 					.build();
 		} else {
-			this.soundPool = new SoundPool(20, AudioManager.STREAM_MUSIC, 0);
+			this.soundPool = new SoundPool(MAX_STREAM, AudioManager.STREAM_MUSIC, 0);
 		}
 	}
 	
