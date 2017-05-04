@@ -37,7 +37,8 @@ public class SettingMenu {
     private Text settings;
     private Text music, sound;
 
-    Slider musicSlider;
+    Slider musicSlider, soundEffectSlider;
+    boolean playSoundEffectSetting;
 
     public SettingMenu() {
         x = 240;
@@ -56,18 +57,29 @@ public class SettingMenu {
         backState = BOUNDS_NOT_TOUCHED;
 
         // float x, float y, float min, float max, float value
-        System.out.println("musicVolume: " + SoundController.musicVolume);
         musicSlider = new Slider(x, music.getY() - (music.getHeight()*2) + (music.getHeight()/2), SoundController.musicVolume);
+        soundEffectSlider = new Slider(x, sound.getY() - (sound.getHeight()*2) + (sound.getHeight()/2), SoundController.soundEffectVolume);
+        boolean playSoundEffectSetting = false;
     }
 
     public void update(float deltaTime) {
         musicSlider.update(deltaTime);
+        soundEffectSlider.update(deltaTime);
 
         if (musicSlider.getPressedDown()) {
                 SoundController.resumeMusic();
                 SoundController.setMusicVolume(musicSlider.getValue());
         } else {
                 SoundController.pauseMusic();
+        }
+        if (soundEffectSlider.getPressedDown()) {
+            playSoundEffectSetting = true;
+            SoundController.setSoundEffectVolume(soundEffectSlider.getValue());
+        } else {
+            if (playSoundEffectSetting) {
+                playSoundEffectSetting = false;
+                SoundController.playSettingSound();
+            }
         }
     }
 
@@ -114,6 +126,7 @@ public class SettingMenu {
 
             // sliders
             musicSlider.listenToTouches(touchEvents, touchPoint, guiCam, game, glGame);
+            soundEffectSlider.listenToTouches(touchEvents, touchPoint, guiCam, game, glGame);
         }
     }
 
@@ -121,6 +134,7 @@ public class SettingMenu {
         batcher.beginBatch(Assets.menuesTexture);
         batcher.drawSprite(x, y, Assets.menu_frame.width, Assets.menu_frame.height, Assets.menu_frame);
         musicSlider.render(batcher);
+        soundEffectSlider.render(batcher);
         batcher.endBatch();
 
         settings.render(batcher);

@@ -2,11 +2,15 @@ package com.francistp.game.presidentialjump.Settings;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.AssetFileDescriptor;
+import android.media.AudioManager;
 import android.media.SoundPool;
 
 import com.francistp.game.framework.Music;
 import com.francistp.game.framework.Sound;
 import com.francistp.game.framework.impl.GLGame;
+
+import java.io.IOException;
 
 /**
  * Created by Francis on 2015-06-24.
@@ -58,6 +62,12 @@ public class SoundController {
 
     private static boolean shouldMusicBePlaying;
 
+    private static int JUMP_SOUND;
+    private static int ELECTRIC_SOUND;
+
+    private static boolean isUserMusicPlaying;
+    private static AudioManager manager;
+
     public static void load(GLGame game){
         glGame = game;
 
@@ -77,6 +87,12 @@ public class SoundController {
 
         music = null;
         sound = null;
+
+        manager = (AudioManager)glGame.getSystemService(Context.AUDIO_SERVICE);
+        isUserMusicPlaying = manager.isMusicActive();
+
+        soundPool = glGame.getAudio().getSoundPool();
+        loadSoundEffects();
     }
 
     public static void update(){
@@ -149,6 +165,11 @@ public class SoundController {
         Saves.setMusicVolume(musicVolume);
     }
 
+    public static void setSoundEffectVolume(float soundEffectV) {
+        soundEffectVolume = soundEffectV;
+        Saves.setSoundEffectVolume(soundEffectVolume);
+    }
+
     public static void pauseMusicAppClosed(){
         if (music != null && music.isPlaying()) {
             music.pause();
@@ -160,5 +181,28 @@ public class SoundController {
             if (music != null)
                 music.play();
         }
+    }
+
+    private static void loadSoundEffects() { // need to manually add the files I want loaded here
+        try {
+            AssetFileDescriptor assetDescriptor = glGame.getAssets().openFd(soundEffectDirectory + "JumpSound.ogg");
+            JUMP_SOUND = soundPool.load(assetDescriptor, 0);
+            assetDescriptor = glGame.getAssets().openFd(soundEffectDirectory + "electricshock.ogg");
+            ELECTRIC_SOUND = soundPool.load(assetDescriptor, 0);
+        } catch (IOException e) {
+            throw new RuntimeException("Couldn't load sound some soundEffects: " + e.getMessage());
+        }
+    }
+
+    public static void playJumpSound() {
+        soundPool.play(JUMP_SOUND, soundEffectVolume, soundEffectVolume, 0, 0, 1);
+    }
+
+    public static void playElectricSound() {
+        soundPool.play(ELECTRIC_SOUND, soundEffectVolume, soundEffectVolume, 0, 0, 1);
+    }
+
+    public static void playSettingSound() {
+        soundPool.play(JUMP_SOUND, soundEffectVolume, soundEffectVolume, 0, 0, 1);
     }
 }

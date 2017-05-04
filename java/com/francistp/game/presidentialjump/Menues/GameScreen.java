@@ -466,6 +466,7 @@ public class GameScreen extends GLScreen {
     public boolean checkIfHit() {
         if (CollisionTester.CollisionTest(player.getDamageBounds(), topBoundary.getBounds()) || CollisionTester.CollisionTest(player.getDamageBounds(), bottomBoundary.getBounds())) {
             deathCause = "YOU WERE KILLED BY THE ELECTRIC BARRIER";
+            SoundController.playElectricSound();
             return true;
         } else {
             return false;

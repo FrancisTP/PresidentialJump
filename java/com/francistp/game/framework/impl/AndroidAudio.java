@@ -1,6 +1,7 @@
 package com.francistp.game.framework.impl;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.media.AudioAttributes;
@@ -11,6 +12,7 @@ import android.os.Build;
 import com.francistp.game.framework.Audio;
 import com.francistp.game.framework.Music;
 import com.francistp.game.framework.Sound;
+import com.francistp.game.presidentialjump.Settings.SoundController;
 
 import java.io.IOException;
 
@@ -19,7 +21,6 @@ public class AndroidAudio implements Audio {
 	SoundPool soundPool;
 
 	private final int MAX_STREAM = 20;
-	private boolean soundLoaded = false;
 
 	@SuppressWarnings("deprecation")
 	public AndroidAudio(Activity activity){
@@ -56,5 +57,9 @@ public class AndroidAudio implements Audio {
 		} catch (IOException e) {
 			throw new RuntimeException("Couldn't load sound '" + filename + "'");
 		}
+	}
+
+	public SoundPool getSoundPool() {
+		return soundPool;
 	}
 }
