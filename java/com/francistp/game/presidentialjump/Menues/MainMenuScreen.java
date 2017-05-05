@@ -102,7 +102,7 @@ public class MainMenuScreen extends GLScreen {
 
 		settingMenu = new SettingMenu();
 		highscore = Saves.getHighscore();
-		highscoreString = "Highscore: ";
+		highscoreString = "Highscore: ";//
 		if (Integer.toString(highscore).length() == 1) {
 			highscoreString += "000000" + Integer.toString(highscore);
 		} else if (Integer.toString(highscore).length() == 2) {
