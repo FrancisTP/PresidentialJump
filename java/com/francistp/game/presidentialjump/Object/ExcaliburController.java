@@ -75,17 +75,17 @@ public class ExcaliburController {
             excaliburs[2].setState(Excalibur.AIM, 0);
         } else if (this.state == LEFT_TO_RIGHT) {
             excaliburs[0].setState(Excalibur.AIM, 0);
-            excaliburs[1].setState(Excalibur.AIM, 90);
-            excaliburs[2].setState(Excalibur.AIM, 180);
+            excaliburs[1].setState(Excalibur.AIM, 100);
+            excaliburs[2].setState(Excalibur.AIM, 200);
         } else if (this.state == RIGHT_TO_LEFT) {
-            excaliburs[0].setState(Excalibur.AIM, 180);
-            excaliburs[1].setState(Excalibur.AIM, 90);
+            excaliburs[0].setState(Excalibur.AIM, 200);
+            excaliburs[1].setState(Excalibur.AIM, 100);
             excaliburs[2].setState(Excalibur.AIM, 0);
         } else if (this.state == LEFT_THEN_RIGHT) {
             excaliburs[0].setState(Excalibur.AIM, 0);
-            excaliburs[2].setState(Excalibur.AIM, 90);
+            excaliburs[2].setState(Excalibur.AIM, 100);
         } else if (this.state == RIGHT_THEN_LEFT) {
-            excaliburs[0].setState(Excalibur.AIM, 90);
+            excaliburs[0].setState(Excalibur.AIM, 100);
             excaliburs[2].setState(Excalibur.AIM, 0);
         } else {
             state = NOTHING;

@@ -5,6 +5,7 @@ import com.francistp.game.framework.gl.SpriteBatcher;
 import com.francistp.game.framework.gl.TextureRegion;
 import com.francistp.game.presidentialjump.Assets.Assets;
 import com.francistp.game.presidentialjump.Menues.GameScreen;
+import com.francistp.game.presidentialjump.Settings.SoundController;
 
 import java.util.Random;
 
@@ -96,6 +97,13 @@ public class Firework {
             if (state == SHOOTING_STATE) {
                 y += speed;
                 if (y > explosionHeight) {
+                    if (color == BLUE) {
+                        SoundController.playFirework01();
+                    } else if (color == YELLOW) {
+                        SoundController.playFirework02();
+                    } else if (color == RED) {
+                        SoundController.playFirework03();
+                    }
                     state = EXPLOSION_STATE;
                     counter = 0;
                 }

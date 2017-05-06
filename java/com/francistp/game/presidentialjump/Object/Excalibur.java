@@ -24,13 +24,14 @@ public class Excalibur {
     private static final int AFTER_EFFECT = 2;
     public static final int NOTHING = 3;
 
-    private static final int INITIAL_AIM_COUNT = 15;
-    private static final int AIM_COUNT = 75;
+    private static final int INITIAL_AIM_COUNT = 20;
+    private static final int AIM_COUNT = 80;
     private static final int SHOOT_COUNT = 25;
-    private static final int AFTER_EFFECT_COUNT = 15;
+    private static final int AFTER_EFFECT_COUNT = 20;
 
     private GameObjectRectangle bounds;
-    private boolean flashed, aimArleadyPlayed;
+    private boolean flashed, allArleadyPlayed;
+    private  ExcaliburParticle[] excaliburParticles;
 
     public Excalibur(float x) {
         this.x = x;
@@ -45,8 +46,13 @@ public class Excalibur {
         stateCounter = 0;
         delayCounter = 0;
         ready = false;
-        aimArleadyPlayed = false;
+        allArleadyPlayed = false;
         flashed = false;
+
+        excaliburParticles = new ExcaliburParticle[20];
+        for (int i=0; i<excaliburParticles.length; i++) {
+            excaliburParticles[i] = new ExcaliburParticle(this.x);
+        }
     }
 
     public void update(float deltaTime) {
@@ -54,21 +60,20 @@ public class Excalibur {
             delayCounter++;
 
             if (delayCounter > delay) {
+                if (!allArleadyPlayed) {
+                    SoundController.playExcaliburAllSound();
+                    allArleadyPlayed = true;
+                }
                 ready = true;
                 stateCounter++;
                 if (stateCounter > INITIAL_AIM_COUNT) {
                     width = initialWidth * (1 - (((float)stateCounter - (float)INITIAL_AIM_COUNT) / (float)AIM_COUNT));
-                    if (!aimArleadyPlayed) {
-                        aimArleadyPlayed = true;
-                        SoundController.playExcaliburAimSound();
-                    }
                 }
 
                 if (stateCounter >= AIM_COUNT + INITIAL_AIM_COUNT) {
                     stateCounter = 0;
                     state = SHOOT;
                     width = bounds.getWidth();
-                    SoundController.playExcaliburShootSound();
                 }
             }
         } else if (state == SHOOT) {
@@ -81,13 +86,21 @@ public class Excalibur {
         } else if (state == AFTER_EFFECT) {
             stateCounter++;
 
+            for (int i=0; i<excaliburParticles.length; i++) {
+                excaliburParticles[i].update(deltaTime);
+            }
+
             if (stateCounter > AFTER_EFFECT_COUNT) {
                 stateCounter = 0;
                 delayCounter = 0;
                 state = NOTHING;
-                aimArleadyPlayed = false;
+                allArleadyPlayed = false;
                 ready = false;
                 flashed = false;
+
+                for (int i=0; i<excaliburParticles.length; i++) {
+                    excaliburParticles[i].reset();
+                }
             }
         } else {
             // NOTHING
@@ -105,7 +118,9 @@ public class Excalibur {
                 batcher.drawSprite(x, y, width, height, Assets.excalibur_solid);
             }
         } else if (state == AFTER_EFFECT) {
-            batcher.drawSprite(x, y, 1, 1, Assets.excalibur_solid);
+            for (int i=0; i<excaliburParticles.length; i++) {
+                excaliburParticles[i].render(batcher);
+            }
         } else {
             // NOTHING
         }

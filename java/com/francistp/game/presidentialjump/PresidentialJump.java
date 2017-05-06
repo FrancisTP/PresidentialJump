@@ -36,12 +36,14 @@ public class PresidentialJump extends GLGame {
     @Override
     public void onPause(){
         SoundController.pauseMusicAppClosed();
+        SoundController.pauseAllSoundEffects();
         super.onPause();
     }
 
     @Override
     public void onResume() {
         SoundController.resumeMusicAppOpened();
+        SoundController.resumeAllSoundEffects();
         super.onResume();
     }
 

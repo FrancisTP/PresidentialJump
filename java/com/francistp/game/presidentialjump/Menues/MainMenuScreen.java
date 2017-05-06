@@ -121,7 +121,7 @@ public class MainMenuScreen extends GLScreen {
 			highscoreString += Integer.toString(highscore);
 		}
 
-		highscoreText = new Text(highscoreString, 7, "white", "center", 40, 40000, 400, true);
+		highscoreText = new Text(highscoreString, 7, "white", "center", 40, 400, 400, true);
 
 		// Request a song
 		//SoundController.requestSong("MainMenuSong.mp3");
@@ -176,6 +176,7 @@ public class MainMenuScreen extends GLScreen {
 				if(OverlapTester.pointInRectangle(playBounds, touchPoint)){
 					//state = CHANGE_SCREEN_STATE;
 					SoundController.stopMusic();
+					SoundController.stopAllSoundEffects();
 					game.setScreen(new LoadingScreen(glGame, "GameScreen", fireworks));
 					//return;
 				}

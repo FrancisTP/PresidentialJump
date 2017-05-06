@@ -38,6 +38,7 @@ public class Text {
         background = false;
         backgroundHeight = 0;
         height = 0;
+        invisible = false;
 
         if (size > 10) {
             backgroundPadding = backgroundPadding * ((size / 10) * (size / 10));
@@ -57,6 +58,7 @@ public class Text {
         background = false;
         backgroundHeight = 0;
         height = 0;
+        invisible = false;
 
         if (size > 10) {
             backgroundPadding = backgroundPadding * ((size / 10) * (size / 10));
@@ -76,6 +78,7 @@ public class Text {
 
         alignment = "left";
         height = 0;
+        invisible = false;
 
         if (size > 10) {
             backgroundPadding = backgroundPadding * ((size / 10) * (size / 10));
@@ -95,6 +98,7 @@ public class Text {
         this.alignment = alignment;
 
         height = 0;
+        invisible = false;
 
         if (size > 10) {
             backgroundPadding = backgroundPadding * ((size / 10) * (size / 10));
@@ -114,6 +118,7 @@ public class Text {
 
         alignment = "left";
         height = 0;
+        invisible = false;
 
         if (size > 10) {
             backgroundPadding = backgroundPadding * ((size / 10) * (size / 10));
@@ -133,6 +138,7 @@ public class Text {
         this.alignment = alignment;
 
         height = 0;
+        invisible = false;
 
         if (size > 10) {
             backgroundPadding = backgroundPadding * ((size / 10) * (size / 10));

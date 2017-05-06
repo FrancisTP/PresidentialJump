@@ -42,12 +42,12 @@ public class ObstaclesController {
                         // Check which obstacle to create
                         if (randomNum == 0) {
                             // choose type
-                            randomNum = (int) (Math.random() * (6));
+                            randomNum = (int) (Math.random() * (2));
 
                             if (excaliburController.getReady()) {
-                                if (randomNum == 0 || randomNum == 1) {
+                                if (randomNum == 0) {// randomNum == 1) {
                                     excaliburController.setState(ExcaliburController.LEFT);
-                                } else if (randomNum == 2 || randomNum == 3) {
+                                } else if (randomNum == 1) {// || randomNum == 3) {
                                     excaliburController.setState(ExcaliburController.RIGHT);
                                 } else if (randomNum == 4) {
                                     excaliburController.setState(ExcaliburController.LEFT_THEN_RIGHT);

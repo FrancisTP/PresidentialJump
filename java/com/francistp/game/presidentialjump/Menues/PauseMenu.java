@@ -107,6 +107,7 @@ public class PauseMenu {
                     GameScreen.state = GameScreen.RUNNING_STATE;
                     if (GameScreen.gameStarted) {
                         SoundController.resumeMusic();
+                        SoundController.resumeAllSoundEffects();
                     }
                 }
                 if(OverlapTester.pointInRectangle(settingBounds, touchPoint)) {
@@ -115,6 +116,7 @@ public class PauseMenu {
                 }
                 if(OverlapTester.pointInRectangle(quitBounds, touchPoint)) {
                     SoundController.stopMusic();
+                    SoundController.stopAllSoundEffects();
                     quitState = BOUNDS_NOT_TOUCHED;
                     game.setScreen(new LoadingScreen(glGame, "MainMenuScreen"));
                 }

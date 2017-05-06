@@ -230,6 +230,7 @@ public class GameScreen extends GLScreen {
 
                 if(OverlapTester.pointInRectangle(pauseBounds, touchPoint)) {
                     SoundController.pauseMusic();
+                    SoundController.pauseAllSoundEffects();
                     pauseState = BOUNDS_NOT_TOUCHED;
                     state = PAUSED_STATE;
                 }
