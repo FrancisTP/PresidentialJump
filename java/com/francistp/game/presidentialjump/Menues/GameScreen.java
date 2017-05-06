@@ -20,6 +20,9 @@ import com.francistp.game.presidentialjump.Character.Trump;
 import com.francistp.game.presidentialjump.Decore.Background;
 import com.francistp.game.presidentialjump.Decore.Fireworks;
 import com.francistp.game.presidentialjump.Object.ElectricBoundary;
+import com.francistp.game.presidentialjump.Object.Excalibur;
+import com.francistp.game.presidentialjump.Object.ExcaliburController;
+import com.francistp.game.presidentialjump.Object.ObstaclesController;
 import com.francistp.game.presidentialjump.Object.Wall;
 import com.francistp.game.presidentialjump.Settings.SoundController;
 
@@ -72,6 +75,9 @@ public class GameScreen extends GLScreen {
     String deathCause;
     public static boolean gameStarted;
 
+    // Obstacles
+    ObstaclesController obstaclesController;
+
     public GameScreen(Game game, Fireworks fireworks) {
         super(game);
         guiCam = new Camera2D(glGraphics, 480, 800); // Screen resolution 1280x800
@@ -111,6 +117,9 @@ public class GameScreen extends GLScreen {
 
         deathCause = "";
         gameStarted = false;
+
+        // obstacles
+        obstaclesController = new ObstaclesController();
     }
 
     @Override
@@ -173,6 +182,8 @@ public class GameScreen extends GLScreen {
             background.checkBackgrounds();
 
             checkAndSetPlayer(player, wall);
+
+            obstaclesController.update(deltaTime);
 
             if (checkIfHit()) {
                 pauseState = BOUNDS_NOT_TOUCHED;
@@ -300,6 +311,10 @@ public class GameScreen extends GLScreen {
         player.render(batcher);
         batcher.endBatch();
 
+        // Obstacles
+        obstaclesController.render(batcher);
+        //
+
         topBoundary.render(batcher);
         bottomBoundary.render(batcher);
 
@@ -348,6 +363,8 @@ public class GameScreen extends GLScreen {
         player.render(batcher);
         batcher.endBatch();
 
+        obstaclesController.render(batcher);
+
         topBoundary.render(batcher);
         bottomBoundary.render(batcher);
 
@@ -382,6 +399,8 @@ public class GameScreen extends GLScreen {
         player.render(batcher);
         batcher.endBatch();
 
+        obstaclesController.render(batcher);
+
         topBoundary.render(batcher);
         bottomBoundary.render(batcher);
 
@@ -414,6 +433,8 @@ public class GameScreen extends GLScreen {
         batcher.beginBatch(Assets.trumpallbodyparts);
         player.render(batcher);
         batcher.endBatch();
+
+        obstaclesController.render(batcher);
 
         topBoundary.render(batcher);
         bottomBoundary.render(batcher);
@@ -468,6 +489,24 @@ public class GameScreen extends GLScreen {
             deathCause = "YOU WERE KILLED BY THE ELECTRIC BARRIER";
             SoundController.playElectricSound();
             return true;
+        } else if (obstaclesController.getExcaliburController().getState() != ExcaliburController.NOTHING) {
+            if (obstaclesController.getExcaliburController().getExcaliburs()[0].getState() == Excalibur.SHOOT) {
+                if (CollisionTester.CollisionTest(player.getDamageBounds(), obstaclesController.getExcaliburController().getExcaliburs()[0].getBounds())) {
+                    deathCause = "YOU WERE KILLED BY EXCALIBUR";
+                    return true;
+                }
+            } else if (obstaclesController.getExcaliburController().getExcaliburs()[1].getState() == Excalibur.SHOOT) {
+                if (CollisionTester.CollisionTest(player.getDamageBounds(), obstaclesController.getExcaliburController().getExcaliburs()[1].getBounds())) {
+                    deathCause = "YOU WERE KILLED BY EXCALIBUR";
+                    return true;
+                }
+            } else if (obstaclesController.getExcaliburController().getExcaliburs()[2].getState() == Excalibur.SHOOT) {
+                if (CollisionTester.CollisionTest(player.getDamageBounds(), obstaclesController.getExcaliburController().getExcaliburs()[2].getBounds())) {
+                    deathCause = "YOU WERE KILLED BY EXCALIBUR";
+                    return true;
+                }
+            }
+            return false;
         } else {
             return false;
         }

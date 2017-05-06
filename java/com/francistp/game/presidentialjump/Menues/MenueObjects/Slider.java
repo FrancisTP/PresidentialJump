@@ -90,10 +90,6 @@ public class Slider {
                     guiCam.touchToWorld(touchPoint);
                     pressedDown = true;
                     fingerXPosition = touchPoint.x - (x - (sliderBar.width/2));
-                    System.out.println("touchPoint.x: " + touchPoint.x);
-                    System.out.println("(x - (sliderBar.width/2): " +  (x - (sliderBar.width/2)));
-                    System.out.println("fingerXPosition: " + fingerXPosition);
-                    System.out.println("sliderBar.width: " + sliderBar.width);
                 }
             }
             if(event.type == Input.TouchEvent.TOUCH_DRAGGED){

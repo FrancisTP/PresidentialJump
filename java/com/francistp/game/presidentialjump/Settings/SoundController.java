@@ -65,6 +65,8 @@ public class SoundController {
     private static int JUMP_SOUND;
     private static int ELECTRIC_SOUND;
     private static int SETTING_SOUND;
+    private static int EXCALIBUR_AIM;
+    private static int EXCALIBUR_SHOOT;
 
     private static boolean isUserMusicPlaying;
     private static AudioManager manager;
@@ -192,6 +194,10 @@ public class SoundController {
             ELECTRIC_SOUND = soundPool.load(assetDescriptor, 0);
             assetDescriptor = glGame.getAssets().openFd(soundEffectDirectory + "settingSound.ogg");
             SETTING_SOUND = soundPool.load(assetDescriptor, 0);
+            assetDescriptor = glGame.getAssets().openFd(soundEffectDirectory + "excaliburAim.ogg");
+            EXCALIBUR_AIM = soundPool.load(assetDescriptor, 0);
+            assetDescriptor = glGame.getAssets().openFd(soundEffectDirectory + "excaliburShoot.ogg");
+            EXCALIBUR_SHOOT = soundPool.load(assetDescriptor, 0);
         } catch (IOException e) {
             throw new RuntimeException("Couldn't load sound some soundEffects: " + e.getMessage());
         }
@@ -207,5 +213,13 @@ public class SoundController {
 
     public static void playSettingSound() {
         soundPool.play(SETTING_SOUND, soundEffectVolume, soundEffectVolume, 0, 0, 1);
+    }
+
+    public static void playExcaliburAimSound() {
+        soundPool.play(EXCALIBUR_AIM, soundEffectVolume, soundEffectVolume, 0, 0, 1);
+    }
+
+    public static void playExcaliburShootSound() {
+        soundPool.play(EXCALIBUR_SHOOT, soundEffectVolume, soundEffectVolume, 0, 0, 1);
     }
 }

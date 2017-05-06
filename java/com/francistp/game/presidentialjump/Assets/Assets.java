@@ -335,6 +335,13 @@ public class Assets {
     public static TextureRegion sound_button;
     public static TextureRegion sound_button_pressed;
 
+
+    // Obstacles
+    public static Texture obstaclesTexture;
+
+    public static TextureRegion excalibur_solid;
+    public static TextureRegion excalibur_transparent;
+
     ////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////
 
@@ -705,6 +712,7 @@ public class Assets {
         loadMenues(game);
         loadButtons(game);
         loadFence(game);
+        loadObstacles(game);
 
         // text_background
         plainSkyAndGroundTexture = new Texture(game, "environments/SkyAndGround.png");
@@ -744,6 +752,7 @@ public class Assets {
         reloadMenues();
         reloadButtons();
         reloadFence();
+        reloadObstacles();
 
         if (plainSkyAndGroundTexture != null) {
             plainSkyAndGroundTexture.reload();
@@ -768,6 +777,7 @@ public class Assets {
         unloadMenues();
         unloadButtons();
         unloadFence();
+        unloadObstacles();
 
         if (plainSkyAndGroundTexture != null) {
             plainSkyAndGroundTexture.dispose();
@@ -786,6 +796,7 @@ public class Assets {
         clearMenues();
         clearButtons();
         clearFence();
+        clearObstacles();
 
         unloadMainMenu();
         plainSkyAndGroundTexture = null;
@@ -1333,5 +1344,34 @@ public class Assets {
         cloud_09_medium_right = null;
         cloud_09_small_left = null;
         cloud_09_small_right = null;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////
+
+    public static void loadObstacles(GLGame game) {
+        obstaclesTexture = new Texture(game, "objects/obstacles.png");
+
+        excalibur_solid = new TextureRegion(obstaclesTexture, 3, 3, 1, 1);
+        excalibur_transparent = new TextureRegion(obstaclesTexture, 8, 3, 1, 1);
+    }
+
+    public static void reloadObstacles() {
+        if (obstaclesTexture != null) {
+            obstaclesTexture.reload();
+        }
+    }
+
+    public static void unloadObstacles() {
+        if (obstaclesTexture != null) {
+            obstaclesTexture.dispose();
+        }
+    }
+
+    public static void clearObstacles() {
+        obstaclesTexture = null;
+
+        excalibur_solid = null;
+        excalibur_transparent = null;
     }
 }
