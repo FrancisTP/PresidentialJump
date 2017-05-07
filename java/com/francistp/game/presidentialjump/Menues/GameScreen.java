@@ -22,6 +22,7 @@ import com.francistp.game.presidentialjump.Decore.Fireworks;
 import com.francistp.game.presidentialjump.Object.ElectricBoundary;
 import com.francistp.game.presidentialjump.Object.Excalibur;
 import com.francistp.game.presidentialjump.Object.ExcaliburController;
+import com.francistp.game.presidentialjump.Object.MissileController;
 import com.francistp.game.presidentialjump.Object.ObstaclesController;
 import com.francistp.game.presidentialjump.Object.Wall;
 import com.francistp.game.presidentialjump.Settings.SoundController;
@@ -186,6 +187,7 @@ public class GameScreen extends GLScreen {
             obstaclesController.update(deltaTime);
 
             if (checkIfHit()) {
+                player.setDead(true);
                 pauseState = BOUNDS_NOT_TOUCHED;
                 state = FINISHED_STATE;
                 finishedMenu = new FinishedMenu(score,deathCause);
@@ -200,6 +202,56 @@ public class GameScreen extends GLScreen {
         } else if (Assets.readyState && state == FINISHED_STATE) {
             List<Input.TouchEvent> touchEvents = game.getInput().getTouchEvents();
             game.getInput().getKeyEvents();
+
+            player.update(deltaTime);
+            if (player.getPlayerState() != 0) {
+                wall.scroll(-1.50f);
+                background.scroll(-1.50f);
+
+                if (topBoundary.getY() > 780) {
+                    topBoundary.addY(-2f);
+                    if (topBoundary.getY() < 780) {
+                        topBoundary.setY(780);
+                    }
+                }
+                if (bottomBoundary.getY() < 0) {
+                    bottomBoundary.addY(2f);
+                    if (bottomBoundary.getY() > 0) {
+                        bottomBoundary.setY(0);
+                    }
+                }
+
+                topBoundary.update();
+                bottomBoundary.update();
+
+                if (scoreCounter >= 10) {
+                    scoreCounter = 0;
+                    score++;
+                    if (Integer.toString(score).length() == 1) {
+                        scoreText.setText(scoreString + "000000" + Integer.toString(score));
+                    } else if (Integer.toString(score).length() == 2) {
+                        scoreText.setText(scoreString + "00000" + Integer.toString(score));
+                    } else if (Integer.toString(score).length() == 3) {
+                        scoreText.setText(scoreString + "0000" + Integer.toString(score));
+                    } else if (Integer.toString(score).length() == 4) {
+                        scoreText.setText(scoreString + "000" + Integer.toString(score));
+                    } else if (Integer.toString(score).length() == 5) {
+                        scoreText.setText(scoreString + "00" + Integer.toString(score));
+                    } else if (Integer.toString(score).length() == 6) {
+                        scoreText.setText(scoreString + "0" + Integer.toString(score));
+                    } else if (Integer.toString(score).length() == 7) {
+                        scoreText.setText(scoreString + Integer.toString(score));
+                    }
+                }
+            }
+            background.update(deltaTime);
+
+            wall.checkWall();
+            background.checkBackgrounds();
+
+            checkAndSetPlayer(player, wall);
+
+            obstaclesController.update(deltaTime);
 
             finishedMenu.update(deltaTime);
             finishedMenu.listenToTouches(touchEvents, touchPoint, guiCam, game, glGame);
@@ -308,9 +360,7 @@ public class GameScreen extends GLScreen {
         wall.render(batcher);
         batcher.endBatch();
 
-        batcher.beginBatch(Assets.trumpallbodyparts);
         player.render(batcher);
-        batcher.endBatch();
 
         // Obstacles
         obstaclesController.render(batcher);
@@ -360,9 +410,7 @@ public class GameScreen extends GLScreen {
         wall.render(batcher);
         batcher.endBatch();
 
-        batcher.beginBatch(Assets.trumpallbodyparts);
         player.render(batcher);
-        batcher.endBatch();
 
         obstaclesController.render(batcher);
 
@@ -396,9 +444,9 @@ public class GameScreen extends GLScreen {
         wall.render(batcher);
         batcher.endBatch();
 
-        batcher.beginBatch(Assets.trumpallbodyparts);
+
         player.render(batcher);
-        batcher.endBatch();
+
 
         obstaclesController.render(batcher);
 
@@ -431,9 +479,7 @@ public class GameScreen extends GLScreen {
         wall.render(batcher);
         batcher.endBatch();
 
-        batcher.beginBatch(Assets.trumpallbodyparts);
         player.render(batcher);
-        batcher.endBatch();
 
         obstaclesController.render(batcher);
 
@@ -489,24 +535,57 @@ public class GameScreen extends GLScreen {
         if (CollisionTester.CollisionTest(player.getDamageBounds(), topBoundary.getBounds()) || CollisionTester.CollisionTest(player.getDamageBounds(), bottomBoundary.getBounds())) {
             deathCause = "YOU WERE KILLED BY THE ELECTRIC BARRIER";
             SoundController.playElectricSound();
+            player.setDeathCause(ObstaclesController.BARRIER);
             return true;
         } else if (obstaclesController.getExcaliburController().getState() != ExcaliburController.NOTHING) {
             if (obstaclesController.getExcaliburController().getExcaliburs()[0].getState() == Excalibur.SHOOT) {
                 if (CollisionTester.CollisionTest(player.getDamageBounds(), obstaclesController.getExcaliburController().getExcaliburs()[0].getBounds())) {
                     deathCause = "YOU WERE KILLED BY EXCALIBUR";
-                    return true;
-                }
-            } else if (obstaclesController.getExcaliburController().getExcaliburs()[1].getState() == Excalibur.SHOOT) {
-                if (CollisionTester.CollisionTest(player.getDamageBounds(), obstaclesController.getExcaliburController().getExcaliburs()[1].getBounds())) {
-                    deathCause = "YOU WERE KILLED BY EXCALIBUR";
-                    return true;
-                }
-            } else if (obstaclesController.getExcaliburController().getExcaliburs()[2].getState() == Excalibur.SHOOT) {
-                if (CollisionTester.CollisionTest(player.getDamageBounds(), obstaclesController.getExcaliburController().getExcaliburs()[2].getBounds())) {
-                    deathCause = "YOU WERE KILLED BY EXCALIBUR";
+                    player.setDeathCause(ObstaclesController.EXCALIBUR);
                     return true;
                 }
             }
+            if (obstaclesController.getExcaliburController().getExcaliburs()[1].getState() == Excalibur.SHOOT) {
+                if (CollisionTester.CollisionTest(player.getDamageBounds(), obstaclesController.getExcaliburController().getExcaliburs()[1].getBounds())) {
+                    deathCause = "YOU WERE KILLED BY EXCALIBUR";
+                    player.setDeathCause(ObstaclesController.EXCALIBUR);
+                    return true;
+                }
+            }
+            if (obstaclesController.getExcaliburController().getExcaliburs()[2].getState() == Excalibur.SHOOT) {
+                if (CollisionTester.CollisionTest(player.getDamageBounds(), obstaclesController.getExcaliburController().getExcaliburs()[2].getBounds())) {
+                    deathCause = "YOU WERE KILLED BY EXCALIBUR";
+                    player.setDeathCause(ObstaclesController.EXCALIBUR);
+                    return true;
+                }
+            }
+            return false;
+        } if (obstaclesController.getMissileController().getState() != MissileController.NOTHING || true) {
+            if (!obstaclesController.getMissileController().getMissiles()[0].isReady()) {
+                if (CollisionTester.CollisionTest(player.getDamageBounds(), obstaclesController.getMissileController().getMissiles()[0].getBounds())) {
+                    deathCause = "YOU WERE KILLED BY A MISSILE";
+                    obstaclesController.getMissileController().getMissiles()[0].hit();
+                    player.setDeathCause(ObstaclesController.MISSILE);
+                    return true;
+                }
+            }
+            if (!obstaclesController.getMissileController().getMissiles()[1].isReady()) {
+                if (CollisionTester.CollisionTest(player.getDamageBounds(), obstaclesController.getMissileController().getMissiles()[1].getBounds())) {
+                    deathCause = "YOU WERE KILLED BY A MISSILE";
+                    obstaclesController.getMissileController().getMissiles()[1].hit();
+                    player.setDeathCause(ObstaclesController.MISSILE);
+                    return true;
+                }
+            }
+            if (!obstaclesController.getMissileController().getMissiles()[2].isReady()) {
+                if (CollisionTester.CollisionTest(player.getDamageBounds(), obstaclesController.getMissileController().getMissiles()[2].getBounds())) {
+                    deathCause = "YOU WERE KILLED BY A MISSILE";
+                    obstaclesController.getMissileController().getMissiles()[2].hit();
+                    player.setDeathCause(ObstaclesController.MISSILE);
+                    return true;
+                }
+            }
+
             return false;
         } else {
             return false;

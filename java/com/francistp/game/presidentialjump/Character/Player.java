@@ -16,12 +16,14 @@ public class Player {
     }
 
     protected int playerState;
+    protected int deathCause;
 
-    protected final int IDLE = 0;
-    protected final int JUMP_LEFT = 1;
-    protected final int JUMP_RIGHT = 2;
-    protected final int WALL_LEFT = 3;
-    protected final int WALL_RIGHT = 4;
+    public static final int IDLE = 0;
+    public static final int JUMP_LEFT = 1;
+    public static final int JUMP_RIGHT = 2;
+    public static final int WALL_LEFT = 3;
+    public static final int WALL_RIGHT = 4;
+    protected boolean dead;
 
     private static final float GRAVITY = -0.5f;
     private static final float WALL_RESISTANCE = 0.65f;
@@ -44,6 +46,7 @@ public class Player {
 
         jumpSpeedX = 22;
         jumpSpeedY = 19;
+        dead = false;
     }
 
     public void update(float deltaTime) {
@@ -166,5 +169,13 @@ public class Player {
 
     public float getY() {
         return y;
+    }
+
+    public void setDead(boolean dead) {
+        this.dead = dead;
+    }
+
+    public void setDeathCause(int deathCause) {
+        this.deathCause = deathCause;
     }
 }

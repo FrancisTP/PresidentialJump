@@ -165,6 +165,7 @@ public class Assets {
     // Trump
     public static Texture trumpallbodyparts;
 
+    public static TextureRegion disintegrate_block;
     public static TextureRegion trump_body_jump_left;
     public static TextureRegion trump_body_jump_right;
     public static TextureRegion trump_body_left;
@@ -338,9 +339,41 @@ public class Assets {
 
     // Obstacles
     public static Texture obstaclesTexture;
+    public static TextureRegion reduntant;
 
     public static TextureRegion excalibur_solid;
     public static TextureRegion excalibur_transparent;
+    public static TextureRegion missile_explosion_01;
+    public static TextureRegion missile_explosion_02;
+    public static TextureRegion missile_explosion_03;
+    public static TextureRegion missile_explosion_04;
+    public static TextureRegion missile_explosion_05;
+    public static TextureRegion missile_explosion_06;
+    public static TextureRegion missile_explosion_07;
+    public static TextureRegion missile_explosion_08;
+    public static TextureRegion missile_explosion_09;
+    public static TextureRegion missile_explosion_10;
+    public static TextureRegion missile_explosion_11;
+    public static TextureRegion missile_explosion_12;
+    public static TextureRegion missile_explosion_13;
+    public static TextureRegion missile_01;
+    public static TextureRegion missile_02;
+    public static TextureRegion missile_fire_01;
+    public static TextureRegion missile_fire_02;
+    public static TextureRegion missile_fire_03;
+    public static TextureRegion missile_fire_04;
+    public static TextureRegion missile_fire_05;
+    public static TextureRegion missile_fire_06;
+    public static TextureRegion missile_fire_07;
+    public static TextureRegion missile_fire_08;
+    public static TextureRegion missile_warning;
+
+    public static Animation missile;
+    public static TextureRegion [] missileCollection;
+    public static Animation missile_fire;
+    public static TextureRegion [] missileFireCollection;
+    public static Animation missile_explosion;
+    public static TextureRegion [] missileExplosionCollection;
 
     ////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////
@@ -1025,6 +1058,7 @@ public class Assets {
     public static void loadTrump(GLGame game) {
         trumpallbodyparts = new Texture(game, "characters/TrumpSpriteSheet.png");
 
+        disintegrate_block = new TextureRegion(trumpallbodyparts, 181, 3, 5, 5);
         trump_body_jump_left = new TextureRegion(trumpallbodyparts, 3, 211, 45, 40);
         trump_body_jump_right = new TextureRegion(trumpallbodyparts, 52, 211, 45, 40);
         trump_body_left = new TextureRegion(trumpallbodyparts, 101, 211, 45, 40);
@@ -1082,6 +1116,7 @@ public class Assets {
     public static void clearTrump()  {
         unloadTrump();
 
+        disintegrate_block = null;
         trumpallbodyparts = null;
         trump_body_jump_left = null;
         trump_body_jump_right = null;
@@ -1351,9 +1386,43 @@ public class Assets {
 
     public static void loadObstacles(GLGame game) {
         obstaclesTexture = new Texture(game, "objects/obstacles.png");
+        reduntant = new TextureRegion(obstaclesTexture, 0, 0, 1, 1);
 
         excalibur_solid = new TextureRegion(obstaclesTexture, 3, 3, 1, 1);
         excalibur_transparent = new TextureRegion(obstaclesTexture, 8, 3, 1, 1);
+        missile_explosion_01 = new TextureRegion(obstaclesTexture, 3, 25, 96, 96);
+        missile_explosion_02 = new TextureRegion(obstaclesTexture, 103, 67, 96, 96);
+        missile_explosion_03 = new TextureRegion(obstaclesTexture, 3, 125, 96, 96);
+        missile_explosion_04 = new TextureRegion(obstaclesTexture, 103, 167, 96, 96);
+        missile_explosion_05 = new TextureRegion(obstaclesTexture, 3, 225, 96, 96);
+        missile_explosion_06 = new TextureRegion(obstaclesTexture, 103, 267, 96, 96);
+        missile_explosion_07 = new TextureRegion(obstaclesTexture, 3, 325, 96, 96);
+        missile_explosion_08 = new TextureRegion(obstaclesTexture, 103, 367, 96, 96);
+        missile_explosion_09 = new TextureRegion(obstaclesTexture, 3, 425, 96, 96);
+        missile_explosion_10 = new TextureRegion(obstaclesTexture, 103, 467, 96, 96);
+        missile_explosion_11 = new TextureRegion(obstaclesTexture, 3, 525, 96, 96);
+        missile_explosion_12 = new TextureRegion(obstaclesTexture, 103, 567, 96, 96);
+        missile_explosion_13 = new TextureRegion(obstaclesTexture, 0, 0, 1, 1);
+        missile_01 = new TextureRegion(obstaclesTexture, 136, 3, 24, 60);
+        missile_02 = new TextureRegion(obstaclesTexture, 164, 3, 24, 60);
+        missile_fire_01 = new TextureRegion(obstaclesTexture, 13, 3, 10, 18);
+        missile_fire_02 = new TextureRegion(obstaclesTexture, 27, 3, 10, 18);
+        missile_fire_03 = new TextureRegion(obstaclesTexture, 41, 3, 10, 18);
+        missile_fire_04 = new TextureRegion(obstaclesTexture, 55, 3, 10, 18);
+        missile_fire_05 = new TextureRegion(obstaclesTexture, 69, 3, 10, 18);
+        missile_fire_06 = new TextureRegion(obstaclesTexture, 83, 3, 10, 18);
+        missile_fire_07 = new TextureRegion(obstaclesTexture, 97, 3, 10, 18);
+        missile_fire_08 = new TextureRegion(obstaclesTexture, 111, 3, 10, 18);
+        missile_warning = new TextureRegion(obstaclesTexture, 125, 3, 7, 49);
+
+        missileCollection = new TextureRegion[] {missile_01, missile_02};
+        missile = new Animation(1.0f, missileCollection);
+
+        missileFireCollection = new TextureRegion[] {missile_fire_01, missile_fire_02, missile_fire_03, missile_fire_04, missile_fire_05, missile_fire_06, missile_fire_07, missile_fire_08};
+        missile_fire = new Animation(1.0f, missileFireCollection);
+
+        missileExplosionCollection = new TextureRegion[] {missile_explosion_01, missile_explosion_02, missile_explosion_03, missile_explosion_04, missile_explosion_05, missile_explosion_06, missile_explosion_07,missile_explosion_08, missile_explosion_09, missile_explosion_10, missile_explosion_11, missile_explosion_12, missile_explosion_13};
+        missile_explosion = new Animation(1.0f, missileExplosionCollection);
     }
 
     public static void reloadObstacles() {
@@ -1373,5 +1442,37 @@ public class Assets {
 
         excalibur_solid = null;
         excalibur_transparent = null;
+        missile_explosion_01 = null;
+        missile_explosion_02 = null;
+        missile_explosion_03 = null;
+        missile_explosion_04 = null;
+        missile_explosion_05 = null;
+        missile_explosion_06 = null;
+        missile_explosion_07 = null;
+        missile_explosion_08 = null;
+        missile_explosion_09 = null;
+        missile_explosion_10 = null;
+        missile_explosion_11 = null;
+        missile_explosion_12 = null;
+        missile_01 = null;
+        missile_02 = null;
+        missile_fire_01 = null;
+        missile_fire_02 = null;
+        missile_fire_03 = null;
+        missile_fire_04 = null;
+        missile_fire_05 = null;
+        missile_fire_06 = null;
+        missile_fire_07 = null;
+        missile_fire_08 = null;
+        missile_warning = null;
+
+        missileCollection = null;
+        missile = null;
+
+        missileFireCollection = null;
+        missile_fire = null;
+
+        missileExplosionCollection = null;
+        missile_explosion = null;
     }
 }

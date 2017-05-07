@@ -69,6 +69,10 @@ public class SoundController {
     private static int FIREWORK_01;
     private static int FIREWORK_02;
     private static int FIREWORK_03;
+    private static int MISSILE_MOVING_01;
+    private static int MISSILE_MOVING_02;
+    private static int MISSILE_MOVING_03;
+    private static int MISSILE_EXPLOSION;
 
     private static boolean isUserMusicPlaying;
     private static AudioManager manager;
@@ -172,6 +176,30 @@ public class SoundController {
 
     public static void setSoundEffectVolume(float soundEffectV) {
         soundEffectVolume = soundEffectV;
+        /*
+            private static int JUMP_SOUND;
+            private static int ELECTRIC_SOUND;
+            private static int SETTING_SOUND;
+            private static int EXCALIBUR_ALL;
+            private static int FIREWORK_01;
+            private static int FIREWORK_02;
+            private static int FIREWORK_03;
+            private static int MISSILE_MOVING_01;
+            private static int MISSILE_MOVING_02;
+            private static int MISSILE_MOVING_03;
+            private static int MISSILE_EXPLOSION;
+         */
+        soundPool.setVolume(JUMP_SOUND, soundEffectVolume, soundEffectVolume);
+        soundPool.setVolume(ELECTRIC_SOUND, soundEffectVolume, soundEffectVolume);
+        soundPool.setVolume(SETTING_SOUND, soundEffectVolume, soundEffectVolume);
+        soundPool.setVolume(EXCALIBUR_ALL, soundEffectVolume, soundEffectVolume);
+        soundPool.setVolume(FIREWORK_01, soundEffectVolume, soundEffectVolume);
+        soundPool.setVolume(FIREWORK_02, soundEffectVolume, soundEffectVolume);
+        soundPool.setVolume(FIREWORK_03, soundEffectVolume, soundEffectVolume);
+        soundPool.setVolume(MISSILE_MOVING_01, soundEffectVolume, soundEffectVolume);
+        soundPool.setVolume(MISSILE_MOVING_02, soundEffectVolume, soundEffectVolume);
+        soundPool.setVolume(MISSILE_MOVING_03, soundEffectVolume, soundEffectVolume);
+        soundPool.setVolume(MISSILE_EXPLOSION, soundEffectVolume, soundEffectVolume);
         Saves.setSoundEffectVolume(soundEffectVolume);
     }
 
@@ -204,6 +232,14 @@ public class SoundController {
             FIREWORK_02 = soundPool.load(assetDescriptor, 0);
             assetDescriptor = glGame.getAssets().openFd(soundEffectDirectory + "firework_03.ogg");
             FIREWORK_03 = soundPool.load(assetDescriptor, 0);
+            assetDescriptor = glGame.getAssets().openFd(soundEffectDirectory + "missileMoving01.ogg");
+            MISSILE_MOVING_01 = soundPool.load(assetDescriptor, 0);
+            assetDescriptor = glGame.getAssets().openFd(soundEffectDirectory + "missileMoving02.ogg");
+            MISSILE_MOVING_02 = soundPool.load(assetDescriptor, 0);
+            assetDescriptor = glGame.getAssets().openFd(soundEffectDirectory + "missileMoving03.ogg");
+            MISSILE_MOVING_03 = soundPool.load(assetDescriptor, 0);
+            assetDescriptor = glGame.getAssets().openFd(soundEffectDirectory + "missileExplosion.ogg");
+            MISSILE_EXPLOSION = soundPool.load(assetDescriptor, 0);
 
         } catch (IOException e) {
             throw new RuntimeException("Couldn't load sound some soundEffects: " + e.getMessage());
@@ -262,5 +298,33 @@ public class SoundController {
 
     public static void playFirework03() {
         soundPool.play(FIREWORK_03, soundEffectVolume, soundEffectVolume, 0, 0, 1);
+    }
+
+    public static void playMissileMoving01() {
+        soundPool.play(MISSILE_MOVING_01, soundEffectVolume, soundEffectVolume, 0, 0, 1);
+    }
+
+    public static void pauseMissileMoving01() {
+        soundPool.stop(MISSILE_MOVING_01);
+    }
+
+    public static void playMissileMoving02() {
+        soundPool.play(MISSILE_MOVING_02, soundEffectVolume, soundEffectVolume, 0, 0, 1);
+    }
+
+    public static void pauseMissileMoving02() {
+        soundPool.stop(MISSILE_MOVING_02);
+    }
+
+    public static void playMissileMoving03() {
+        soundPool.play(MISSILE_MOVING_03, soundEffectVolume, soundEffectVolume, 0, 0, 1);
+    }
+
+    public static void pauseMissileMoving03() {
+        soundPool.stop(MISSILE_MOVING_03);
+    }
+
+    public static void playMissileExplosion() {
+        soundPool.play(MISSILE_EXPLOSION, soundEffectVolume, soundEffectVolume, 0, 0, 1);
     }
 }
