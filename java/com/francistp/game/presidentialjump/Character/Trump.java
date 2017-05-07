@@ -37,7 +37,8 @@ public class Trump extends Player {
     private float dustTimer;
 
     private DisintegratedPlayer disintegratedPlayer;
-    private boolean createdDisintegratePlayer;
+    private ExplodedPlayer explodedPlayer;
+    private boolean createdDeadPlayer;
 
     public Trump(){
         super();
@@ -80,7 +81,7 @@ public class Trump extends Player {
         hairFlipAnimationTimer = 0;
         hairSettleAnimationTimer = 0;
         dustTimer = 0;
-        createdDisintegratePlayer = false;
+        createdDeadPlayer = false;
     }
 
     @Override
@@ -107,10 +108,10 @@ public class Trump extends Player {
             damageBounds.setPosition(position.x - bodyOffsetX, position.y - bodyOffsetY + 10);
         } else {
             if (deathCause == ObstaclesController.EXCALIBUR) {
-
+                // EXCALIBUR
                 // CREATE DISINTEGRATED PLAYER
-                if (!createdDisintegratePlayer) {
-                    createdDisintegratePlayer = true;
+                if (!createdDeadPlayer) {
+                    createdDeadPlayer = true;
                     // beginning and end are only 1 wide
                     // create a matrix to populate the pixel disentigration thing
                     // 24 high, 19 across
@@ -204,6 +205,37 @@ public class Trump extends Player {
                     disintegratedPlayer = new DisintegratedPlayer(disintegratedParticles);
                 }
                 disintegratedPlayer.update(deltaTime);
+            } else if (deathCause == ObstaclesController.MISSILE) {
+                // MISSILES
+                if (!createdDeadPlayer) {
+                    createdDeadPlayer = true;
+                    //ExplodedPart head, body, leftLeg, rightLeg, leftArm, rightArm;
+                    ExplodedPart head = null;
+                    ExplodedPart body = null;
+                    ExplodedPart leftLeg = null;
+                    ExplodedPart rightLeg = null;
+                    ExplodedPart leftArm = null;
+                    ExplodedPart rightArm = null;
+                    if (playerState == JUMP_LEFT || playerState == WALL_RIGHT) {
+                        head = new ExplodedPart(position.x, position.y, ExplodedPart.BOTTOM, Assets.trump_head_dead_left);
+                        body = new ExplodedPart(position.x, position.y, ExplodedPart.ALL, Assets.trump_body_dead_left);
+                        leftLeg = new ExplodedPart(position.x, position.y, ExplodedPart.TOP, Assets.trump_leg_dead_left);
+                        rightLeg = new ExplodedPart(position.x, position.y, ExplodedPart.TOP, Assets.trump_leg_dead_left);
+                        leftArm = new ExplodedPart(position.x, position.y, ExplodedPart.TOP, Assets.trump_arm_dead);
+                        rightArm = new ExplodedPart(position.x, position.y, ExplodedPart.RIGHT, Assets.trump_hand_dead_left);
+                    } else if (playerState == JUMP_RIGHT || playerState == WALL_LEFT) {
+                        head = new ExplodedPart(position.x, position.y, ExplodedPart.BOTTOM, Assets.trump_head_dead_right);
+                        body = new ExplodedPart(position.x, position.y, ExplodedPart.ALL, Assets.trump_body_dead_right);
+                        leftLeg = new ExplodedPart(position.x, position.y,ExplodedPart.TOP, Assets.trump_leg_dead_right);
+                        rightLeg = new ExplodedPart(position.x, position.y,  ExplodedPart.TOP, Assets.trump_leg_dead_right);
+                        leftArm = new ExplodedPart(position.x, position.y, ExplodedPart.TOP, Assets.trump_arm_dead);
+                        rightArm = new ExplodedPart(position.x, position.y, ExplodedPart.LEFT, Assets.trump_hand_dead_right);
+                    }
+
+                    ExplodedPart[] explodedParts = new ExplodedPart[] {head, body, leftLeg, rightLeg, leftArm, rightArm};
+                    explodedPlayer = new ExplodedPlayer(explodedParts);
+                }
+                explodedPlayer.update(deltaTime);
             }
         }
     }
@@ -308,8 +340,12 @@ public class Trump extends Player {
             }
         } else {    // DEAD
             if (deathCause == ObstaclesController.EXCALIBUR) {
-                if (createdDisintegratePlayer) {
+                if (createdDeadPlayer) {
                     disintegratedPlayer.render(batcher);
+                }
+            } else if (deathCause == ObstaclesController.MISSILE) {
+                if (createdDeadPlayer) {
+                    explodedPlayer.render(batcher);
                 }
             }
         }

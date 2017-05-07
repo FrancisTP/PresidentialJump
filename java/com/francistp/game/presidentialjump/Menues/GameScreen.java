@@ -540,21 +540,21 @@ public class GameScreen extends GLScreen {
         } else if (obstaclesController.getExcaliburController().getState() != ExcaliburController.NOTHING) {
             if (obstaclesController.getExcaliburController().getExcaliburs()[0].getState() == Excalibur.SHOOT) {
                 if (CollisionTester.CollisionTest(player.getDamageBounds(), obstaclesController.getExcaliburController().getExcaliburs()[0].getBounds())) {
-                    deathCause = "YOU WERE KILLED BY EXCALIBUR";
+                    deathCause = "YOU WERE KILLED BY ORBITAL BOMBARDMENT";
                     player.setDeathCause(ObstaclesController.EXCALIBUR);
                     return true;
                 }
             }
             if (obstaclesController.getExcaliburController().getExcaliburs()[1].getState() == Excalibur.SHOOT) {
                 if (CollisionTester.CollisionTest(player.getDamageBounds(), obstaclesController.getExcaliburController().getExcaliburs()[1].getBounds())) {
-                    deathCause = "YOU WERE KILLED BY EXCALIBUR";
+                    deathCause = "YOU WERE KILLED BY ORBITAL BOMBARDMENT";
                     player.setDeathCause(ObstaclesController.EXCALIBUR);
                     return true;
                 }
             }
             if (obstaclesController.getExcaliburController().getExcaliburs()[2].getState() == Excalibur.SHOOT) {
                 if (CollisionTester.CollisionTest(player.getDamageBounds(), obstaclesController.getExcaliburController().getExcaliburs()[2].getBounds())) {
-                    deathCause = "YOU WERE KILLED BY EXCALIBUR";
+                    deathCause = "YOU WERE KILLED BY ORBITAL BOMBARDMENT";
                     player.setDeathCause(ObstaclesController.EXCALIBUR);
                     return true;
                 }

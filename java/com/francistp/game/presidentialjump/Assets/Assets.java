@@ -166,6 +166,10 @@ public class Assets {
     public static Texture trumpallbodyparts;
 
     public static TextureRegion disintegrate_block;
+    public static TextureRegion trump_arm_dead;
+    public static TextureRegion trump_blood;
+    public static TextureRegion trump_body_dead_left;
+    public static TextureRegion trump_body_dead_right;
     public static TextureRegion trump_body_jump_left;
     public static TextureRegion trump_body_jump_right;
     public static TextureRegion trump_body_left;
@@ -174,6 +178,8 @@ public class Assets {
     public static TextureRegion trump_body_slide_right;
     public static TextureRegion trump_eyes_closed;
     public static TextureRegion trump_eyes_open;
+    public static TextureRegion trump_hand_dead_left;
+    public static TextureRegion trump_hand_dead_right;
     public static TextureRegion trump_hand_left;
     public static TextureRegion trump_hand_right;
     public static TextureRegion trump_head_01_left;
@@ -184,6 +190,10 @@ public class Assets {
     public static TextureRegion trump_head_03_right;
     public static TextureRegion trump_head_04_left;
     public static TextureRegion trump_head_04_right;
+    public static TextureRegion trump_head_dead_left;
+    public static TextureRegion trump_head_dead_right;
+    public static TextureRegion trump_leg_dead_left;
+    public static TextureRegion trump_leg_dead_right;
     public static TextureRegion trump_mouth_01_left;
     public static TextureRegion trump_mouth_01_right;
     public static TextureRegion trump_mouth_02_left;
@@ -1058,33 +1068,43 @@ public class Assets {
     public static void loadTrump(GLGame game) {
         trumpallbodyparts = new Texture(game, "characters/TrumpSpriteSheet.png");
 
-        disintegrate_block = new TextureRegion(trumpallbodyparts, 181, 3, 5, 5);
-        trump_body_jump_left = new TextureRegion(trumpallbodyparts, 3, 211, 45, 40);
-        trump_body_jump_right = new TextureRegion(trumpallbodyparts, 52, 211, 45, 40);
-        trump_body_left = new TextureRegion(trumpallbodyparts, 101, 211, 45, 40);
-        trump_body_right = new TextureRegion(trumpallbodyparts, 150, 211, 45, 40);
-        trump_body_slide_left = new TextureRegion(trumpallbodyparts, 199, 211, 45, 40);
-        trump_body_slide_right = new TextureRegion(trumpallbodyparts, 248, 211, 45, 40);
-        trump_eyes_closed = new TextureRegion(trumpallbodyparts, 297, 211, 25, 5);
-        trump_eyes_open = new TextureRegion(trumpallbodyparts, 321, 230, 25, 5);
-        trump_hand_left = new TextureRegion(trumpallbodyparts, 297, 240, 15, 10);
-        trump_hand_right = new TextureRegion(trumpallbodyparts, 316, 240, 15, 10);
+        disintegrate_block = new TextureRegion(trumpallbodyparts, 181, 501, 5, 5);
+        trump_arm_dead = new TextureRegion(trumpallbodyparts, 181, 325, 5, 20);
+        trump_blood = new TextureRegion(trumpallbodyparts, 190, 343, 1, 1);
+        trump_body_dead_left = new TextureRegion(trumpallbodyparts, 181, 267, 25, 25);
+        trump_body_dead_right = new TextureRegion(trumpallbodyparts, 181, 296, 25, 25);
+        trump_body_jump_left = new TextureRegion(trumpallbodyparts, 181, 3, 45, 40);
+        trump_body_jump_right = new TextureRegion(trumpallbodyparts, 181, 47, 45, 40);
+        trump_body_left = new TextureRegion(trumpallbodyparts, 181, 91, 45, 40);
+        trump_body_right = new TextureRegion(trumpallbodyparts, 181, 135, 45, 40);
+        trump_body_slide_left = new TextureRegion(trumpallbodyparts, 181, 179, 45, 40);
+        trump_body_slide_right = new TextureRegion(trumpallbodyparts, 181, 223, 45, 40);
+        trump_eyes_closed = new TextureRegion(trumpallbodyparts, 190, 325, 25, 5);
+        trump_eyes_open = new TextureRegion(trumpallbodyparts, 190, 334, 25, 5);
+        trump_hand_dead_left = new TextureRegion(trumpallbodyparts, 205, 343, 20, 10);
+        trump_hand_dead_right = new TextureRegion(trumpallbodyparts, 205, 357, 20, 10);
+        trump_hand_left = new TextureRegion(trumpallbodyparts, 210, 305, 15, 10);
+        trump_hand_right = new TextureRegion(trumpallbodyparts, 205, 371, 15, 10);
         trump_head_01_left = new TextureRegion(trumpallbodyparts, 3, 3, 85, 100);
         trump_head_01_right = new TextureRegion(trumpallbodyparts, 3, 107, 85, 100);
-        trump_head_02_left = new TextureRegion(trumpallbodyparts, 92, 3, 85, 100);
-        trump_head_02_right = new TextureRegion(trumpallbodyparts, 92, 107, 85, 100);
-        trump_head_03_left = new TextureRegion(trumpallbodyparts, 199, 3, 85, 100);
-        trump_head_03_right = new TextureRegion(trumpallbodyparts, 181, 107, 85, 100);
-        trump_head_04_left = new TextureRegion(trumpallbodyparts, 270, 107, 85, 100);
-        trump_head_04_right = new TextureRegion(trumpallbodyparts, 288, 3, 85, 100);
-        trump_mouth_01_left = new TextureRegion(trumpallbodyparts, 359, 107, 20, 15);
-        trump_mouth_01_right = new TextureRegion(trumpallbodyparts, 359, 126, 20, 15);
-        trump_mouth_02_left = new TextureRegion(trumpallbodyparts, 359, 145, 20, 15);
-        trump_mouth_02_right = new TextureRegion(trumpallbodyparts, 359, 164, 20, 15);
-        trump_mouth_03_left = new TextureRegion(trumpallbodyparts, 359, 183, 20, 15);
-        trump_mouth_03_right = new TextureRegion(trumpallbodyparts, 359, 202, 20, 15);
-        trump_mouth_04_left = new TextureRegion(trumpallbodyparts, 297, 221, 20, 15);
-        trump_mouth_04_right = new TextureRegion(trumpallbodyparts, 335, 211, 20, 15);
+        trump_head_02_left = new TextureRegion(trumpallbodyparts, 3, 211, 85, 100);
+        trump_head_02_right = new TextureRegion(trumpallbodyparts, 3, 315, 85, 100);
+        trump_head_03_left = new TextureRegion(trumpallbodyparts, 92, 3, 85, 100);
+        trump_head_03_right = new TextureRegion(trumpallbodyparts, 92, 107, 85, 100);
+        trump_head_04_left = new TextureRegion(trumpallbodyparts, 92, 211, 85, 100);
+        trump_head_04_right = new TextureRegion(trumpallbodyparts, 92, 315, 85, 100);
+        trump_head_dead_left = new TextureRegion(trumpallbodyparts, 3, 419, 85, 87);
+        trump_head_dead_right = new TextureRegion(trumpallbodyparts, 92, 419, 85, 87);
+        trump_leg_dead_left = new TextureRegion(trumpallbodyparts, 210, 267, 10, 15);
+        trump_leg_dead_right = new TextureRegion(trumpallbodyparts, 210, 286, 10, 15);
+        trump_mouth_01_left = new TextureRegion(trumpallbodyparts, 181, 349, 20, 15);
+        trump_mouth_01_right = new TextureRegion(trumpallbodyparts, 181, 368, 20, 15);
+        trump_mouth_02_left = new TextureRegion(trumpallbodyparts, 181, 387, 20, 15);
+        trump_mouth_02_right = new TextureRegion(trumpallbodyparts, 181, 406, 20, 15);
+        trump_mouth_03_left = new TextureRegion(trumpallbodyparts, 181, 425, 20, 15);
+        trump_mouth_03_right = new TextureRegion(trumpallbodyparts, 181, 444, 20, 15);
+        trump_mouth_04_left = new TextureRegion(trumpallbodyparts, 181, 463, 20, 15);
+        trump_mouth_04_right = new TextureRegion(trumpallbodyparts, 181, 482, 20, 15);
 
         trump_hair_flip_right_collection = new TextureRegion[] {trump_head_01_right, trump_head_02_right, trump_head_03_right, trump_head_04_right};
         trump_hair_flip_right = new Animation(1.0f, trump_hair_flip_right_collection);
@@ -1117,7 +1137,10 @@ public class Assets {
         unloadTrump();
 
         disintegrate_block = null;
-        trumpallbodyparts = null;
+        trump_arm_dead = null;
+        trump_blood = null;
+        trump_body_dead_left = null;
+        trump_body_dead_right = null;
         trump_body_jump_left = null;
         trump_body_jump_right = null;
         trump_body_left = null;
@@ -1126,6 +1149,8 @@ public class Assets {
         trump_body_slide_right = null;
         trump_eyes_closed = null;
         trump_eyes_open = null;
+        trump_hand_dead_left = null;
+        trump_hand_dead_right = null;
         trump_hand_left = null;
         trump_hand_right = null;
         trump_head_01_left = null;
@@ -1136,6 +1161,10 @@ public class Assets {
         trump_head_03_right = null;
         trump_head_04_left = null;
         trump_head_04_right = null;
+        trump_head_dead_left = null;
+        trump_head_dead_right = null;
+        trump_leg_dead_left = null;
+        trump_leg_dead_right = null;
         trump_mouth_01_left = null;
         trump_mouth_01_right = null;
         trump_mouth_02_left = null;
@@ -1144,6 +1173,7 @@ public class Assets {
         trump_mouth_03_right = null;
         trump_mouth_04_left = null;
         trump_mouth_04_right = null;
+
         trump_hair_flip_right_collection = null;
         trump_hair_flip_right = null;
         trump_hair_flip_left_collection = null;

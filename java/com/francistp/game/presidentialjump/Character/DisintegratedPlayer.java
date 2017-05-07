@@ -11,8 +11,6 @@ public class DisintegratedPlayer {
     private DisintegrateParticle[] disintegratedParticles;
 
     public DisintegratedPlayer(DisintegrateParticle[] disintegratedParticles) {
-        int disintegratedParticlesCount = 0;
-
         this.disintegratedParticles = disintegratedParticles;
     }
 

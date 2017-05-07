@@ -37,7 +37,6 @@ public class DisintegrateParticle {
     }
 
     public void render(SpriteBatcher batcher) {
-        System.out.println("X: " + x + "    Y: " + y + "    Width: " + width + "    Height: " + height);
         batcher.drawSprite(x, y, width, height, Assets.disintegrate_block);
     }
 }
