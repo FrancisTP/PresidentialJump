@@ -21,6 +21,7 @@ public class ExplodedPart {
     public static final int ALL = 4;
     private int bloodOn;
     private TextureRegion sprite;
+    private int bloodCounter;
 
     public ExplodedPart(float x, float y, int bloodOn, TextureRegion sprite) {
         this.x = x;
@@ -47,6 +48,7 @@ public class ExplodedPart {
         gravity = 0.15f;
         width = this.sprite.width;
         height = this.sprite.height;
+        bloodCounter = 0;
     }
 
     public void update(float deltaTime) {
@@ -59,6 +61,15 @@ public class ExplodedPart {
                 xSpeed = (-1)*xSpeed;
             } else if (x - (width/2) < 40 && xSpeed < 0) {
                 xSpeed = (-1)*xSpeed;
+            }
+
+            if (bloodCounter < 4) {
+                bloodCounter++;
+                BloodController.createBlood(x, y, bloodOn);
+            } else if (bloodCounter > 6){
+                bloodCounter = 0;
+            } else {
+                bloodCounter++;
             }
         }
     }

@@ -236,6 +236,7 @@ public class Trump extends Player {
                     explodedPlayer = new ExplodedPlayer(explodedParts);
                 }
                 explodedPlayer.update(deltaTime);
+                BloodController.update(deltaTime);
             }
         }
     }
@@ -348,6 +349,7 @@ public class Trump extends Player {
                     explodedPlayer.render(batcher);
                 }
             }
+            BloodController.render(batcher);
         }
 
         /*

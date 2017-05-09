@@ -10,6 +10,7 @@ import com.francistp.game.framework.math.Rectangle;
 import com.francistp.game.framework.math.Vector2;
 import com.francistp.game.presidentialjump.Assets.Assets;
 import com.francistp.game.presidentialjump.Assets.Text;
+import com.francistp.game.presidentialjump.Character.BloodController;
 import com.francistp.game.presidentialjump.Decore.Fireworks;
 import com.francistp.game.presidentialjump.Settings.Saves;
 import com.francistp.game.presidentialjump.Settings.SoundController;
@@ -101,12 +102,14 @@ public class FinishedMenu {
                     restartState = BOUNDS_NOT_TOUCHED;
                     SoundController.stopMusic();
                     SoundController.stopAllSoundEffects();
+                    BloodController.clear();
                     game.setScreen(new LoadingScreen(glGame, "GameScreen", new Fireworks()));
                 }
                 if(OverlapTester.pointInRectangle(quitBounds, touchPoint)) {
                     quitState = BOUNDS_NOT_TOUCHED;
                     SoundController.stopMusic();
                     SoundController.stopAllSoundEffects();
+                    BloodController.clear();
                     game.setScreen(new LoadingScreen(glGame, "MainMenuScreen"));
                 }
 

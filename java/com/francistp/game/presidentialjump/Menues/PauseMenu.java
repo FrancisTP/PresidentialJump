@@ -10,6 +10,7 @@ import com.francistp.game.framework.math.Rectangle;
 import com.francistp.game.framework.math.Vector2;
 import com.francistp.game.presidentialjump.Assets.Assets;
 import com.francistp.game.presidentialjump.Assets.Text;
+import com.francistp.game.presidentialjump.Character.BloodController;
 import com.francistp.game.presidentialjump.Settings.SoundController;
 
 import java.util.List;
@@ -118,6 +119,7 @@ public class PauseMenu {
                     SoundController.stopMusic();
                     SoundController.stopAllSoundEffects();
                     quitState = BOUNDS_NOT_TOUCHED;
+                    BloodController.clear();
                     game.setScreen(new LoadingScreen(glGame, "MainMenuScreen"));
                 }
 
