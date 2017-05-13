@@ -37,6 +37,6 @@ public class DisintegrateParticle {
     }
 
     public void render(SpriteBatcher batcher) {
-        batcher.drawSprite(x, y, width, height, Assets.disintegrate_block);
+        batcher.drawSprite(x, y, width, height, Assets.trump_disintegrate_block);
     }
 }

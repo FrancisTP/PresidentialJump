@@ -40,7 +40,7 @@ public class ObstaclesController {
                     delayCounter++;
                 }
                 if (delayCounter > delay) {
-                    if (obstacleInUse == NONE) {
+                    if (obstacleInUse == NONE && GameScreen.state != GameScreen.FINISHED_STATE) {
                         //Min + (int)(Math.random() * ((Max - Min) + 1))
                         int randomNum = 0 + (int)(Math.random() * ((1 - 0) + 1));
                         // Check which obstacle to create

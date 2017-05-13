@@ -137,6 +137,9 @@ public class Missile {
                 SoundController.playMissileExplosion();
             }
             explosionAnimationCounter += 0.2f;
+            if (explosionAnimationCounter > 25) {
+                reset();
+            }
         }
     }
 

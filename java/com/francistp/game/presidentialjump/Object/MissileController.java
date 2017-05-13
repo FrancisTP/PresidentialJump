@@ -76,6 +76,7 @@ public class MissileController {
 
             if (ready) {
                 start = false;
+                state = NOTHING;
             }
 
             if (start) {

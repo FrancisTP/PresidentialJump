@@ -38,6 +38,8 @@ public class Trump extends Player {
 
     private DisintegratedPlayer disintegratedPlayer;
     private ExplodedPlayer explodedPlayer;
+    private ElectrocutedPlayer electrocutedPlayer;
+    private float electrocutedOffsetY;
     private boolean createdDeadPlayer;
 
     public Trump(){
@@ -82,6 +84,8 @@ public class Trump extends Player {
         hairSettleAnimationTimer = 0;
         dustTimer = 0;
         createdDeadPlayer = false;
+
+        electrocutedOffsetY = 20;
     }
 
     @Override
@@ -106,6 +110,25 @@ public class Trump extends Player {
             updatePlayer(deltaTime);
             wallBounds.setPosition(position.x - bodyOffsetX, position.y - bodyOffsetY);
             damageBounds.setPosition(position.x - bodyOffsetX, position.y - bodyOffsetY + 10);
+
+            if (playerState == IDLE) {
+
+            } else if (playerState == JUMP_RIGHT) {
+                hairSettleAnimationTimer = 0;
+                dustTimer = 0;
+                hairFlipAnimationTimer += 0.25f;
+            } else if (playerState == JUMP_LEFT) {
+                hairSettleAnimationTimer = 0;
+                dustTimer = 0;
+                hairFlipAnimationTimer += 0.2f;
+            } else if (playerState == WALL_RIGHT) {
+                hairFlipAnimationTimer = 0;
+                hairSettleAnimationTimer += 0.25f;
+            } else if (playerState == WALL_LEFT) {
+                hairFlipAnimationTimer = 0;
+                hairSettleAnimationTimer += 0.25f;
+            }
+
         } else {
             if (deathCause == ObstaclesController.EXCALIBUR) {
                 // EXCALIBUR
@@ -237,6 +260,12 @@ public class Trump extends Player {
                 }
                 explodedPlayer.update(deltaTime);
                 BloodController.update(deltaTime);
+            }  else if (deathCause == ObstaclesController.BARRIER) {
+                if (!createdDeadPlayer) {
+                    electrocutedPlayer = new ElectrocutedPlayer(position.x, position.y + electrocutedOffsetY, Assets.trump_electrocuted_position_wall_left, Assets.trump_electrocuted_position_jump_right, Assets.trump_electrocuted_position_wall_right, Assets.trump_electrocuted_position_jump_left, new TextureRegion[] {Assets.trump_electricity_01,Assets.trump_electricity_02, Assets.trump_electricity_03, Assets.trump_electricity_04, Assets.trump_electricity_05}, playerState);
+                    createdDeadPlayer = true;
+                }
+                electrocutedPlayer.update(deltaTime);
             }
         }
     }
@@ -257,9 +286,6 @@ public class Trump extends Player {
                 }
                 batcher.drawSprite(position.x + mouthOffsetX, position.y + mouthOffsetY, Assets.trump_mouth_01_right.width, Assets.trump_mouth_01_right.height, Assets.trump_mouth_01_right);
             } else if (playerState == JUMP_RIGHT) {
-                hairSettleAnimationTimer = 0;
-                dustTimer = 0;
-                hairFlipAnimationTimer += 0.25f;
 
                 batcher.drawSprite(position.x + bodyOffsetX, position.y + bodyOffsetY, Assets.trump_body_jump_right.width, Assets.trump_body_jump_right.height, Assets.trump_body_jump_right);
 
@@ -273,9 +299,6 @@ public class Trump extends Player {
                 }
                 batcher.drawSprite(position.x + mouthOffsetX, position.y + mouthOffsetY, Assets.trump_mouth_01_right.width, Assets.trump_mouth_01_right.height, Assets.trump_mouth_01_right);
             } else if (playerState == JUMP_LEFT) {
-                hairSettleAnimationTimer = 0;
-                dustTimer = 0;
-                hairFlipAnimationTimer += 0.2f;
 
                 batcher.drawSprite(position.x - bodyOffsetX, position.y + bodyOffsetY, Assets.trump_body_jump_left.width, Assets.trump_body_jump_left.height, Assets.trump_body_jump_left);
 
@@ -289,9 +312,6 @@ public class Trump extends Player {
                 }
                 batcher.drawSprite(position.x - mouthOffsetX, position.y + mouthOffsetY, Assets.trump_mouth_01_left.width, Assets.trump_mouth_01_left.height, Assets.trump_mouth_01_left);
             } else if (playerState == WALL_RIGHT) {
-                hairFlipAnimationTimer = 0;
-                hairSettleAnimationTimer += 0.25f;
-
                 batcher.drawSprite(position.x - bodyOffsetX, position.y + bodyOffsetY, Assets.trump_body_slide_left.width, Assets.trump_body_slide_left.height, Assets.trump_body_slide_left);
 
                 TextureRegion keyFrame = Assets.trump_hair_settle_left.getKeyFrame(hairSettleAnimationTimer, Animation.ANIMATION_NONLOOPING);
@@ -304,8 +324,6 @@ public class Trump extends Player {
                 }
                 batcher.drawSprite(position.x - mouthOffsetX, position.y + mouthOffsetY, Assets.trump_mouth_01_left.width, Assets.trump_mouth_01_left.height, Assets.trump_mouth_01_left);
             } else if (playerState == WALL_LEFT) {
-                hairFlipAnimationTimer = 0;
-                hairSettleAnimationTimer += 0.25f;
 
                 batcher.drawSprite(position.x + bodyOffsetX, position.y + bodyOffsetY, Assets.trump_body_slide_right.width, Assets.trump_body_slide_right.height, Assets.trump_body_slide_right);
 
@@ -340,16 +358,16 @@ public class Trump extends Player {
                 }
             }
         } else {    // DEAD
-            if (deathCause == ObstaclesController.EXCALIBUR) {
-                if (createdDeadPlayer) {
+            if (createdDeadPlayer) {
+                if (deathCause == ObstaclesController.EXCALIBUR) {
                     disintegratedPlayer.render(batcher);
-                }
-            } else if (deathCause == ObstaclesController.MISSILE) {
-                if (createdDeadPlayer) {
+                } else if (deathCause == ObstaclesController.MISSILE) {
                     explodedPlayer.render(batcher);
+                    BloodController.render(batcher);
+                } else if (deathCause == ObstaclesController.BARRIER) {
+                    electrocutedPlayer.render(batcher);
                 }
             }
-            BloodController.render(batcher);
         }
 
         /*

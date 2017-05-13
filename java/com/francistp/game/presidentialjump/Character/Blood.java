@@ -45,7 +45,6 @@ public class Blood {
             x += speedX;
             y += speedY;
             speedY -= GRAVITY;
-            System.out.println("updating");
         } else {
             destroy = true;
         }
