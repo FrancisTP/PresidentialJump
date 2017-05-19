@@ -32,7 +32,7 @@ public class ObstaclesController {
 
     public void update(float deltaTime) {
 
-        if (GameScreen.gameStarted) {
+        if (false) {//(GameScreen.gameStarted) {
             if (delay == 0 && obstacleInUse == NONE) {
                 delay = 30 + (int)(Math.random() * ((120 - 30) + 1));
             } else {

@@ -900,6 +900,14 @@ public class Text {
         create();
     }
 
+    public void addY(float amount) {
+        for (int i=0; i<lines.length; i++) {
+            lines[i].addY(amount);
+        }
+        y += amount;
+        backgroundY += amount;
+    }
+
     public float getX() {
         return x;
     }

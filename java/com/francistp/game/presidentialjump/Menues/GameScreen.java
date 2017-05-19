@@ -24,6 +24,7 @@ import com.francistp.game.presidentialjump.Object.Excalibur;
 import com.francistp.game.presidentialjump.Object.ExcaliburController;
 import com.francistp.game.presidentialjump.Object.MissileController;
 import com.francistp.game.presidentialjump.Object.ObstaclesController;
+import com.francistp.game.presidentialjump.Object.TwitterBoardController;
 import com.francistp.game.presidentialjump.Object.Wall;
 import com.francistp.game.presidentialjump.Settings.SoundController;
 
@@ -78,6 +79,7 @@ public class GameScreen extends GLScreen {
 
     // Obstacles
     ObstaclesController obstaclesController;
+    TwitterBoardController twitterBoardController;
 
     public GameScreen(Game game, Fireworks fireworks) {
         super(game);
@@ -121,6 +123,7 @@ public class GameScreen extends GLScreen {
 
         // obstacles
         obstaclesController = new ObstaclesController();
+        twitterBoardController = new TwitterBoardController();
     }
 
     @Override
@@ -138,6 +141,7 @@ public class GameScreen extends GLScreen {
             if (player.getPlayerState() != 0) {
                 wall.scroll(-1.50f);
                 background.scroll(-1.50f);
+                twitterBoardController.update(deltaTime);
 
                 if (topBoundary.getY() > 780) {
                     topBoundary.addY(-2f);
@@ -360,6 +364,8 @@ public class GameScreen extends GLScreen {
         wall.render(batcher);
         batcher.endBatch();
 
+        twitterBoardController.render(batcher);
+
         player.render(batcher);
 
         // Obstacles
@@ -443,7 +449,6 @@ public class GameScreen extends GLScreen {
         batcher.beginBatch(Assets.fenceTexture);
         wall.render(batcher);
         batcher.endBatch();
-
 
         player.render(batcher);
 

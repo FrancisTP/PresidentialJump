@@ -40,7 +40,7 @@ public class Assets {
     public static TextureRegion at;
     public static TextureRegion b_lower;
     public static TextureRegion b_upper;
-    public static TextureRegion text_background;
+    public static TextureRegion backwards_dash;
     public static TextureRegion c_lower;
     public static TextureRegion c_upper;
     public static TextureRegion comma;
@@ -53,6 +53,7 @@ public class Assets {
     public static TextureRegion exclamation_mark;
     public static TextureRegion f_lower;
     public static TextureRegion f_upper;
+    public static TextureRegion forward_dash;
     public static TextureRegion g_lower;
     public static TextureRegion g_upper;
     public static TextureRegion h_lower;
@@ -91,6 +92,7 @@ public class Assets {
     public static TextureRegion q_lower;
     public static TextureRegion q_upper;
     public static TextureRegion question_mark;
+    public static TextureRegion quotation_mark;
     public static TextureRegion r_lower;
     public static TextureRegion r_upper;
     public static TextureRegion s_lower;
@@ -98,6 +100,7 @@ public class Assets {
     public static TextureRegion semi_colon;
     public static TextureRegion t_lower;
     public static TextureRegion t_upper;
+    public static TextureRegion text_background;
     public static TextureRegion u_lower;
     public static TextureRegion u_upper;
     public static TextureRegion v_lower;
@@ -393,7 +396,6 @@ public class Assets {
     public static TextureRegion [] missileFireCollection;
     public static Animation missile_explosion;
     public static TextureRegion [] missileExplosionCollection;
-
     ////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////
 
@@ -401,6 +403,7 @@ public class Assets {
     public static void load(GLGame game){
         glGame = game;
         loadAlwaysLoaded(glGame);
+
     }
     public static void load(){
         loadAlwaysLoaded(glGame);
@@ -502,82 +505,85 @@ public class Assets {
     public static void loadText(GLGame game) {
         textSpriteSheet = new Texture(game, "other/text.png");
 
-        a_lower = new TextureRegion(textSpriteSheet, 183, 233, 32, 31);
+        a_lower = new TextureRegion(textSpriteSheet, 3, 198, 32, 31);
         a_upper = new TextureRegion(textSpriteSheet, 3, 57, 32, 43);
-        apostrophe = new TextureRegion(textSpriteSheet, 163, 426, 7, 12);
+        apostrophe = new TextureRegion(textSpriteSheet, 446, 207, 7, 12);
         at = new TextureRegion(textSpriteSheet, 39, 3, 38, 43);
         b_lower = new TextureRegion(textSpriteSheet, 39, 50, 32, 43);
         b_upper = new TextureRegion(textSpriteSheet, 81, 3, 32, 43);
-        text_background = new TextureRegion(textSpriteSheet, 147, 273, 1, 1);
-        c_lower = new TextureRegion(textSpriteSheet, 147, 238, 32, 31);
+        backwards_dash = new TextureRegion(textSpriteSheet, 385, 144, 20, 40);
+        c_lower = new TextureRegion(textSpriteSheet, 183, 191, 32, 31);
         c_upper = new TextureRegion(textSpriteSheet, 3, 104, 32, 43);
-        comma = new TextureRegion(textSpriteSheet, 222, 375, 7, 19);
+        comma = new TextureRegion(textSpriteSheet, 446, 184, 7, 19);
         d_lower = new TextureRegion(textSpriteSheet, 39, 97, 32, 43);
         d_upper = new TextureRegion(textSpriteSheet, 75, 50, 32, 43);
         dollar = new TextureRegion(textSpriteSheet, 117, 3, 32, 43);
-        e_lower = new TextureRegion(textSpriteSheet, 215, 270, 32, 31);
+        e_lower = new TextureRegion(textSpriteSheet, 427, 50, 32, 31);
         e_upper = new TextureRegion(textSpriteSheet, 3, 151, 32, 43);
-        equal = new TextureRegion(textSpriteSheet, 186, 410, 31, 26);
-        exclamation_mark = new TextureRegion(textSpriteSheet, 139, 332, 7, 43);
-        f_lower = new TextureRegion(textSpriteSheet, 110, 332, 25, 43);
+        equal = new TextureRegion(textSpriteSheet, 463, 85, 31, 26);
+        exclamation_mark = new TextureRegion(textSpriteSheet, 416, 97, 7, 43);
+        f_lower = new TextureRegion(textSpriteSheet, 398, 50, 25, 43);
         f_upper = new TextureRegion(textSpriteSheet, 39, 144, 32, 43);
-        g_lower = new TextureRegion(textSpriteSheet, 219, 144, 32, 38);
+        forward_dash = new TextureRegion(textSpriteSheet, 409, 144, 20, 40);
+        g_lower = new TextureRegion(textSpriteSheet, 39, 191, 32, 38);
         g_upper = new TextureRegion(textSpriteSheet, 75, 97, 32, 43);
         h_lower = new TextureRegion(textSpriteSheet, 111, 50, 32, 43);
         h_upper = new TextureRegion(textSpriteSheet, 153, 3, 32, 43);
-        hyphen = new TextureRegion(textSpriteSheet, 3, 433, 31, 7);
-        i_lower = new TextureRegion(textSpriteSheet, 146, 285, 7, 43);
-        i_upper = new TextureRegion(textSpriteSheet, 150, 332, 19, 43);
+        hyphen = new TextureRegion(textSpriteSheet, 463, 115, 31, 7);
+        i_lower = new TextureRegion(textSpriteSheet, 450, 120, 7, 43);
+        i_upper = new TextureRegion(textSpriteSheet, 362, 144, 19, 43);
         j_lower = new TextureRegion(textSpriteSheet, 3, 3, 32, 50);
-        j_upper = new TextureRegion(textSpriteSheet, 3, 198, 32, 43);
-        k_lower = new TextureRegion(textSpriteSheet, 157, 273, 25, 43);
-        k_upper = new TextureRegion(textSpriteSheet, 39, 191, 32, 43);
-        l_lower = new TextureRegion(textSpriteSheet, 38, 386, 13, 43);
-        l_upper = new TextureRegion(textSpriteSheet, 75, 144, 32, 43);
-        m_lower = new TextureRegion(textSpriteSheet, 55, 379, 32, 31);
-        m_upper = new TextureRegion(textSpriteSheet, 111, 97, 32, 43);
-        n_lower = new TextureRegion(textSpriteSheet, 91, 379, 32, 31);
-        n_upper = new TextureRegion(textSpriteSheet, 147, 50, 32, 43);
-        number_0 = new TextureRegion(textSpriteSheet, 189, 3, 32, 43);
-        number_1 = new TextureRegion(textSpriteSheet, 3, 386, 31, 43);
-        number_2 = new TextureRegion(textSpriteSheet, 3, 245, 32, 43);
-        number_3 = new TextureRegion(textSpriteSheet, 39, 238, 32, 43);
-        number_4 = new TextureRegion(textSpriteSheet, 75, 191, 32, 43);
-        number_5 = new TextureRegion(textSpriteSheet, 111, 144, 32, 43);
-        number_6 = new TextureRegion(textSpriteSheet, 147, 97, 32, 43);
-        number_7 = new TextureRegion(textSpriteSheet, 183, 50, 32, 43);
-        number_8 = new TextureRegion(textSpriteSheet, 219, 50, 32, 43);
-        number_9 = new TextureRegion(textSpriteSheet, 3, 292, 32, 43);
-        o_lower = new TextureRegion(textSpriteSheet, 127, 379, 32, 31);
-        o_upper = new TextureRegion(textSpriteSheet, 39, 285, 32, 43);
-        p_lower = new TextureRegion(textSpriteSheet, 219, 186, 32, 38);
-        p_upper = new TextureRegion(textSpriteSheet, 75, 238, 32, 43);
-        parenthesis_left = new TextureRegion(textSpriteSheet, 225, 3, 26, 43);
-        parenthesis_right = new TextureRegion(textSpriteSheet, 186, 268, 25, 43);
-        period = new TextureRegion(textSpriteSheet, 173, 362, 7, 13);
-        pound = new TextureRegion(textSpriteSheet, 75, 332, 31, 43);
-        q_lower = new TextureRegion(textSpriteSheet, 183, 191, 32, 38);
-        q_upper = new TextureRegion(textSpriteSheet, 111, 191, 32, 43);
-        question_mark = new TextureRegion(textSpriteSheet, 147, 144, 32, 43);
-        r_lower = new TextureRegion(textSpriteSheet, 55, 414, 32, 31);
-        r_upper = new TextureRegion(textSpriteSheet, 183, 97, 32, 43);
-        s_lower = new TextureRegion(textSpriteSheet, 91, 414, 32, 31);
-        s_upper = new TextureRegion(textSpriteSheet, 219, 97, 32, 43);
-        semi_colon = new TextureRegion(textSpriteSheet, 173, 320, 7, 38);
-        t_lower = new TextureRegion(textSpriteSheet, 163, 379, 19, 43);
-        t_upper = new TextureRegion(textSpriteSheet, 111, 285, 31, 43);
-        u_lower = new TextureRegion(textSpriteSheet, 127, 414, 32, 31);
-        u_upper = new TextureRegion(textSpriteSheet, 3, 339, 32, 43);
-        v_lower = new TextureRegion(textSpriteSheet, 215, 305, 32, 31);
-        v_upper = new TextureRegion(textSpriteSheet, 39, 332, 32, 43);
-        w_lower = new TextureRegion(textSpriteSheet, 184, 340, 32, 31);
-        w_upper = new TextureRegion(textSpriteSheet, 75, 285, 32, 43);
-        x_lower = new TextureRegion(textSpriteSheet, 186, 375, 32, 31);
-        x_upper = new TextureRegion(textSpriteSheet, 111, 238, 32, 43);
-        y_lower = new TextureRegion(textSpriteSheet, 219, 228, 32, 38);
-        y_upper = new TextureRegion(textSpriteSheet, 147, 191, 32, 43);
-        z_lower = new TextureRegion(textSpriteSheet, 220, 340, 31, 31);
-        z_upper = new TextureRegion(textSpriteSheet, 183, 144, 32, 43);
+        j_upper = new TextureRegion(textSpriteSheet, 75, 144, 32, 43);
+        k_lower = new TextureRegion(textSpriteSheet, 440, 3, 25, 43);
+        k_upper = new TextureRegion(textSpriteSheet, 111, 97, 32, 43);
+        l_lower = new TextureRegion(textSpriteSheet, 433, 120, 13, 43);
+        l_upper = new TextureRegion(textSpriteSheet, 147, 50, 32, 43);
+        m_lower = new TextureRegion(textSpriteSheet, 219, 191, 32, 31);
+        m_upper = new TextureRegion(textSpriteSheet, 189, 3, 32, 43);
+        n_lower = new TextureRegion(textSpriteSheet, 255, 191, 32, 31);
+        n_upper = new TextureRegion(textSpriteSheet, 111, 144, 32, 43);
+        number_0 = new TextureRegion(textSpriteSheet, 147, 97, 32, 43);
+        number_1 = new TextureRegion(textSpriteSheet, 363, 50, 31, 43);
+        number_2 = new TextureRegion(textSpriteSheet, 183, 50, 32, 43);
+        number_3 = new TextureRegion(textSpriteSheet, 225, 3, 32, 43);
+        number_4 = new TextureRegion(textSpriteSheet, 147, 144, 32, 43);
+        number_5 = new TextureRegion(textSpriteSheet, 183, 97, 32, 43);
+        number_6 = new TextureRegion(textSpriteSheet, 219, 50, 32, 43);
+        number_7 = new TextureRegion(textSpriteSheet, 261, 3, 32, 43);
+        number_8 = new TextureRegion(textSpriteSheet, 183, 144, 32, 43);
+        number_9 = new TextureRegion(textSpriteSheet, 219, 97, 32, 43);
+        o_lower = new TextureRegion(textSpriteSheet, 291, 191, 32, 31);
+        o_upper = new TextureRegion(textSpriteSheet, 255, 50, 32, 43);
+        p_lower = new TextureRegion(textSpriteSheet, 75, 191, 32, 38);
+        p_upper = new TextureRegion(textSpriteSheet, 297, 3, 32, 43);
+        parenthesis_left = new TextureRegion(textSpriteSheet, 363, 97, 26, 43);
+        parenthesis_right = new TextureRegion(textSpriteSheet, 469, 3, 25, 43);
+        period = new TextureRegion(textSpriteSheet, 457, 196, 7, 13);
+        pound = new TextureRegion(textSpriteSheet, 405, 3, 31, 43);
+        q_lower = new TextureRegion(textSpriteSheet, 111, 191, 32, 38);
+        q_upper = new TextureRegion(textSpriteSheet, 219, 144, 32, 43);
+        question_mark = new TextureRegion(textSpriteSheet, 255, 97, 32, 43);
+        quotation_mark = new TextureRegion(textSpriteSheet, 433, 167, 16, 13);
+        r_lower = new TextureRegion(textSpriteSheet, 327, 191, 32, 31);
+        r_upper = new TextureRegion(textSpriteSheet, 291, 50, 32, 43);
+        s_lower = new TextureRegion(textSpriteSheet, 427, 85, 32, 31);
+        s_upper = new TextureRegion(textSpriteSheet, 333, 3, 32, 43);
+        semi_colon = new TextureRegion(textSpriteSheet, 363, 191, 7, 38);
+        t_lower = new TextureRegion(textSpriteSheet, 393, 97, 19, 43);
+        t_upper = new TextureRegion(textSpriteSheet, 327, 144, 31, 43);
+        text_background = new TextureRegion(textSpriteSheet, 183, 226, 1, 1);
+        u_lower = new TextureRegion(textSpriteSheet, 374, 191, 32, 31);
+        u_upper = new TextureRegion(textSpriteSheet, 255, 144, 32, 43);
+        v_lower = new TextureRegion(textSpriteSheet, 410, 188, 32, 31);
+        v_upper = new TextureRegion(textSpriteSheet, 291, 97, 32, 43);
+        w_lower = new TextureRegion(textSpriteSheet, 461, 126, 32, 31);
+        w_upper = new TextureRegion(textSpriteSheet, 327, 50, 32, 43);
+        x_lower = new TextureRegion(textSpriteSheet, 461, 161, 32, 31);
+        x_upper = new TextureRegion(textSpriteSheet, 369, 3, 32, 43);
+        y_lower = new TextureRegion(textSpriteSheet, 147, 191, 32, 38);
+        y_upper = new TextureRegion(textSpriteSheet, 291, 144, 32, 43);
+        z_lower = new TextureRegion(textSpriteSheet, 463, 50, 31, 31);
+        z_upper = new TextureRegion(textSpriteSheet, 327, 97, 32, 43);
     }
 
     public static void reloadText() {
@@ -601,7 +607,7 @@ public class Assets {
         at = null;
         b_lower = null;
         b_upper = null;
-        text_background = null;
+        backwards_dash = null;
         c_lower = null;
         c_upper = null;
         comma = null;
@@ -614,6 +620,7 @@ public class Assets {
         exclamation_mark = null;
         f_lower = null;
         f_upper = null;
+        forward_dash = null;
         g_lower = null;
         g_upper = null;
         h_lower = null;
@@ -652,6 +659,7 @@ public class Assets {
         q_lower = null;
         q_upper = null;
         question_mark = null;
+        quotation_mark = null;
         r_lower = null;
         r_upper = null;
         s_lower = null;
@@ -659,6 +667,7 @@ public class Assets {
         semi_colon = null;
         t_lower = null;
         t_upper = null;
+        text_background = null;
         u_lower = null;
         u_upper = null;
         v_lower = null;

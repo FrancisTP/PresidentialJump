@@ -20,6 +20,13 @@ public class Word {
         this.height = height;
     }
 
+    public void addY(float amount) {
+        for (int i=0; i<characters.length; i++) {
+            characters[i].addY(amount);
+            y += amount;
+        }
+    }
+
     public Character[] getCharacters() {
         return characters;
     }

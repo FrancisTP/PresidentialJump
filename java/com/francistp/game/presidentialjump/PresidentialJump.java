@@ -4,6 +4,7 @@ import com.francistp.game.framework.Screen;
 import com.francistp.game.framework.impl.GLGame;
 import com.francistp.game.presidentialjump.Assets.Assets;
 import com.francistp.game.presidentialjump.Menues.LoadingScreen;
+import com.francistp.game.presidentialjump.Object.TwitterHandler;
 import com.francistp.game.presidentialjump.Settings.Saves;
 import com.francistp.game.presidentialjump.Settings.SoundController;
 
@@ -25,6 +26,8 @@ public class PresidentialJump extends GLGame {
             Saves.load(this);
             Assets.load(this);
             SoundController.load(this);
+            TwitterHandler.configureTwitter();
+
             firstTimeCreate = false;
             Assets.readyState = true;
         } else {

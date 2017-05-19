@@ -164,12 +164,18 @@ public class Character {
             sprite = Assets.semi_colon;
         } else if (this.character == '\'') {
             sprite = Assets.apostrophe;
+        } else if (this.character == '"') {
+            sprite = Assets.quotation_mark;
         } else if (this.character == '(') {
-            sprite = Assets.parenthesis_left;  // TO BE ADDED
+            sprite = Assets.parenthesis_left;
         } else if (this.character == ')') {
-            sprite = Assets.parenthesis_right;  // TO BE ADDED
+            sprite = Assets.parenthesis_right;
         }  else if (this.character == '@') {
-            sprite = Assets.at;  // TO BE ADDED
+            sprite = Assets.at;
+        } else if (this.character == '/') {
+            sprite = Assets.forward_dash;
+        } else if (this.character == '\\') {
+            sprite = Assets.backwards_dash;
         } else if (this.character == ' ') {
             sprite = null;
         } else {
@@ -183,6 +189,10 @@ public class Character {
             width = 20 * (this.size / 10);
             height = 25 * (this.size / 10);
         }
+    }
+
+    public void addY(float amount) {
+        y += amount;
     }
 
     public float getX() {
@@ -202,7 +212,7 @@ public class Character {
             this.y = y - (height/2);
         } else if (this.character == '-') {
             this.y = y + (biggestHeight/2) - (height/2);
-        } else if (this.character == '\'') {
+        } else if (this.character == '\'' || this.character == '"') {
             this.y = y + biggestHeight - (height);//(height/2)
         } else if (this.character == 'g' || this.character == 'j' || this.character == 'p' || this.character == 'q' || this.character == 'y' || this.character == 'Q') {
             this.y = y - (height/3) + (height/9);

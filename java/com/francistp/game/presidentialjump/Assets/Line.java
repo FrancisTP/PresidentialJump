@@ -18,6 +18,13 @@ public class Line {
 
     }
 
+    public void addY(float amount) {
+        for (int i=0; i<words.length; i++) {
+            words[i].addY(amount);
+            y += amount;
+        }
+    }
+
     public Word[] getWords() {
         return words;
     }
