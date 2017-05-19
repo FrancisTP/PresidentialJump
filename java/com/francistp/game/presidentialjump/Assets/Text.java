@@ -11,7 +11,7 @@ public class Text {
     private String text;
     private float x, y;
     private float width, height;
-    private final float lineSpacing = 4f;
+    private final float lineSpacing = 10f;
     private float backgroundPadding = 20;
     private boolean invisible;
     private boolean background;

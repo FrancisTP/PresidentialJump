@@ -1,5 +1,8 @@
-package com.francistp.game.presidentialjump.Object;
+package com.francistp.game.presidentialjump.Decore;
 
+import com.francistp.game.presidentialjump.Settings.Saves;
+
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -25,11 +28,13 @@ public class TwitterHandler {
     private static Twitter twitter;
     private static boolean areTweetsLoaded, looped;
     private static String twitterUser;
-    private static final int AMOUNT_OF_TWEET = 25;
+    private static final int TWEETS_PER_USER = 50;
     private static String[] tweets;
     private static int tweetPosition;
 
     public static String TRUMP = "realDonaldTrump";
+
+    private static final String noTweetsFoundMessage = "Sorry, no tweets!";
 
     public static void configureTwitter() {
         cb = new ConfigurationBuilder();
@@ -40,22 +45,25 @@ public class TwitterHandler {
         areTweetsLoaded = false;
         looped = false;
         twitterUser = TRUMP; // will need to check for character soon
-        tweets = new String[AMOUNT_OF_TWEET];
+        tweets = new String[TWEETS_PER_USER];
         tweetPosition = 0;
     }
 
     private static void resetVariables() {
         areTweetsLoaded = false;
         looped = false;
-        twitterUser = "realDonaldTrump";
-        tweets = new String[AMOUNT_OF_TWEET];
+        twitterUser = TRUMP;
+        tweets = new String[TWEETS_PER_USER];
         tweetPosition = 0;
     }
 
     public static void loadTweets() {
         if (!areTweetsLoaded) {
+            if (tweets == null || tweets[0] != null || (tweets[0] != null && !tweets[0].isEmpty())) {
+                tweets = new String[TWEETS_PER_USER];
+            }
             try {
-                Paging paging = new Paging(1, AMOUNT_OF_TWEET);
+                Paging paging = new Paging(1, TWEETS_PER_USER);
                 List<Status> statuses = twitter.getUserTimeline(twitterUser, paging);
                 Iterator iterator = statuses.iterator();
                 for (int i = 0; i < tweets.length; i++) {
@@ -68,23 +76,55 @@ public class TwitterHandler {
                                 tempTweets[r] = tweets[r];
                                 tweets = tempTweets;
                             }
+
                             break;
                         } else {
-                            tweets = new String[] {"Sorry, no tweets!"};
+                            tweets = new String[] {noTweetsFoundMessage};
                         }
                     }
                 }
-            } catch (TwitterException e) {
+
+                if (!tweets[0].equals(noTweetsFoundMessage)) { // Check if any tweets were found
+                    // There are tweets
+                    String[] existingTweets = Saves.getTweets(twitterUser);
+                    if (existingTweets.length == 0) { // no previously saved tweets
+                        Saves.saveTweets(twitterUser, tweets);
+                    } else { // check if there are any new tweets
+                        if (!tweets[0].equals(existingTweets[0])) { // If new tweets, save
+                            Saves.saveTweets(twitterUser, tweets);
+                        } // if not do nothing, tweets already set
+                    }
+                }
+                areTweetsLoaded = true; // are tweets loaded only set true here so if error occurs, when gameScreen is reloaded it will try to get the tweets again
+            } catch (TwitterException e) { // if there was an error check if tweets for user were previously saved
                 System.out.println("Error fetching tweets: " + e.getMessage());
-                tweets = new String[]{"There was an issue getting " + twitterUser + "s tweets, check your internet connection!"};
+                String[] existingTweets = Saves.getTweets(twitterUser);
+                if (existingTweets.length > 0) {
+                    tweets = existingTweets;
+                } else {
+                    tweets = new String[]{"There was an issue getting " + twitterUser + "s tweets, check your internet connection!"};
+                }
             }
-            areTweetsLoaded = true;
         }
 
-        System.out.println("LOADING TWEETS: ");
-        for (String tweet : tweets) {
-            System.out.println(tweet);
+        // validate that no tweet is null or empty or just spaces
+        List tempTweets = new ArrayList();
+
+        for (int i=0; i<tweets.length; i++) {
+            if (tweets[i] != null && !tweets[i].isEmpty() && tweets[i].trim().length() > 0) { // tweet is not null, empty or composed of only white spaces
+                tempTweets.add(tweets[i]);
+            }
         }
+
+        tweets = new String[tempTweets.size()];
+        Iterator iterator = tempTweets.iterator();
+        int tweetCounter = 0;
+        while(iterator.hasNext()) {
+            tweets[tweetCounter] = ((String)iterator.next());
+            tweetCounter++;
+        }
+
+        // tweets are populated with no null strings, so can be freely used with the text class
     }
 
     public static void setTwitterUser(String tU) {

@@ -11,6 +11,9 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 public class Saves {
 	private static float musicVolume;
@@ -33,6 +36,8 @@ public class Saves {
 	private static final String firstTimePlayingKey = "firstTimePlaying";
 	private static final int defaultFirstTimePlaying = 1;
 	private static final int defaultFirstTimePlayingCheck = -1;
+
+	private static final String tweetsKey = "tweets_";
 
 	private static SharedPreferences sharedPreferences;
 	private static SharedPreferences.Editor editor;
@@ -154,5 +159,33 @@ public class Saves {
 		} else {
 			return true;
 		}
+	}
+
+	public static void saveTweets(String twitterUser, String[] tweets) {
+		String uniqueUserKey = tweetsKey + twitterUser;
+
+		Set<String> tweetSet = new LinkedHashSet<String>();
+		for (String tweet: tweets) {
+			tweetSet.add(tweet);
+		}
+		editor.putStringSet(uniqueUserKey, tweetSet);
+		editor.commit();
+	}
+
+	public static String[] getTweets(String twitterUser) {
+		String uniqueUserKey = tweetsKey + twitterUser;
+		Set<String> tweetSet = sharedPreferences.getStringSet(uniqueUserKey, new LinkedHashSet<String>());
+
+		String[] tweets = new String[tweetSet.size()];
+		int tweetCounter = 0;
+		Iterator iterator = tweetSet.iterator();
+		while (iterator.hasNext()) {
+			tweets[tweetCounter] = ((String)iterator.next());
+			tweetCounter++;
+		}
+
+
+
+		return (tweets);
 	}
 }

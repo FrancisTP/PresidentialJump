@@ -4,7 +4,7 @@ import com.francistp.game.framework.Screen;
 import com.francistp.game.framework.impl.GLGame;
 import com.francistp.game.presidentialjump.Assets.Assets;
 import com.francistp.game.presidentialjump.Menues.LoadingScreen;
-import com.francistp.game.presidentialjump.Object.TwitterHandler;
+import com.francistp.game.presidentialjump.Decore.TwitterHandler;
 import com.francistp.game.presidentialjump.Settings.Saves;
 import com.francistp.game.presidentialjump.Settings.SoundController;
 

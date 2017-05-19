@@ -24,7 +24,7 @@ import com.francistp.game.presidentialjump.Object.Excalibur;
 import com.francistp.game.presidentialjump.Object.ExcaliburController;
 import com.francistp.game.presidentialjump.Object.MissileController;
 import com.francistp.game.presidentialjump.Object.ObstaclesController;
-import com.francistp.game.presidentialjump.Object.TwitterBoardController;
+import com.francistp.game.presidentialjump.Decore.TwitterBoardController;
 import com.francistp.game.presidentialjump.Object.Wall;
 import com.francistp.game.presidentialjump.Settings.SoundController;
 
@@ -51,6 +51,8 @@ public class GameScreen extends GLScreen {
     public static final int PAUSED_STATE = 3;
     public static final int FINISHED_STATE = 4;
     public static final int SETTING_STATE = 5;
+
+    public static final float scrollSpeed = -1.5f;
 
     final int BOUNDS_NOT_TOUCHED = 0;
     final int BOUNDS_TOUCHED = 1;
@@ -139,8 +141,8 @@ public class GameScreen extends GLScreen {
 
             player.update(deltaTime);
             if (player.getPlayerState() != 0) {
-                wall.scroll(-1.50f);
-                background.scroll(-1.50f);
+                wall.scroll(scrollSpeed);
+                background.scroll(scrollSpeed);
                 twitterBoardController.update(deltaTime);
 
                 if (topBoundary.getY() > 780) {
@@ -209,8 +211,8 @@ public class GameScreen extends GLScreen {
 
             player.update(deltaTime);
             if (player.getPlayerState() != 0) {
-                wall.scroll(-1.50f);
-                background.scroll(-1.50f);
+                wall.scroll(scrollSpeed);
+                background.scroll(scrollSpeed);
 
                 if (topBoundary.getY() > 780) {
                     topBoundary.addY(-2f);

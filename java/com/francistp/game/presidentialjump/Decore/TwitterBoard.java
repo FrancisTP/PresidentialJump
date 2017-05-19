@@ -1,4 +1,4 @@
-package com.francistp.game.presidentialjump.Object;
+package com.francistp.game.presidentialjump.Decore;
 
 import com.francistp.game.framework.gl.SpriteBatcher;
 import com.francistp.game.presidentialjump.Assets.Text;
