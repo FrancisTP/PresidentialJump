@@ -68,7 +68,7 @@ public class TwitterHandler {
                 Iterator iterator = statuses.iterator();
                 for (int i = 0; i < tweets.length; i++) {
                     if (iterator.hasNext()) {
-                        tweets[i] = ((Status)iterator.next()).getText();
+                        tweets[i] = (((Status)iterator.next()).getText()).replace("|", "");
                     } else {
                         if (i != 0) {
                             String[] tempTweets = new String[i];
@@ -101,6 +101,12 @@ public class TwitterHandler {
                 String[] existingTweets = Saves.getTweets(twitterUser);
                 if (existingTweets.length > 0) {
                     tweets = existingTweets;
+
+                    System.out.println(" ");
+                    System.out.println("GETTING SAVED TWEETS..");
+                    for (int i=0; i<tweets.length; i++) {
+                        System.out.println("Tweet [" + i + "] is: " + tweets[i]);
+                    }
                 } else {
                     tweets = new String[]{"There was an issue getting " + twitterUser + "s tweets, check your internet connection!"};
                 }

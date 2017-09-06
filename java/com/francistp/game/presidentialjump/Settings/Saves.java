@@ -4,7 +4,6 @@ import android.content.SharedPreferences;
 
 import com.francistp.game.framework.FileIO;
 import com.francistp.game.framework.impl.GLGame;
-import com.francistp.game.presidentialjump.R;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -41,6 +40,8 @@ public class Saves {
 
 	private static SharedPreferences sharedPreferences;
 	private static SharedPreferences.Editor editor;
+
+	private final static String delimiter = "|";
 	
 	public static void load(GLGame game){
 		// load all keys when app is opened..
@@ -164,28 +165,25 @@ public class Saves {
 	public static void saveTweets(String twitterUser, String[] tweets) {
 		String uniqueUserKey = tweetsKey + twitterUser;
 
-		Set<String> tweetSet = new LinkedHashSet<String>();
-		for (String tweet: tweets) {
-			tweetSet.add(tweet);
+
+		String joinedTweets = "";
+		for (int i=0; i<tweets.length; i++) {
+			if (i == tweets.length - 1) {
+				joinedTweets = joinedTweets + tweets[i];
+			} else {
+				joinedTweets = joinedTweets + tweets[i] + delimiter;
+			}
 		}
-		editor.putStringSet(uniqueUserKey, tweetSet);
+
+		editor.putString(uniqueUserKey, joinedTweets);
 		editor.commit();
 	}
 
 	public static String[] getTweets(String twitterUser) {
 		String uniqueUserKey = tweetsKey + twitterUser;
-		Set<String> tweetSet = sharedPreferences.getStringSet(uniqueUserKey, new LinkedHashSet<String>());
+		String joinedTweets = sharedPreferences.getString(uniqueUserKey, "");
 
-		String[] tweets = new String[tweetSet.size()];
-		int tweetCounter = 0;
-		Iterator iterator = tweetSet.iterator();
-		while (iterator.hasNext()) {
-			tweets[tweetCounter] = ((String)iterator.next());
-			tweetCounter++;
-		}
-
-
-
+		String[] tweets = joinedTweets.split("\\" + delimiter);
 		return (tweets);
 	}
 }

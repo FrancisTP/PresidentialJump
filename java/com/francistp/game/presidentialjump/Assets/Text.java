@@ -993,4 +993,8 @@ public class Text {
             batcher.endBatch();
         }
     }
+
+    public float getBackgroundY() {
+        return backgroundY;
+    }
 }

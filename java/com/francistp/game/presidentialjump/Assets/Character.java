@@ -214,7 +214,7 @@ public class Character {
             this.y = y + (biggestHeight/2) - (height/2);
         } else if (this.character == '\'' || this.character == '"') {
             this.y = y + biggestHeight - (height);//(height/2)
-        } else if (this.character == 'g' || this.character == 'j' || this.character == 'p' || this.character == 'q' || this.character == 'y' || this.character == 'Q') {
+        } else if (this.character == 'g' || this.character == 'j' || this.character == 'p' || this.character == 'q' || this.character == 'y') {
             this.y = y - (height/3) + (height/9);
         } else if (this.character == '0' || this.character == '6') {
             this.y = y - (height/50);
